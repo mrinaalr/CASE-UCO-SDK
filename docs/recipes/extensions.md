@@ -266,7 +266,7 @@ Complex extensions with multiple modules can provide a `manifest.json` file in t
 | `cdo_shapes_compatibility` | No | Map of CDO Shapes profile → compatibility status |
 | `status` | No | Staged promotion lifecycle state: `"candidate"`, `"operational"`, or `"deprecated"` (see [`mcp_server/knowledge_lifecycle.py`](../../mcp_server/knowledge_lifecycle.py)). Manifests without this field are treated as `"operational"`. |
 
-SDK-developed Exploitation State Machine (ESM) extensions under `extensions/` illustrate the pattern: narrow phase/action catalogs (`elder-fraud`, `extortion`, `trafficking`, `forced-labor`) declare `depends_on: ["trajectories", "attack-technique"]`, while [`layered`](../../extensions/layered/) composes multiple machines via `enables` Relationships (`depends_on` includes `forced-labor`). See each extension's README for exemplars.
+SDK-developed Exploitation State Machine (ESM) extensions under `extensions/` illustrate the pattern: narrow phase/action catalogs (`elder-fraud`, `extortion`, `trafficking`, `forced-labor`) declare `depends_on: ["trajectories", "attack-technique"]`, while [`layered`](../../extensions/layered/) (v0.2.0) is the **composition metamodel** — `ExploitationStateMachine` / `Layer` / `Coupling` for sequential hand-offs, concurrent/parallel tracks, and shared factors without flattening alphabets (`depends_on` includes `trajectories` and, for the Atkinson exemplar, `forced-labor`). See [`layered-esm-composition.md`](layered-esm-composition.md) and each extension's README.
 
 ### Example Manifest
 

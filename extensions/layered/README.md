@@ -1,97 +1,90 @@
-# Layered Multi-Offense ESM Composition (`layered`)
+# Layered Exploitation State Machine Composition (`layered`)
 
-One case graph, **multiple trajectories**, composed without flattening into
-one S. Companion to [forced-labor](../forced-labor/),
-[trafficking](../trafficking/), and [trajectories](../trajectories/).
+Status: **`candidate`** · version **0.2.0**
 
-Two composition patterns are demonstrated in separate exemplars with
-different evidentiary standards:
+Domain-agnostic **composition metamodel** for Exploitation State Machines
+(ESMs) over [`trajectories`](../trajectories/). A case-level
+`lay:ExploitationStateMachine` aggregates:
 
-| Pattern | Exemplar | What it shows |
+| Class | Role |
+|---|---|
+| `lay:Layer` | One machine slot — binds exactly one `traj:Trajectory` (+ optional per-layer `traj:StateMachineModel`) |
+| `lay:Coupling` | First-class inter-layer edge (`enables`, `temporallyOverlaps`, …) |
+| Factors via `lay:hasFactor` | Shared actors, instruments, locations, evidence |
+
+**Does not flatten** multiple domain alphabets into one mega-S. Domain phase /
+technique catalogs plug in (`forced-labor`, `trafficking`, `elder-fraud`, or
+`layered-vocab.ttl` for CSEA/transit/CST).
+
+## What this fills
+
+| Need | Before | After |
 |---|---|---|
-| **Sequential / layered hand-off** | `layered.ttl` (Atkinson) | `Relationship(enables)` where one machine's terminal phase enables the next machine's start |
-| **Concurrent / parallel** | `layered-legal-process.ttl` (illustrative) | Two independent tracks with **no** hand-off Relationship; phases share an intentional overlap window |
+| Multi-trajectory case ESM | Ad-hoc Relationships + comments | `ExploitationStateMachine` + `Layer` |
+| Sequential hand-off | `kindOfRelationship "enables"` only | `Coupling` + optional `realizedBy` |
+| Concurrent / parallel | Shared interval + missing edge | `temporallyOverlaps` + `concurrencyGroup` |
+| Full vs partial | Narrative only | `completeness` / `coverage` |
+| Shared factors | Scattered nodes | `hasFactor` register |
 
-## Pattern A — Sequential / layered (Atkinson)
+## Composition patterns (`lay:compositionPattern`)
 
-**United States v. Jonathan Michael Atkinson** (E.D. Wash.). Source:
-[Spokesman-Review, 2025-04-13](https://www.spokesman.com/stories/2025/apr/13/tri-cities-business-owner-accused-of-grooming-sex-/)
-(newspaper quoting AUSA Laurel Holland — thinner than a DOJ PR; confidence
-calibrated down; unnamed counts among “11 charges” are not invented).
+| Value | Meaning |
+|---|---|
+| `sequential` | Layers ordered by `enables` / `feeds` hand-offs |
+| `concurrent` | Temporal overlap via `temporallyOverlaps` (no enables between those tracks) |
+| `parallel` | Same `concurrencyGroup`, independent (overlap assertion optional) |
+| `hybrid` | Mix (typical: sequential chain + concurrent sidecar) |
 
-| ID | Trajectory | Alphabet | Terminal |
-|---|---|---|---|
-| T1 | CSEA / grooming (Honduras) → CSAM leverage | `lay:` grooming phases | `disrupted` |
-| T2 | Cross-border transit → harboring | `lay:` transit/harbor | `disrupted` |
-| T3 | Forced labor at Crossroad Services | `fl:` (forced-labor) | `disrupted` at `ForcedLabor` |
-| T4 | Child sex trafficking (Pasco) | `lay:` child-sex-trafficking | `disrupted` |
+## Coverage / completeness
 
-**Hand-offs** (`uco-core:Relationship`):
+- **`lay:coverage`** on a Layer — this trajectory runs the full modeled alphabet
+  (`full`) or stops mid-alphabet (`partial`), e.g. forced labor without
+  `WageAppropriation`.
+- **`lay:completeness`** on the ESM — all known threads modeled (`full`) or a
+  sourced subset (`partial`). Actions deliberately outside the offense ESM
+  (e.g. post-arrest obstruction) keep completeness `partial`.
 
-- T1 `CSAMLeverage` **enables** T2 `CrossBorderTransit`
-- T2 `Harboring` **enables** T3 `Control` and T4 `PlacementControl`
-- T1 CSAM action **providesLeverageFor** T4 ICE/pastor-exposure threats
+## Coupling kinds (`lay:couplingKind`)
 
-This is a **sequential/layered hand-off composition** (T1 → T2 → T3, T2 → T4).
-It does **not** claim genuine temporal concurrency between T3 and T4: the
-source places both in post-arrival Pasco (“worked for his company for unfair
-wages and would be forced to engage in sexual acts”) without interval
-precision. Shared `atk:interval-pasco` is an honest source-bounded limitation
-(no precise US-arrival date), not a deliberate concurrency feature.
+`enables` · `providesLeverageFor` · `produces` · `sharesFactor` ·
+`temporallyOverlaps` · `feeds`
 
-Spouse is anonymized as `atk:person-spouse` (personal name omitted). Alleged
-post-arrest obstruction (hotel removal / witness-tampering investigation) is
-kept as parallel `Action`s — **not** an offense ESM — attributed to the
-anonymized spouse node.
-
-## Pattern B — Concurrent / parallel (legal-process, illustrative)
-
-`layered-legal-process.ttl` is **illustrative / fabricated** — not grounded
-in a specific PACER filing. It is the right place to demonstrate concurrency
-without overclaiming a real case.
-
-| ID | Trajectory | Coupling |
-|---|---|---|
-| L1 | Warrant: Application → JudicialAuthorization → WarrantExecution | **enables** L2 Arrest (sequential hand-off) |
-| L2 | Custody: Arrest → ChargingDecision → Arraignment | enabled by L1 |
-| L3 | Surveillance: Authorization → ActiveMonitoring → MonitoringClosed | **none** — deliberately no `Relationship` to L1/L2 |
-
-L1→L2 is the same sequential idiom as Atkinson. L3 runs in the **same
-illustrative time window** (`lp:interval`) with **no** `enables` /
-hand-off edge to L1 or L2. That absence is the demonstration of concurrency,
-not an oversight: surveillance/monitoring proceeds in parallel with the
-warrant-to-custody chain.
-
-### Data-model note (temporal overlap)
-
-The trajectories metamodel asserts occupancy via `traj:atInterval` →
-`time:ProperInterval`. It does **not** define a first-class property to
-assert that two `traj:PhaseAssertion`s (or trajectories) temporally overlap.
-Concurrency in this exemplar is therefore expressed by (1) assigning phases
-to the same intentional overlap interval and (2) omitting any hand-off
-`Relationship` between the concurrent machines. OWL-Time relations such as
-`time:intervalOverlaps` exist at the profile layer but are not wired into
-`traj:` as a composition primitive.
+`temporallyOverlaps` **requires** `lay:couplingInterval` (SHACL).
 
 ## Files
 
 | File | Role |
 |---|---|
-| `layered-vocab.ttl` | Grooming + transit + child-sex-trafficking phases/Techniques |
-| `layered-shapes.ttl` | `instrument` required on layered Techniques |
-| `layered.ttl` | Crime composition — Atkinson (sequential/layered hand-offs) |
-| `layered-legal-process.ttl` | Non-crime composition — sequential (L1→L2) + concurrent (L3‖L1/L2) |
-| `manifest.json` | `depends_on: trajectories, attack-technique, forced-labor` |
+| `layered.ttl` | Composition T-Box (`ExploitationStateMachine`, `Layer`, `Coupling`) |
+| `layered-vocab.ttl` | CSEA / transit / child-sex-trafficking domain alphabet |
+| `layered-shapes.ttl` | Composition + Technique-instrument SHACL |
+| `layered-exemplar.ttl` | Atkinson — sequential multi-offense ESM (4 Layers) |
+| `layered-legal-process.ttl` | Hybrid legal-process ESM (sequential + concurrent) |
+| `layered-invalid-exemplar.ttl` | Expected-invalid composition fixture |
 
-## Domain-agnostic?
+## Exemplars
 
-**Yes, the composition pattern is.** `traj:` machines + optional
-`Relationship(enables)` do not require exploitation vocabulary.
-`layered.ttl` is one crime instantiation; `layered-legal-process.ttl` is a
-procedural instantiation. You can layer as many process machines as the case
-needs — investigation workflows, legalproc tracks, offense ESMs — as long as
-each keeps its own S/A alphabet and hand-offs stay as Relationships (do not
-flatten into one mega-S). Concurrent tracks simply omit the hand-off edge.
+### A — Sequential multi-offense (Atkinson)
+
+`layered-exemplar.ttl` — U.S. v. Jonathan Michael Atkinson (E.D. Wash.).
+Source: [Spokesman-Review, 2025-04-13](https://www.spokesman.com/stories/2025/apr/13/tri-cities-business-owner-accused-of-grooming-sex/).
+
+| Layer | Trajectory | Alphabet | Coverage |
+|---|---|---|---|
+| T1 | CSEA / grooming → CSAM leverage | `lay:` grooming | `full` |
+| T2 | Transit → harboring | `lay:` transit/harbor | `full` |
+| T3 | Forced labor | `fl:` | `partial` |
+| T4 | Child sex trafficking | `lay:` CST | `full` |
+
+`compositionPattern sequential` · `completeness partial` · subject Atkinson ·
+factors include CSAM / four-plex / Crossroad instruments + evidence nodes.
+
+### B — Hybrid sequential + concurrent (illustrative)
+
+`layered-legal-process.ttl` — fabricated warrant → custody chain with a
+concurrent surveillance Layer. `temporallyOverlaps` Couplings + shared
+`concurrencyGroup "hearing-window"`. Proves domain-agnostic composition
+(no offense vocabulary).
 
 ## Validation
 
@@ -99,7 +92,7 @@ flatten into one mega-S). Concurrent tracks simply omit the hand-off edge.
 from case_uco.validation import validate_graph_file
 
 for path in (
-    "extensions/layered/layered.ttl",
+    "extensions/layered/layered-exemplar.ttl",
     "extensions/layered/layered-legal-process.ttl",
 ):
     validate_graph_file(
@@ -109,4 +102,26 @@ for path in (
         strict_concepts=True,
         force_rdfs_inference=True,
     )
+
+# Must NOT conform:
+validate_graph_file(
+    "extensions/layered/layered-invalid-exemplar.ttl",
+    extensions=["layered"],
+    profiles=["time", "prov-o"],
+    strict_concepts=True,
+    force_rdfs_inference=True,
+)
 ```
+
+`depends_on: trajectories, attack-technique, forced-labor` pulls alphabets
+needed by the Atkinson exemplar.
+
+## Design rules
+
+1. **One Layer ↔ one Trajectory.** Never merge States across domains.
+2. **Coupling is authoritative** for ESM composition; `realizedBy` Relationship
+   is optional interop.
+3. **Concurrency is explicit** (`temporallyOverlaps` + interval), not implied
+   by missing edges alone.
+4. **Domain vocab is optional** — process machines use local `traj:State`
+   individuals; offense machines plug in domain schemes via `domainAlphabet`.

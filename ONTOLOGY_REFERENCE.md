@@ -4,8 +4,8 @@ Auto-generated reference for all classes, properties, and vocabulary types in th
 
 | Metric | Count |
 |--------|-------|
-| Classes | 2882 |
-| Direct properties | 2403 |
+| Classes | 2885 |
+| Direct properties | 2418 |
 | Modules | 81 |
 | Vocabulary types | 54 |
 
@@ -65,7 +65,7 @@ Auto-generated reference for all classes, properties, and vocabulary types in th
 - [ext.elder-fraud.ef](#extelder-fraudef) (8 classes)
 - [ext.extortion.ex](#extextortionex) (3 classes)
 - [ext.forced-labor.fl](#extforced-laborfl) (5 classes)
-- [ext.layered.lay](#extlayeredlay) (8 classes)
+- [ext.layered.lay](#extlayeredlay) (11 classes)
 - [ext.legalproc.legalproc](#extlegalproclegalproc) (8 classes)
 - [ext.rico.rico](#extricorico) (2 classes)
 - [ext.solveit.solveit-analysis](#extsolveitsolveit-analysis) (9 classes)
@@ -41730,6 +41730,81 @@ Auto-generated reference for all classes, properties, and vocabulary types in th
 | subaction | Action | zero_or_more | No | References to other actions that make up part of a larger more complex action. |
 
 ## ext.layered.lay
+
+### Coupling
+
+*First-class inter-layer (or endpoint-to-endpoint) coupling inside a lay:ExploitationStateMachine. Expresses sequential hand-offs (enables), leverage reuse (providesLeverageFor), production of occupancy (produces), shared-factor links (sharesFactor), and explicit temporal overlap for concurrent/parallel tracks (temporallyOverlaps). Optionally cites a uco-core:Relationship via lay:realizedBy for SPARQL/interop with open-vocab relationship graphs. Prefer Coupling over bare Relationship alone when the edge participates in ESM composition semantics. Temporal overlap semantics align with W3C OWL-Time interval relations (https://www.w3.org/TR/owl-time/#interval-relations).*
+
+**Parents:** UcoObject | **IRI:** `http://example.org/ontology/layered/Coupling`
+
+| Property | Type | Cardinality | Required | Description |
+|----------|------|-------------|----------|-------------|
+| createdBy | IdentityAbstraction | zero_or_one | No | The identity that created a characterization of a concept. |
+| description | string | zero_or_more | No | A description of a particular concept characterization. |
+| externalReference | ExternalReference | zero_or_more | No | Specifies a reference to a resource outside of the UCO. |
+| hasFacet | Facet | zero_or_more | No | Further sets of properties characterizing a concept based on the particular context of the class and of the particula... |
+| modifiedTime | dateTime | zero_or_more | No | Specifies the time that this particular version of the object was modified. The object creator can use the time it de... |
+| name | string | zero_or_one | No | The name of a particular concept characterization. |
+| objectCreatedTime | dateTime | zero_or_one | No | The time at which a characterization of a concept is created. This time pertains to the time of creating the record o... |
+| objectMarking | MarkingDefinitionAbstraction | zero_or_more | No | Marking definitions to be applied to a particular concept characterization in its entirety. |
+| objectStatus | string | zero_or_one | No | The current state of formality and acceptance for a UCO object. |
+| specVersion | string | zero_or_one | No | The version of UCO ontology or subontology specification used to characterize a concept. |
+| tag | string | zero_or_more | No | A generic tag/label. |
+| couplingKind | string | exactly_one | Yes | Controlled vocabulary (SHACL sh:in) for Coupling semantics: 'enables' (sequential hand-off — source occupancy/action ... |
+| fromLayer | Layer | zero_or_one | No | Source Layer of a directed Coupling. |
+| realizedBy | Relationship | zero_or_one | No | Optional uco-core:Relationship that materializes the same edge in open-vocab Relationship form (e.g. kindOfRelationsh... |
+| toLayer | Layer | zero_or_one | No | Target Layer of a directed Coupling. |
+
+### ExploitationStateMachine
+
+*Case-level (or subject-level) composition of one or more traj:Trajectory machines into a layered Exploitation State Machine (ESM). Each participating machine remains its own alphabet (S/A) via a lay:Layer; cross-machine coupling is expressed with lay:Coupling, never by merging States into one mega-S. Supports full or partial case coverage, single or multiple trajectories, and sequential / concurrent / parallel / hybrid composition patterns. Domain-agnostic — offense, legal-process, or investigation machines may all participate. Motivated by multi-thread digital-forensic and cyber-investigation composition needs; see NIST SP 800-61r2 for phase-oriented incident practice (https://csrc.nist.gov/publications/detail/sp/800-61/rev-2/final).*
+
+**Parents:** UcoObject | **IRI:** `http://example.org/ontology/layered/ExploitationStateMachine`
+
+| Property | Type | Cardinality | Required | Description |
+|----------|------|-------------|----------|-------------|
+| createdBy | IdentityAbstraction | zero_or_one | No | The identity that created a characterization of a concept. |
+| description | string | zero_or_more | No | A description of a particular concept characterization. |
+| externalReference | ExternalReference | zero_or_more | No | Specifies a reference to a resource outside of the UCO. |
+| hasFacet | Facet | zero_or_more | No | Further sets of properties characterizing a concept based on the particular context of the class and of the particula... |
+| modifiedTime | dateTime | zero_or_more | No | Specifies the time that this particular version of the object was modified. The object creator can use the time it de... |
+| name | string | zero_or_one | No | The name of a particular concept characterization. |
+| objectCreatedTime | dateTime | zero_or_one | No | The time at which a characterization of a concept is created. This time pertains to the time of creating the record o... |
+| objectMarking | MarkingDefinitionAbstraction | zero_or_more | No | Marking definitions to be applied to a particular concept characterization in its entirety. |
+| objectStatus | string | zero_or_one | No | The current state of formality and acceptance for a UCO object. |
+| specVersion | string | zero_or_one | No | The version of UCO ontology or subontology specification used to characterize a concept. |
+| tag | string | zero_or_more | No | A generic tag/label. |
+| completeness | string | exactly_one | Yes | Whether the ESM claims to model all known offense/process threads for the subject ('full') or only a sourced subset (... |
+| compositionPattern | string | exactly_one | Yes | Overall composition pattern of the ESM. Controlled vocabulary (SHACL sh:in): 'sequential' (layers ordered by enables ... |
+| hasAggregateModel | StateMachineModel | zero_or_one | No | Optional traj:StateMachineModel that learnedFrom the union of layer trajectories for cross-layer analytics. MUST NOT ... |
+| hasCoupling | Coupling | zero_or_more | No | Links an Exploitation State Machine to a Coupling edge that connects its layers or their endpoints. |
+| hasLayer | Layer | one_or_more | Yes | Links an Exploitation State Machine to one of its Layer slots. An ESM MUST have at least one Layer. |
+
+### Layer
+
+*One machine slot inside a lay:ExploitationStateMachine. Binds exactly one traj:Trajectory (observed occupancy history) and optionally one traj:StateMachineModel (per-layer inferred alphabet model). Carries coverage (full vs partial run of the modeled alphabet), an ordering index for sequential chains, and an optional concurrency group for parallel/concurrent tracks. Domain-agnostic; optional lay:domainAlphabet points at a SKOS scheme or other vocabulary identifying the phase alphabet.*
+
+**Parents:** UcoObject | **IRI:** `http://example.org/ontology/layered/Layer`
+
+| Property | Type | Cardinality | Required | Description |
+|----------|------|-------------|----------|-------------|
+| createdBy | IdentityAbstraction | zero_or_one | No | The identity that created a characterization of a concept. |
+| description | string | zero_or_more | No | A description of a particular concept characterization. |
+| externalReference | ExternalReference | zero_or_more | No | Specifies a reference to a resource outside of the UCO. |
+| hasFacet | Facet | zero_or_more | No | Further sets of properties characterizing a concept based on the particular context of the class and of the particula... |
+| modifiedTime | dateTime | zero_or_more | No | Specifies the time that this particular version of the object was modified. The object creator can use the time it de... |
+| name | string | zero_or_one | No | The name of a particular concept characterization. |
+| objectCreatedTime | dateTime | zero_or_one | No | The time at which a characterization of a concept is created. This time pertains to the time of creating the record o... |
+| objectMarking | MarkingDefinitionAbstraction | zero_or_more | No | Marking definitions to be applied to a particular concept characterization in its entirety. |
+| objectStatus | string | zero_or_one | No | The current state of formality and acceptance for a UCO object. |
+| specVersion | string | zero_or_one | No | The version of UCO ontology or subontology specification used to characterize a concept. |
+| tag | string | zero_or_more | No | A generic tag/label. |
+| concurrencyGroup | string | zero_or_one | No | Opaque group identifier. Layers sharing the same concurrencyGroup are intended to run concurrent or parallel within t... |
+| coverage | string | exactly_one | Yes | Whether this Layer's Trajectory runs the full modeled alphabet endpoint ('full') or only a partial/mid-chain occupanc... |
+| domainAlphabet | ConceptScheme | zero_or_one | No | Optional SKOS ConceptScheme identifying the phase vocabulary (S) this Layer uses — e.g. a forced-labor or grooming ph... |
+| hasMachineModel | StateMachineModel | zero_or_one | No | Optional per-layer traj:StateMachineModel (inferred alphabet / transition estimates for this Layer's machine only). |
+| layerIndex | nonNegativeInteger | exactly_one | Yes | Zero- or one-based order of this Layer within sequential composition (hand-off chains). Concurrent/parallel Layers ma... |
+| occupiesTrajectory | Trajectory | exactly_one | Yes | The traj:Trajectory whose observed phase occupancy this Layer carries. Exactly one per Layer. |
 
 ### a_bring_to_us
 

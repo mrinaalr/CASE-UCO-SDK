@@ -1,30 +1,27 @@
 # Layered composition — NON-CRIME practical example (legal / investigative process)
 #
 # ILLUSTRATIVE / FABRICATED — not grounded in a specific PACER filing.
-# This is the concurrency demonstration graph (Atkinson in layered.ttl stays
-# sequential/layered hand-offs only; do not read concurrency claims into it).
+# Demonstrates lay:ExploitationStateMachine with HYBRID composition:
+# sequential enables (L1→L2) PLUS concurrent temporallyOverlaps (L3‖L1/L2).
 #
-# Two patterns side by side in one graph, zero offense vocabulary:
-#
-#   (a) SEQUENTIAL / LAYERED hand-off
+#   (a) SEQUENTIAL hand-off
 #       L1  Warrant:  WarrantApplication → JudicialAuthorization →
-#                     WarrantExecution (return / service)
+#                     WarrantExecution
 #       L2  Custody:  Arrest → ChargingDecision → Arraignment
-#       Hand-off: WarrantExecution --enables--> Arrest
+#       Coupling: WarrantExecution --enables--> Arrest
 #
-#   (b) GENUINELY CONCURRENT / PARALLEL
-#       L3  Surveillance/monitoring: Authorization → ActiveMonitoring →
-#           MonitoringClosed
-#       L3 shares lp:interval with L1/L2 on purpose (same illustrative window)
-#       but has NO Relationship(enables|…) to L1 or L2.
-#       That absence IS the concurrency demonstration — not an oversight.
-#       (traj: has no first-class "overlaps" edge between PhaseAssertions;
-#       overlap is implied by shared atInterval + missing hand-off. See README.)
+#   (b) CONCURRENT / PARALLEL
+#       L3  Surveillance: Authorization → ActiveMonitoring → MonitoringClosed
+#       L3 shares lp:interval with L1/L2 AND has explicit
+#       lay:Coupling couplingKind temporallyOverlaps (first-class — not
+#       implied merely by missing enables edges).
+#       concurrencyGroup "hearing-window" on L1/L2/L3.
 #
-# Uses bare traj:State individuals + uco-action:Action (no Technique catalog;
-# traj:enactsAction is optional). Validates under extensions=['layered'].
+# Domain-agnostic: bare traj:State individuals + uco-action:Action (no
+# Technique catalog). Validates under extensions=['layered'].
 
 @prefix lp: <http://example.org/layered/legal-process/> .
+@prefix lay: <http://example.org/ontology/layered/> .
 @prefix traj: <http://example.org/ontology/trajectories/> .
 @prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
 @prefix uco-tool: <https://ontology.unifiedcyberontology.org/uco/tool/> .
@@ -274,8 +271,9 @@ lp:transition-c2 a traj:Transition ;
 #################################################################
 # L3 — Surveillance / monitoring (CONCURRENT with L1/L2)
 #
-# Deliberately NO Relationship connecting L3 phases to L1 or L2.
-# Absence of enables/hand-off IS the concurrency demonstration.
+# L3 concurrent with L1/L2 via temporallyOverlaps Couplings (below).
+# No enables Relationship between L3 and L1/L2 — concurrency is first-class.
+# Concurrent with L1/L2: temporallyOverlaps Couplings + shared concurrencyGroup.
 #################################################################
 
 lp:action-authorize-surveillance
@@ -329,7 +327,7 @@ lp:phase-s2 a traj:PhaseAssertion ;
 
 lp:trajectory-surveillance a traj:Trajectory ;
 	uco-core:name "L3 — Surveillance authorization → active monitoring → closed (concurrent with L1/L2)" ;
-	uco-core:description "Parallel illustrative track. Intentionally has NO Relationship to L1 or L2; concurrency = shared lp:interval + missing hand-off." ;
+	uco-core:description "Parallel illustrative track. Concurrent with L1/L2 via lay:Coupling temporallyOverlaps + concurrencyGroup hearing-window; no enables hand-off to L1/L2." ;
 	traj:hasPhaseAssertion lp:phase-s0 , lp:phase-s1 , lp:phase-s2 .
 
 lp:trig-s1 a uco-core:UcoObject ; uco-core:name "Trigger: monitoring period begins" .
@@ -350,13 +348,13 @@ lp:transition-s2 a traj:Transition ;
 	traj:enactsAction lp:action-close-monitoring .
 
 #################################################################
-# Hand-off — SEQUENTIAL only (L1 → L2). L3 has none by design.
+# Relationships + first-class Couplings / Layers / ESM
 #################################################################
 
 lp:handoff-warrant-enables-arrest
 	a uco-core:Relationship ;
 	uco-core:name "Warrant execution enables arrest" ;
-	uco-core:description "L1 terminal WarrantExecution enables L2 Arrest — sequential/layered coupling without flattening S. L3 surveillance is deliberately NOT a source or target of any enables edge." ;
+	uco-core:description "L1 terminal WarrantExecution enables L2 Arrest — sequential coupling without flattening S." ;
 	uco-core:isDirectional true ;
 	uco-core:kindOfRelationship "enables" ;
 	uco-core:source lp:phase-w2 ;
@@ -387,7 +385,7 @@ lp:rel-authorize-surveillance-produces-s0
 	uco-core:target lp:phase-s0 .
 
 #################################################################
-# Per-layer models + composition model
+# Per-layer models + aggregate model
 #################################################################
 
 lp:tool a uco-tool:Tool ; uco-core:name "Illustrative process estimator" .
@@ -421,7 +419,7 @@ lp:model-custody a traj:StateMachineModel ;
 
 lp:model-surveillance a traj:StateMachineModel ;
 	uco-core:name "L3 model — surveillance / monitoring (concurrent)" ;
-	uco-core:description "Independent of L1/L2 — no enables coupling in the instance graph." ;
+	uco-core:description "Independent of L1/L2 enables chain — coupled only via temporallyOverlaps." ;
 	traj:initialState lp:SurveillanceAuthorization ;
 	traj:learnedFrom lp:trajectory-surveillance ;
 	traj:hasTransition lp:transition-s1 , lp:transition-s2 ;
@@ -429,9 +427,106 @@ lp:model-surveillance a traj:StateMachineModel ;
 	prov:wasGeneratedBy lp:estimate-run .
 
 lp:model-composition a traj:StateMachineModel ;
-	uco-core:name "Legal-process composition (L1∪L2 sequential + L3 concurrent)" ;
-	uco-core:description "Aggregate over warrant, custody, and surveillance trajectories. No single initialState. L1→L2 coupling is Relationship enables; L3 concurrency is shared interval + deliberate absence of any hand-off Relationship." ;
+	uco-core:name "Legal-process aggregate (L1∪L2 sequential + L3 concurrent)" ;
+	uco-core:description "Aggregate over warrant, custody, and surveillance. No single initialState. Cross-layer semantics live on lay:Coupling." ;
 	traj:learnedFrom lp:trajectory-warrant , lp:trajectory-custody , lp:trajectory-surveillance ;
 	traj:hasTransition lp:transition-w1 , lp:transition-w2 , lp:transition-c1 , lp:transition-c2 , lp:transition-s1 , lp:transition-s2 ;
 	traj:hasTransitionEstimate lp:est-w1 , lp:est-w2 , lp:est-c1 , lp:est-c2 , lp:est-s1 , lp:est-s2 ;
 	prov:wasGeneratedBy lp:estimate-run .
+
+#################################################################
+# Layers + Couplings + ExploitationStateMachine (hybrid)
+#################################################################
+
+lp:layer-l1
+	a lay:Layer ;
+	uco-core:name "L1 — Warrant process" ;
+	lay:occupiesTrajectory lp:trajectory-warrant ;
+	lay:hasMachineModel lp:model-warrant ;
+	lay:domainAlphabet lp:WarrantScheme ;
+	lay:layerIndex "1"^^xsd:nonNegativeInteger ;
+	lay:coverage "full" ;
+	lay:concurrencyGroup "hearing-window" .
+
+lp:layer-l2
+	a lay:Layer ;
+	uco-core:name "L2 — Custody process" ;
+	lay:occupiesTrajectory lp:trajectory-custody ;
+	lay:hasMachineModel lp:model-custody ;
+	lay:domainAlphabet lp:CustodyScheme ;
+	lay:layerIndex "2"^^xsd:nonNegativeInteger ;
+	lay:coverage "full" ;
+	lay:concurrencyGroup "hearing-window" .
+
+lp:layer-l3
+	a lay:Layer ;
+	uco-core:name "L3 — Surveillance / monitoring (concurrent)" ;
+	lay:occupiesTrajectory lp:trajectory-surveillance ;
+	lay:hasMachineModel lp:model-surveillance ;
+	lay:domainAlphabet lp:SurveillanceScheme ;
+	lay:layerIndex "3"^^xsd:nonNegativeInteger ;
+	lay:coverage "full" ;
+	lay:concurrencyGroup "hearing-window" .
+
+lp:coupling-warrant-enables-arrest
+	a lay:Coupling ;
+	uco-core:name "L1 WarrantExecution enables L2 Arrest" ;
+	lay:couplingKind "enables" ;
+	lay:fromLayer lp:layer-l1 ;
+	lay:toLayer lp:layer-l2 ;
+	lay:fromEndpoint lp:phase-w2 ;
+	lay:toEndpoint lp:phase-c0 ;
+	lay:realizedBy lp:handoff-warrant-enables-arrest .
+
+lp:coupling-l3-overlaps-l1
+	a lay:Coupling ;
+	uco-core:name "L3 surveillance temporally overlaps L1 warrant track" ;
+	lay:couplingKind "temporallyOverlaps" ;
+	lay:fromLayer lp:layer-l3 ;
+	lay:toLayer lp:layer-l1 ;
+	lay:fromEndpoint lp:phase-s1 ;
+	lay:toEndpoint lp:phase-w1 ;
+	lay:couplingInterval lp:interval .
+
+lp:coupling-l3-overlaps-l2
+	a lay:Coupling ;
+	uco-core:name "L3 surveillance temporally overlaps L2 custody track" ;
+	lay:couplingKind "temporallyOverlaps" ;
+	lay:fromLayer lp:layer-l3 ;
+	lay:toLayer lp:layer-l2 ;
+	lay:fromEndpoint lp:phase-s1 ;
+	lay:toEndpoint lp:phase-c1 ;
+	lay:couplingInterval lp:interval .
+
+lp:coupling-apply-produces
+	a lay:Coupling ;
+	uco-core:name "Apply produces L1 s0" ;
+	lay:couplingKind "produces" ;
+	lay:toLayer lp:layer-l1 ;
+	lay:fromEndpoint lp:action-apply ;
+	lay:toEndpoint lp:phase-w0 ;
+	lay:realizedBy lp:rel-apply-produces-s0 .
+
+lp:esm-legal-process
+	a lay:ExploitationStateMachine ;
+	uco-core:name "Illustrative hybrid legal-process ESM (L1→L2 + L3 concurrent)" ;
+	uco-core:description "Domain-agnostic process composition: sequential enables L1→L2 plus concurrent L3 with first-class temporallyOverlaps Couplings and shared concurrencyGroup hearing-window. Fabricated — not a real filing." ;
+	lay:compositionPattern "hybrid" ;
+	lay:completeness "full" ;
+	lay:hasLayer lp:layer-l1 , lp:layer-l2 , lp:layer-l3 ;
+	lay:hasCoupling
+		lp:coupling-warrant-enables-arrest ,
+		lp:coupling-l3-overlaps-l1 ,
+		lp:coupling-l3-overlaps-l2 ,
+		lp:coupling-apply-produces ;
+	lay:hasFactor
+		lp:person-affiant ,
+		lp:person-magistrate ,
+		lp:person-prosecutor ,
+		lp:person-monitor ,
+		lp:evidence-warrant-packet ,
+		lp:evidence-custody-docket ,
+		lp:evidence-surveillance-log ,
+		lp:interval ;
+	lay:hasAggregateModel lp:model-composition .
+

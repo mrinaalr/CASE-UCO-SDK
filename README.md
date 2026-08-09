@@ -280,7 +280,7 @@ Core CASE/UCO covers cyber-observables and investigation management, but real in
 | [`extortion`](extensions/extortion/) | 0.1.0 | Cyber-extortion Exploitation State Machine — phase vocabulary and action catalog for data-breach / leak-threat offenses |
 | [`trafficking`](extensions/trafficking/) | 0.1.0 | Sex-trafficking Exploitation State Machine — victim-journey phase vocabulary and action catalog for individual-operator offenses |
 | [`forced-labor`](extensions/forced-labor/) | 0.1.0 | Forced-labor / debt-bondage Exploitation State Machine — phase vocabulary and action catalog for 18 U.S.C. § 1589 pattern offenses |
-| [`layered`](extensions/layered/) | 0.1.0 | Multi-machine ESM *composition* pattern — sequential/layered hand-offs and concurrent trajectories without a flattened single S |
+| [`layered`](extensions/layered/) | 0.2.0 | Layered ESM composition metamodel — `ExploitationStateMachine` / `Layer` / `Coupling` for full·partial·sequential·concurrent·parallel multi-trajectory cases without flattening S |
 
 Extensions compose: a single graph can combine core observables with CAC victim identification, `legalproc` charges, and `cryptoinv` blockchain traces. See the [cross-ontology composition recipe](docs/recipes/cross-ontology-composition.md).
 

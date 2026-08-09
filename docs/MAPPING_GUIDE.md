@@ -801,6 +801,7 @@ Classes for network connections, IP addresses, DNS records, URLs, and related ar
 | **CountryPartnership** | ext.cac.cacontology-international | Class | A bilateral or multilateral partnership between specific countries for child protection. |
 | **CountyBasedTaskForce** | ext.cac.cacontology-taskforce | Class | CAC task force hosted by and primarily serving specific county jurisdiction. |
 | **CountyPoliceSupport** | ext.cac.cacontology-specialized-units | Class | County-level police department providing support to state computer crimes investigations. Modeled... |
+| **Coupling** | ext.layered.lay | Class | First-class inter-layer (or endpoint-to-endpoint) coupling inside a lay:ExploitationStateMachine.... |
 | **CourseCompletionTracking** | ext.cac.cacontology-prevention | Class | System for tracking participant progress and completion rates in interactive safety courses. |
 | **CourtProceedingsPhase** | ext.cac.cacontology-case-management | Class | Phase during which court proceedings occur including trials and hearings. Anti-rigid gUFO Phase. |
 | **CourtroomAccommodationPlan** | ext.cac.cacontology-case-management | Class | Case documentation specifying planned courtroom accommodations for a child witness, including sup... |
@@ -913,6 +914,7 @@ Classes for network connections, IP addresses, DNS records, URLs, and related ar
 | **EvidenceManipulation** | ext.cac.cacontology-law-enforcement-corruption | Class | Manipulation or destruction of evidence to protect exploitation activities. |
 | **EvidenceStoragePhase** | ext.cac.cacontology-physical-evidence | Class | Phase during which physical evidence is in secure storage (gUFO Phase - anti-rigid). |
 | **ExpertReport** | ext.cac.cacontology-case-management | Class | Expert analysis reports including forensic findings, psychological evaluations, and technical ass... |
+| **ExploitationStateMachine** | ext.layered.lay | Class | Case-level (or subject-level) composition of one or more traj:Trajectory machines into a layered ... |
 | **ExtracurricularRecruitment** | ext.cac.cacontology-recruitment-networks | Class | Recruitment occurring during extracurricular activities or school events. |
 | **ExtraditionRequest** | ext.cac.cacontology-multi-jurisdiction | Class | Legal request to transfer suspect between jurisdictions. |
 | **ExtremistNetworkCell** | ext.cac.cacontology-extremist-enterprises | Class | Operational cell within larger extremist network conducting specialized activities. |
@@ -1070,6 +1072,7 @@ Classes for network connections, IP addresses, DNS records, URLs, and related ar
 | **Laptop** | uco.observable | Class | A laptop, laptop computer, or notebook computer is a small, portable personal computer with a scr... |
 | **LawEnforcementAgency** | ext.cac.cacontology-multi-jurisdiction | Class | Government organization responsible for law enforcement within a jurisdiction. |
 | **LawEnforcementPartner** | ext.cac.cacontology-partnerships | Class | Law enforcement agency participating in partnership with investigative and enforcement responsibi... |
+| **Layer** | ext.layered.lay | Class | One machine slot inside a lay:ExploitationStateMachine. Binds exactly one traj:Trajectory (observ... |
 | **LeadAgency** | ext.cac.cacontology-multi-jurisdiction | Class | Primary agency responsible for coordinating multi-jurisdictional investigation. |
 | **LeadInvestigatorRole** | ext.cac.cacontology-case-management | Class | Primary investigator role with leadership responsibilities for case investigation. Enhanced as an... |
 | **LeadershipStructure** | ext.cac.cacontology-extremist-enterprises | Class | Leadership structure of enterprise including multiple leaders and their areas of control. |
@@ -2168,6 +2171,7 @@ Classes for physical and virtual devices, storage media, and hardware characteri
 | **Laptop** | uco.observable | Class | A laptop, laptop computer, or notebook computer is a small, portable personal computer with a scr... |
 | **LargeScalePlatformTakedown** | ext.cac.cacontology-platforms | Class | Coordinated takedown of major exploitation platforms with user bases exceeding 1 million accounts... |
 | **LawEnforcementPartner** | ext.cac.cacontology-partnerships | Class | Law enforcement agency participating in partnership with investigative and enforcement responsibi... |
+| **Layer** | ext.layered.lay | Class | One machine slot inside a lay:ExploitationStateMachine. Binds exactly one traj:Trajectory (observ... |
 | **LegalCaseSituation** | ext.cac.cacontology-legal-outcomes | Class | Complex situation encompassing the entire legal case from charges to resolution. Modeled as gUFO ... |
 | **LegalComplianceCapability** | ext.cac.cacontology-platforms | Class | A platform's ability to respond to legal requests and cooperate with law enforcement. Modeled as ... |
 | **LegalDataDisclosureAction** | ext.cac.cacontology-platforms | Class | An action to disclose user data to law enforcement in response to legal process. Modeled as gUFO ... |
@@ -2757,6 +2761,7 @@ Classes for installed applications, operating systems, software packages, and pr
 | **EventRecord** | uco.observable | Class | An event record is something that happens in a digital context (e.g., operating system events). |
 | **EventRecordFacet** | uco.observable | Facet | An event record facet is a grouping of characteristics unique to something that happens in a digi... |
 | **EvidenceTransitionEvent** | ext.cac.cacontology-temporal | Class | Event transitioning investigation from Legal Process to Evidence Phase. |
+| **ExploitationStateMachine** | ext.layered.lay | Class | Case-level (or subject-level) composition of one or more traj:Trajectory machines into a layered ... |
 | **FamilyReunification** | ext.cac.cacontology-victim-impact | Class | Process of reuniting trafficking victims with their families. |
 | **FederalProsecution** | ext.cac.cacontology-usa-federal-law | Class | Federal legal prosecution process for child exploitation crimes. Modeled as gUFO Event with tempo... |
 | **FileFacet** | uco.observable | Facet | A file facet is a grouping of characteristics unique to the storage of a file (computer resource ... |
@@ -3592,6 +3597,7 @@ Classes for email messages, SMS/MMS, chat messages, and communication metadata. 
 | **ExpertiseSharing** | ext.cac.cacontology-investigation-coordination | Class | Sharing of specialized expertise including subject matter experts, consultants, and technical spe... |
 | **ExplicitMessageRequestAction** | ext.cac.cacontology-undercover | Class | Suspect requesting explicit pictures or content from undercover persona. |
 | **ExploitationPhase** | ext.cac.cacontology-athletic-exploitation | Class | Active exploitation phase using established authority and coercion mechanisms. Anti-rigid gUFO Ph... |
+| **ExploitationStateMachine** | ext.layered.lay | Class | Case-level (or subject-level) composition of one or more traj:Trajectory machines into a layered ... |
 | **FinancialAccount** | ext.cac.cacontology-asset-forfeiture | Class | Bank account or financial instrument subject to restraint or forfeiture. Enhanced as gUFO Object ... |
 | **ForumPost** | uco.observable | Class | A forum post is message submitted by a user account to an online forum where the message content ... |
 | **ForumPrivateMessage** | uco.observable | Class | A forum private message (aka PM or DM (direct message)) is a one-to-one message from one specific... |
@@ -4885,6 +4891,7 @@ CASE-specific classes for structuring an investigation: cases, investigative act
 | **Examiner** | case.investigation | Class | Examiner is a role involved in providing scientific evaluations of evidence that are used to aid ... |
 | **ExaminerActionLifecycle** | case.investigation | Class | An examiner action lifecycle is an action pattern consisting of an ordered set of actions or subo... |
 | **ExpertReport** | ext.cac.cacontology-case-management | Class | Expert analysis reports including forensic findings, psychological evaluations, and technical ass... |
+| **ExploitationStateMachine** | ext.layered.lay | Class | Case-level (or subject-level) composition of one or more traj:Trajectory machines into a layered ... |
 | **ExtendedInvestigationTimeline** | ext.cac.cacontology-forensics | Class | Investigation timeline spanning weeks, months, or years for complex child exploitation cases. |
 | **ExternalOversightInvestigation** | ext.cac.cacontology-law-enforcement-corruption | Class | Investigation by external agency into law enforcement corruption. |
 | **FederalDefendantRole** | ext.cac.cacontology-usa-federal-law | Class | Role of individual charged in federal child exploitation case. Modeled as anti-rigid gUFO Role. |
@@ -5433,6 +5440,7 @@ Classes for representing timestamps, time intervals, and temporal relationships 
 | **ConversationReconstruction** | ext.cac.cacontology-sextortion | Class | Reconstruction of conversation patterns and progression timelines. |
 | **CoordinatedOffensePattern** | ext.cac.cacontology | Class | Pattern of coordinated criminal activities involving multiple perpetrators working together acros... |
 | **CoordinationSituationPattern** | ext.cac.cacontology-integration-patterns | Class | gUFO pattern for modeling multi-jurisdiction coordination situations with participating organizat... |
+| **Coupling** | ext.layered.lay | Class | First-class inter-layer (or endpoint-to-endpoint) coupling inside a lay:ExploitationStateMachine.... |
 | **CryptocurrencyWalletFacet** | ext.cryptoinv.cryptoinv | Facet | A cryptocurrency wallet facet is a grouping of characteristics unique to a wallet: software, a de... |
 | **CustodyArrangement** | ext.cac.cacontology-custodial | Class | Formal or informal arrangement for child custody or care. Modeled as gUFO Object with temporal ar... |
 | **DateTimeRange** | ext.solveit.solveit-observable | Class | A time interval with start and end boundaries. Exactly one start property (inclusive or exclusive... |
@@ -8230,6 +8238,9 @@ Extension ontologies add domain-specific classes beyond the core CASE/UCO specif
 
 | Class | Type | Description |
 |-------|------|-------------|
+| **Coupling** | Class | First-class inter-layer (or endpoint-to-endpoint) coupling inside a lay:ExploitationStateMachine.... |
+| **ExploitationStateMachine** | Class | Case-level (or subject-level) composition of one or more traj:Trajectory machines into a layered ... |
+| **Layer** | Class | One machine slot inside a lay:ExploitationStateMachine. Binds exactly one traj:Trajectory (observ... |
 | **a_bring_to_us** | Class | Bringing groomed child victims from Honduras into the United States. Affordance abused: cross-bor... |
 | **a_digital_surveillance_control** | Class | Requiring victims to provide cellphone location and passwords to their social media accounts. Aff... |
 | **a_force_child_sex_acts** | Class | Forcing minors brought to Pasco to engage in sexual acts. Affordance abused: residential control ... |

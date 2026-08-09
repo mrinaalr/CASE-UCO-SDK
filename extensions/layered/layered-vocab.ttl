@@ -1,12 +1,13 @@
-# Layered multi-offense ESM vocabulary (T-Box)
+# Layered multi-offense ESM — domain alphabet module (CSEA / transit / CST)
 #
-# Thin phase/action catalogs for the TWO offense threads that are NOT
-# already covered by extensions/forced-labor:
+# Thin phase/action catalogs for offense threads NOT already covered by
+# extensions/forced-labor:
 #   (1) CSEA / grooming + CSAM-leverage (Honduras → transit condition)
 #   (2) Child sex trafficking (Pasco forced sexual acts + ICE/CSAM threats)
+#   (3) Cross-border transit / harboring bridge phases
 #
-# Forced-labor / harboring / wage appropriation reuse fl:* from
-# extensions/forced-labor. Composition of machines lives in layered.ttl.
+# Composition metamodel (ExploitationStateMachine / Layer / Coupling) lives
+# in layered.ttl. Forced-labor phases/actions reuse fl:* .
 #
 # Grounded in the Spokesman-Review account of United States v. Jonathan
 # Michael Atkinson (E.D. Wash.), 2025-04-13:
@@ -30,12 +31,13 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://example.org/ontology/layered>
+<http://example.org/ontology/layered/vocab>
 	a owl:Ontology ;
-	rdfs:label "Layered Multi-Offense Exploitation State Machine Vocabulary"@en ;
-	rdfs:comment "CSEA/grooming and child-sex-trafficking phase/action catalogs used to compose multiple domain ESMs in one case graph. Forced-labor phases/actions come from the forced-labor extension. Grounded in the Spokesman-Review account of U.S. v. Jonathan Michael Atkinson (E.D. Wash.), 2025-04-13."@en ;
+	rdfs:label "Layered ESM Domain Vocabulary (CSEA / transit / child sex trafficking)"@en ;
+	rdfs:comment "Domain phase (traj:State) and Technique catalogs for CSEA/grooming, transit/harboring, and child-sex-trafficking machines used under the layered composition metamodel. Forced-labor alphabet comes from the forced-labor extension. Grounded in the Spokesman-Review account of U.S. v. Jonathan Michael Atkinson (E.D. Wash.), 2025-04-13."@en ;
 	dcterms:source "https://www.spokesman.com/stories/2025/apr/13/tri-cities-business-owner-accused-of-grooming-sex-/"^^xsd:anyURI ;
 	owl:imports
+		<http://example.org/ontology/layered> ,
 		<http://example.org/ontology/trajectories> ,
 		<https://ontology.unifiedcyberontology.org/uco/action/> .
 
