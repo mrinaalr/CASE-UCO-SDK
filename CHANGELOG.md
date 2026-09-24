@@ -15,8 +15,462 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `extensions/elder-fraud/`, `extensions/extortion/`, `extensions/trafficking/`: three narrow, machine-only ESM domain extensions (phase `skos:ConceptScheme` + `uco-action:Technique`-typed action catalog + minimal SHACL + real exemplar each), grounded in United States v. Castanos Garcia et al. (D. Mass. 1:24-cr-10138), United States v. Matthew D. Lane (D. Mass.), and United States v. Chase Anthony Young (N.D. Tex.) respectively.
 - `extensions/forced-labor/`: narrow forced-labor / debt-bondage ESM domain extension (18 U.S.C. § 1589 pattern) with two press-release trajectories sharing one machine — United States v. Gladys Ibanez-Olea (N.D. Ill., completed) and United States v. Thuy Tien Luong (W.D.N.C., disrupted).
 - `extensions/layered/` (v0.2.0): layered ESM **composition metamodel** — `lay:ExploitationStateMachine`, `lay:Layer`, `lay:Coupling` (sequential `enables`, concurrent `temporallyOverlaps`, leverage/shared-factor kinds), `hasFactor` register, full/partial `coverage`/`completeness`. Domain alphabet module in `layered-vocab.ttl`. Exemplars: `layered-exemplar.ttl` (Atkinson sequential multi-offense T1–T4) and `layered-legal-process.ttl` (hybrid warrant→custody + concurrent surveillance). Negative fixture `layered-invalid-exemplar.ttl`.
+
+## [1.30.0] - 2026-09-10
+
+Modeling recipes for the three commercial mobile forensic suites —
+Cellebrite UFED, Magnet AXIOM, and MSAB XRY — each with a validated
+exemplar graph and full MCP routing. Native outputs from these tools are
+not yet in hand; this release establishes the element-to-class mapping
+surface and the investigative spine so a follow-up minor release can fill
+in field-level detail against real exports.
+
+#### Commercial mobile forensic tool recipes
+
+- Added `docs/recipes/cellebrite-ufed-xml.md` for the UFED Physical
+  Analyzer `report.xml` at the root of an unzipped `.ufdr`. Maps every
+  `<modelType>` the format emits to a typed observable, walks
+  `<taggedFiles>` into hashed `File` nodes, and reconstructs the
+  `<extraInfo>`/`<nodeInfo>` join as a `Contained_Within` chain from a
+  decoded artifact back to the on-device file it came from. The community
+  parser handles eighteen model types; Physical Analyzer emits roughly
+  forty, so the recipe also maps `CreditCard`, `TransferOfFunds`,
+  `Password`, `Journey`, `Recording`, `Voicemail`, `Notification`, and
+  `SIMData`, which are unhandled upstream and frequently probative.
+- Added `docs/recipes/magnet-axiom-export.md` for the AXIOM Examine XML
+  export (`Artifact` / `Hit` / `Fragment`). Separates AXIOM Process
+  (acquisition) from AXIOM Examine (analysis and export) as two tools and
+  two actions, maps artifact families to typed observables by category
+  rather than by app-specific artifact name, promotes EXIF GPS fragments
+  to a real `uco-location:Location`, and turns
+  `Fragment name="Recovery method"` into `RecoveredObjectFacet` for
+  carved objects. `Case.mfdb` is recorded as an evidence file rather than
+  parsed, because Magnet publishes no schema for it.
+- Added `docs/recipes/msab-xry-export.md` for the sealed `.xry` container
+  and the XRY / XAMN / XEC Export tool chain. MSAB does not publish the
+  XAMN Extended XML schema and the community repository contains no
+  parser, so the recipe maps XAMN's documented content categories, marks
+  the element-name column unconfirmed rather than guessing at it, and
+  carries a "When the Extended XML schema arrives" section listing what
+  to change once a real export is held.
+
+#### Corrections to community parser patterns
+
+The three recipes follow
+[CASE-Implementation-UFED-XML](https://github.com/casework/CASE-Implementation-UFED-XML),
+[CASE-Implementation-AXIOM](https://github.com/casework/CASE-Implementation-AXIOM),
+and [CASE-Implementation-XRY](https://github.com/casework/CASE-Implementation-XRY)
+where those are right and depart from them where they are not. Each
+departure is recorded in the recipe's Anti-patterns section.
+
+- `Attached_To` is not a member of `ObservableObjectRelationshipVocab`.
+  A graph using it fails this repository's relationship-kind lint; use
+  `Attachment_Of` or `Had_Attachment`.
+- The AXIOM parser builds a complete chain-of-custody block in
+  `writeContextAxiom()` — Tool, Role, Identity, ProvenanceRecord, and
+  both InvestigativeActions — but never calls it, so real output is
+  observables with nothing attributing them. Both device recipes lead
+  with the spine.
+- Placeholder facts validate while asserting falsehoods. Upstream
+  substitutes `1900-01-01T08:00:00` for missing timestamps and repeated
+  digits for missing hashes; the recipes omit the property instead and
+  tag genuine unavailability `hash-status:not-published`.
+- UFED's `Tags` item is a category label, not a media type, and does not
+  belong in `FileFacet.mimeType`.
+- `deleted_state` has no counterpart in `ObservableObjectStateVocab`;
+  recovered records take `RecoveredObjectFacet` with a
+  `RecoveredObjectStatusVocab` member, and intact records take no
+  recovery facet at all.
+- The upstream `drafting:` namespace resolves to `example.org`, and its
+  shipped Turtle declares one class while the code emits fifteen terms.
+  Recipes route genuine gaps through `change-proposal.md` instead.
+- AXIOM localizes artifact and fragment names, so a mapping keyed on
+  English strings silently drops every artifact from a non-`en-US`
+  export. The recipe records the export locale on the export action.
+
+#### Validated exemplars
+
+- Added `examples/vendor-exports/` with a builder and a committed graph
+  per recipe: `cellebrite-ufed-xml.jsonld` (33 nodes),
+  `magnet-axiom-export.jsonld` (36 nodes), and `msab-xry-export.jsonld`
+  (32 nodes). All three conform against CASE 1.4.0 with zero violations
+  and zero undeclared concepts under `--validate` in the recipe
+  execution gate.
+- Field values are synthetic, because no licensed vendor output is
+  redistributable, but the structure is faithful: every element,
+  attribute, artifact, and fragment name reproduced in the recipes comes
+  from the real formats, and every digest in the exemplars is computed
+  over byte payloads the builders define rather than invented.
+- The exemplars also encode SHACL constraints that are easy to get wrong
+  from the vendor side: `observable:contactPhone` requires a
+  `ContactPhone` wrapper whose `contactPhoneNumber` references an account
+  observable rather than repeating the digits, `observable:host`
+  references a `DomainName` observable rather than a string,
+  `observable:exifData` requires a `ControlledDictionary` rather than a
+  plain `Dictionary`, and `SIMForm` draws on `SIMFormVocab`
+  (`Nano SIM`, not `nano-SIM`). `OperatingSystem` nodes carry
+  `SoftwareFacet` and a second `uco-observable:Software` type, ahead of
+  the UCO 2.0.0 move of `manufacturer` and `version` off
+  `OperatingSystemFacet`.
+
+#### Catalog and MCP routing
+
+- Registered all three recipes in `docs/recipes/INDEX.md`, `RECIPE_INDEX`
+  and `MAPPING_GUIDE_INDEX` (`mcp_server/domain_index.py`), the
+  `device-mobile-forensics` family in
+  `mcp_server/investigation_router.py`, and
+  `docs/recipes/recipe-execution.json`. `get_recipe`, `get_recipes`,
+  `guide_mapping`, and `route_investigation_content` all resolve the new
+  recipes; a mixed-vendor submission matches twelve router keywords and
+  returns all three.
+- Extended the mobile-forensics router family with vendor export
+  vocabulary (`ufdr`, `physical analyzer`, `report.xml`, `decodeddata`,
+  `modeltype`, `taggedfiles`, `extrainfo`, `magnet`, `axiom process`,
+  `axiom examine`, `case.mfdb`, `portable case`, `artifact profile`,
+  `recovery method`, `xry`, `msab`, `xamn`, `xec export`,
+  `extended xml`).
+- Added incoming cross-links from `starter-mobile-extraction.md` and
+  `mobile-device.md` so the catalog stays navigable as a graph.
+- The operational recipe catalog is now **85 recipes**, up from 82.
+
+Package versions bumped to **1.30.0**.
+
+## [1.29.0] - 2026-08-30
+
+Shared MCP listener for multi-client use, PACER document-mapping
+fidelity (docket roster, identity dedup, account-handle hygiene),
+and XSD-canonical hexBinary literals so SPARQL joins match across
+extractors and builders.
+
+#### Shared MCP listener
+
+- The CASE/UCO MCP server can run as a shared SSE/HTTP listener
+  (`scripts/run-mcp-server.sh`, default `http://127.0.0.1:8765/sse`)
+  so Cursor, Hermes, Claude Desktop, and other MCP clients use one
+  process. Do not set a Linux `PATH` on a Windows `wsl.exe` stdio
+  wrapper — that made Cursor fail with `spawn wsl.exe ENOENT`.
+  `PATH` and `CASE_UCO_EXTENSIONS` are set inside the Linux process.
+
+#### PACER document mapping
+
+- Raised `process_document_file` `MAX_BYTES` from 10 MiB to 50 MiB so
+  scanned PACER plea agreements and translations are not refused as
+  `source_oversized`.
+- `route_investigation_content` now requires token boundaries for short
+  or numeric family keywords (`ttp`, `c2`, `846`, `554`), so routing a
+  Layer-1 JSON-LD graph no longer false-hits CTI or export-control from
+  `https://` IRIs and statute fragments.
+- PACER semantic mapping now extracts multi-title USC/CFR citations,
+  `UNITED STATES v.` captions, named forensic tools, and platform
+  accounts beyond Snapchat. Shared output folders also get
+  stem-specific extraction sidecars so one PDF does not overwrite
+  another's `extracted-content.json`.
+- Added `extract_pacer_docket_roster`, which parses the PACER criminal
+  docket structurally: defendant number, name, `also known as` aliases,
+  counsel, and the docket-entry-1 per-defendant count matrix. A PACER
+  defendant block contains its own `represented by` attorney block, so a
+  string-level reading promotes defense counsel to the charged party.
+  Layer-2 synthesis should read defendants and counts from this parser
+  rather than from the general NER pass. Firm and address lines are
+  rejected as attorney names, and the roster is empty for non-docket text.
+- Added jurisdiction, court, and venue tokens to `PERSON_NAME_STOPWORDS`
+  so captions no longer yield `uco-identity:Person` nodes named
+  "New York", "New Mexico", "Eastern District", or "District Court".
+- Fixed a relationship `@id` concatenation bug in
+  `scripts/build_pacer_layer2_batch.py` that produced ids of the form
+  `kb:rel-def-kb:charge-1`. Affected docket graphs were rebuilt.
+- Semantic mapping now resolves identity for repeated mentions. Minor
+  victim labels, PACER case numbers, `Document N Filed ...` stamps, and
+  date references each yield one node anchored at their first mention.
+  Previously an indictment emitted a separate `@id` for every mention, so
+  "Minor Victim 4" became nine victims and one page header became twelve
+  events. Because extraction is capped at `MAX_SEMANTIC_ENTITIES` (96),
+  that repetition also spent the budget on page furniture and dropped real
+  entities appearing later in the document: on the ENTERPRISE indictment
+  deduplication recovered Minor Victims 8, 9, and 10, which the capped run
+  had truncated.
+- `PLATFORM_ACCOUNT_RE` no longer turns prose into accounts. The handle
+  segment was optional-prefixed and unvalidated, so narrative text yielded
+  `ApplicationAccount` nodes named "Discord was", "Discord or", and
+  "Discord calls". A token is now accepted only when the source marks it
+  as an account (`@` prefix, surrounding quotes, or a preceding
+  "account"/"username"/"handle" keyword) or it carries handle-like shape,
+  and never when it is a common English word. Handles no longer absorb
+  sentence-final punctuation.
+- Fixed `scripts/_pacer_attach_wechat_source.py`, which passed a `Path` to
+  `CASEGraph.load` (expects a JSON string) and collided on the `kb:`
+  prefix because the copied exemplar declares its own base.
+
+#### Canonical hexBinary
+
+- `xsd:hexBinary` literals are now emitted in XSD canonical (uppercase)
+  form by `CASEGraph`, exposed as `case_uco.graph.canonical_hex_binary`.
+  SPARQL joins compare literals as terms, so a digest written by
+  `hashlib.hexdigest()` (lowercase) does not join to the same digest
+  written by the document extractor (uppercase). The two layers therefore
+  failed to connect in a triplestore even though the bytes matched.
+  This is easy to miss because backends disagree: rdflib silently
+  canonicalizes the literal and the join appears to work, while Oxigraph
+  does not and returns nothing. Across the PACER corpus the mismatch hid
+  35 of the document-to-investigation links; term-equality and
+  case-insensitive joins now both return 248. Values that are not valid
+  hexBinary pass through untouched, so Bitcoin transaction identifiers on
+  `cryptoinv:CryptocurrencyTransactionFacet` keep their lowercase form.
+  The hand-rolled `lit()` helpers in `examples/pacer/*/build_*.py` build
+  JSON-LD without `CASEGraph`, so they now share the same helper, and the
+  affected exemplars were rebuilt.
+
+#### Change proposals and CI
+
+- Added `change_proposals/cac-enterprise-hierarchy-cardinality`, a CAC
+  proposal to make `hasHierarchy` and `hasLeadershipRelation` optional on
+  `ChildExploitationEnterprise`. A charged 18 U.S.C. § 2252A(g) enterprise
+  need not plead internal structure, and requiring those properties
+  pressures a modeller to fabricate hierarchy to pass validation.
+- Refreshed `examples/cti/darkwatchman_2021/build-manifest.json` so the
+  `modeling_guidance` hash matches `docs/recipes/cyber-threat-intelligence.md`.
+  The v1.28.0 recipe edit left the sidecar stale, and CI `Test Python`
+  failed on `CRIT-C-PROVENANCE-MANIFEST-MISMATCH`.
+
+Package versions bumped to **1.29.0**.
+
+## [1.28.0] - 2026-08-27
+
+CaseLinker source-document remodel at n=10, a live corpus probe of the
+current named-graph shape, and a hard split between CAC offender
+language and MITRE ATT&CK attacker tradecraft.
+
+#### CaseLinker current-state probe
+
+- Probed CaseLinker's public SPARQL corpus with v1.27.0 target-shape
+  questions and current-shape detective / commander / prosecutor rewrites.
+  Snapshot and query bank:
+  `examples/caselinker-icac-remodel/CURRENT_STATE_PROBE.md`. Target joins
+  (`InvestigationTrigger`, hashed series, `legalproc` charge–sentence,
+  phase end, disclosure) are absent; tip-as-`hasStep`,
+  `LegalProceeding`/`hasCharge`/`resultsSentence`, and phase begin already
+  answer. Thematic `caselinker:chargeCluster` tokens are no longer mapped
+  to `legalproc:statuteCitation`.
+
+#### Ten-graph source-document remodel
+
+- Remodeled ten CaseLinker cases from their original public press
+  releases under `examples/caselinker-icac-remodel/pilot/` (see
+  `PILOT.md` and `CORPUS.md`). Trigger join is added only when the
+  press release assigns a CyberTip to the matter; empty facets, invented
+  statutes, Illinois victim-role inflation, extra tip nodes, and
+  statutory maxima typed as sentences are refused. One of ten releases
+  cited offense statutes (`legalproc:FederalCharge`); none also had an
+  imposed sentence in the same source. Many live `dcterms:source` URLs
+  are operations, program stats, or dead links and were not remodeled.
+  All ten graphs validate (`cac` + `legalproc`). Named-graph **replace**
+  is required on load; merge would keep the old inflated triples.
+
+#### CAC offender vs ATT&CK attacker
+
+- Clarified that MITRE ATT&CK is not crimes-against-children vocabulary:
+  CAC **offenders** target children and other vulnerable people; ATT&CK
+  models **hackers** and **attackers**. CAC recipes, the CaseLinker
+  remodel, the technique–evidence join, and investigation routing now
+  refuse ATT&CK on CAC graphs except for a sourced rare overlap.
+
+Package versions bumped to **1.28.0**.
+
+## [1.27.0] - 2026-08-27
+
+Queryable press-release legal outcomes, full operational recipe
+execution coverage, and a sourced technique → evidence → outcome join.
+
+#### Press-release legal outcomes (#125)
+
+- Extended `legalproc` with `PleaAgreement`, `PotentialPenalty`,
+  `PretrialReleaseCondition`, `StateCharge`, `FederalCharge`,
+  `StateJurisdiction`, `FederalJurisdiction`, and properties for
+  `outcomeScope`, `sentenceKind`, `jurisdictionKind`, `victimFactStatus`,
+  and source publication versus retrieval time.
+- Fail-closed SHACL rejects bail/bond and statutory maxima typed as
+  imposed sentences, mixed current/prior outcome scope, fabricated
+  jurisdiction, and omitted victim facts recorded as a zero count.
+- Rewrote `cac-legal-sentencing-outcomes.md` with a legal-stage decision
+  table, CaseLinker remodeling guidance, and `legalproc:Plea` /
+  `legalproc:PleaAgreement` as the plea source of truth. Updated related
+  legal and ICAC recipes. Recipe lint rejects state-specific charge
+  subclasses outside anti-pattern sections.
+- Added ten press-release exemplars with SPARQL competency tests for
+  state-only, federal-only, dual jurisdiction, charged-only, current
+  conviction, prior history, imposed sentence, and omitted victim facts.
+- Regenerated `legalproc` language bindings and `_registry.json` so the
+  new classes resolve through MCP search and typed packages.
+
+#### Technique, evidence, and legal-outcome join (#126)
+
+- Added `docs/recipes/technique-evidence-outcome.md` with a source-fidelity
+  table (press / PACER / lab / CTI), a bounded hash-match CSV and UFED-style
+  summary importer, and LE product → DFT-* suggestion profiles that stay
+  off the graph until the source names the method.
+- Lab-join exemplar records DFT-1050 and DFT-1020 with real SHA-256 hashes
+  and an imposed `legalproc:Sentence`. PACER method-claim exemplar records
+  a named Cellebrite tool without inventing `usedTechnique`.
+- Recipe lint rejects empty `ContentDataFacet()` / JSON-LD ContentDataFacet
+  objects without hash, size, MIME type, or payload outside Anti-patterns.
+- Updated sentencing, PACER, SOLVE-IT, starter tool/mobile, CSAM
+  provenance, CTI, and recipe-authoring guidance so ATT&CK stays offender
+  method and SOLVE-IT stays examiner method.
+
+#### Recipe execution coverage (#124)
+
+- Every operational recipe now has schema-valid execution metadata.
+  Dedicated builders remain for upper-ontology and sysdiagnose recipes;
+  remaining recipes use compact catalog fragments.
+- `run_recipe_examples.py --all` reports operational coverage and fails
+  if a recipe is missing from the manifest. Candidate promotion continues
+  to require the same gate. CI's recipe job now runs `--all --validate`
+  so the coverage report is produced on every push.
+- Recipe lint no longer carries an unused mermaid `-->` regexp that CodeQL
+  `py/bad-tag-filter` treated as an incomplete HTML comment end
+  ([alert 538](https://github.com/vulnmaster/CASE-UCO-SDK/security/code-scanning/538)).
+  Ignore directives also accept the HTML comment-end-bang form `--!>`.
+
+#### CaseLinker ICAC remodel patterns (#128–#131)
+
+- Added `docs/recipes/caselinker-icac-remodel.md` and
+  `mcp_server/tools/caselinker_icac_remodel.py` to remodel CaseLinker CAC
+  graphs: `InvestigationTrigger` joins, share-safe known-series matches,
+  `legalproc` dual-typed charges with `chargedWith`/`appliesTo`, commander
+  phase begin/end clocks, generic `ICACtaskForce`, and a CaseLinker private
+  vocab map that fails closed. Share-safe series `referenceURL` values
+  serialize as `xsd:anyURI` (SHACL `DatatypeConstraintComponent`).
+- Loaded `cacontology-us-ncmec.ttl` into the CAC validation subset so
+  CyberTip trigger classes pass strict concept coverage.
+- Exemplars and SPARQL competency queries live under
+  `examples/caselinker-icac-remodel/`.
+
+#### Criminal discovery and disclosure (#132)
+
+- Extended `legalproc` 0.3.0 with `DisclosureObligation`,
+  `DiscoveryProduction`, `SuppressionMotion`, and fail-closed SHACL that
+  requires a source citation and evidence IRI. Brady cannot be inferred
+  from unlabeled exam notes.
+- Added `docs/recipes/legal-discovery-disclosure.md`.
+
+Package versions bumped to **1.27.0**.
+
+## [1.26.0] - 2026-08-26
+
+Fail-closed ontology grounding for the operational recipe catalog, repair of
+undeclared CASE/UCO/CAC terms and non-interoperable relationship labels, and a
+reviewed Rust dependency lockfile update.
+
+#### Recipe ontology grounding (#123)
+
+- Audited all 79 operational recipes against vendored CASE/UCO, every
+  operational extension manifest in full mode, the exact pinned
+  upper-ontology registry, and `relationship_kinds.json`. Corrected fake or
+  mis-namespaced claims including `SextortionScheme`, `HotlineIntake`,
+  `MissingChildReport`, `ProductionCase`, `ExtraditionProcess`,
+  `case-investigation:name`, `gufo:hasParticipant`, and
+  `uco-observable:Facet`.
+- Replaced unregistered relationship strings and diagram labels with declared
+  direct properties or registered vocabulary values. Generic fallback edges
+  now use `Related_To` with precise descriptions that preserve role,
+  ownership, derivation, venue, custody, or evidentiary-basis semantics.
+- Added `mcp_server/recipe_lint.py`, a repository-wide Markdown gate that
+  checks CURIE existence, class/property RDF roles, class/property tables,
+  embedded snippets, canonical diagram edges, and relationship literals. It
+  reports narrow, reviewable exclusions for anti-patterns, proposed terms,
+  wildcard notation, instance IDs, and controlled literals; malformed or
+  unbounded directives fail closed.
+- Integrated recipe lint into `make test`, `make test-mcp`, CI's MCP suite, and
+  candidate promotion. Promotion rejects an invalid candidate before running
+  its exemplar builder.
+- Corrected canonical namespace examples in the fraud/crypto and change-
+  proposal recipes, removed unregistered external chemical identifiers from
+  operational guidance, and made every canonical diagram property namespace-
+  explicit.
+- Added regression coverage proving the gate rejects `SextortionScheme`,
+  `used_platform`, `case-investigation:name`, `gufo:hasParticipant`,
+  `uco-observable:Facet`, `Relates_To`, and prose-only custom labels such as
+  `Basis_Of`, while classifying explicit anti-pattern and wildcard examples.
+
+#### Recipe exemplar validation
+
+- Repaired checkout import-path handling for recipe builders and graph
+  validation so `case_uco` and MCP modules resolve consistently from a clean
+  checkout and validation failures remain fail-closed.
+- Made relationship-kind lint strict for executable exemplars, corrected the
+  FOAF/ORG account-attribution exemplar to use registered `Related_To`, and
+  added regression tests for conforming/nonconforming validation and
+  unregistered relationship values.
+- `run_recipe_examples.py --all --validate` now passes all 11 registered
+  strict-concept exemplar entries.
+
+#### Dependency maintenance
+
+- Included Dependabot #122, updating the Rust `uuid` lockfile entry from
+  1.24.1 to 1.25.0 after its full CI, dependency-review, and Rust security
+  checks passed.
+
+Package versions bumped to **1.26.0**.
+
+## [1.25.0] - 2026-08-25
+
+Remote SPARQL query and analysis for the MCP server, with CaseLinker as the
+first reference endpoint and a security boundary suitable for agent-facing
+network access.
+
+#### Remote SPARQL MCP workflow (#120)
+
+- Added `execute_sparql_query(query, endpoint_url?, timeout_seconds?)`, a
+  generic SPARQL 1.1 Protocol client for SELECT, ASK, CONSTRUCT, and DESCRIBE.
+  It uses CaseLinker's public CASE/UCO/CAC endpoint by default and accepts
+  other standards-compliant endpoints.
+- Results are normalized as SPARQL JSON bindings, ASK booleans, JSON-LD, or
+  RDF text with stable request/response metadata, query digest, bounded safe
+  summaries, and `content_trust: untrusted-external-sparql-results`. The full
+  query and remote HTTP error bodies are not reflected in tool results.
+- Added the `case-uco://sparql` MCP resource with the ontology-first query
+  workflow, CaseLinker endpoint profile, named-graph/default-union behavior,
+  safe starter queries, and privacy guidance.
+- Added query and transport controls: local rejection of SPARQL Update and
+  SERVICE, query/response/timeout caps, blocked redirects and URL credentials,
+  public-HTTPS-by-default endpoint validation, DNS/private-address rejection,
+  optional exact host allowlists, and fail-closed SPARQL egress under secure
+  deployment profiles unless explicitly enabled.
+- Added 35 focused offline tests plus an opt-in live CaseLinker smoke test,
+  covering query forms and lexical edge cases, SSRF and
+  secure-profile policies, request protocol, SELECT/ASK/CONSTRUCT response
+  normalization, HTTP errors, response bounds, and MCP tool/resource wiring.
+- Added `docs/SPARQL.md` with the query/analysis guide and a separate future
+  validated graph-loading contract for Oxigraph and Fuseki. Query execution
+  remains read-only; graph loading will require validation provenance,
+  configured write targets, dry-run/commit separation, idempotency, named-
+  graph ownership, and explicit overwrite authority.
+- Documented CaseLinker's current endpoint contract and identified its current
+  documentation posture: a README quick start, brief OpenAPI operation, and
+  executable live tests. A dedicated upstream API guide is recommended for
+  GET/POST encoding, content negotiation, response/error schemas, rate-limit
+  headers, namespaces, examples, and corpus/version metadata.
+
+#### Dependency maintenance
+
+- Merged Dependabot #117, updating the Rust `uuid` lockfile entry from 1.24.0
+  to 1.24.1 after the Rust tests, security audit, dependency review, and full
+  CI matrix passed.
+- Merged Dependabot #118, updating the test-only `Microsoft.NET.Test.Sdk`
+  dependency from 18.8.1 to 18.9.0 after the C# tests and full CI matrix
+  passed.
+- Merged Dependabot #119, updating the test-only
+  `xunit.runner.visualstudio` adapter from 3.1.5 to 4.0.0. The adapter remains
+  compatible with this .NET 8/xUnit v2 test project, and the C# tests and full
+  CI matrix passed on the update.
+
+Package versions bumped to **1.25.0**.
+
+## [1.24.0] - 2026-08-16
+
 Alignment to the CASE and UCO 1.5.0 releases, a SHACL cardinality fix in the
-generator, and repair of the extension compatibility harness.
+generator, repair of the extension compatibility harness, bounded Apple
+acquisition-package tooling, and published deployment-compute requirements.
 
 #### Ontology alignment (CASE/UCO 1.5.0)
 
@@ -49,6 +503,10 @@ generator, and repair of the extension compatibility harness.
   `cryptoinv`, `drugs`, `legalproc`, `rico`, `toolcap` and `weapons`, each
   confirmed `Conforms: True` against the 1.5.0 closure rather than assumed
   from UCO's `owl:backwardCompatibleWith`.
+- Regenerated the ontology reference, mapping guide, and four runtime
+  registries from the complete pinned recursive checkout. They now expose
+  2,933 core and extension classes across 79 modules, matching the sources
+  used by the release workflow.
 
 #### Generator
 
@@ -85,6 +543,78 @@ generator, and repair of the extension compatibility harness.
 - Removed the unused `ul_record` / `ul_event` locals in
   `examples/sysdiagnose/build_ios_sysdiagnose_unified_logs.py`, clearing the
   last two open CodeQL alerts (`py/unused-local-variable` #527, #528).
+- Resolved nine findings surfaced when CodeQL analyzed the new v1.24 code
+  (#529–#537): benchmark temporary directories are securely randomized,
+  Java service-provider overrides are explicit, Python cleanup no longer uses
+  an empty exception handler, benchmark memory sampling avoids forced garbage
+  collection, C# cache pruning uses an explicit filter, and streaming output
+  paths are normalized before use.
+
+#### Marking-safe partitioning (#79)
+
+- Added matching marking/authorization boundary policies to all four SDKs.
+  Partition plans fail closed by default; explicit home-reference and support
+  graph modes preserve a reconstructable union without copying protected node
+  content into an unauthorized partition.
+- Added v2 manifests with dataset/partition hashes, effective scopes, safe
+  manifest mode, routing/omission counts, validation-bundle identity, and
+  declared RDF-union reconstruction. Python performs an RDF-isomorphism proof;
+  native SDKs verify the exact JSON-LD assertion union.
+- Added partition-set validation orchestration: self-contained partitions are
+  validated independently, while referenced sets are reconstructed and
+  validated together.
+
+#### Bounded streaming writer (#80)
+
+- Added frozen-context, incremental JSON-LD writers with a configurable
+  per-node allocation cap in Python, C#, Java, and Rust. Unknown prefixes and
+  oversized nodes fail before atomic destination replacement; induced-failure
+  tests prove existing destination bytes survive.
+
+#### Cross-language benchmark release gate (#81)
+
+- Expanded C#, Java, and Rust from catalog-only timing to the same catalog,
+  relationship-rich partition, deserialization roundtrip, and streaming-write
+  workload families as Python, across 1K/10K/100K tiers.
+- Added repeated samples, min/max/median/mean/stdev/p95 dispersion, workload
+  memory metrics, process peak RSS, Python bundle/coverage/SHACL stages, and a
+  consolidated machine-readable/Markdown release report.
+- Every language now emits the same deterministic catalog fixture; the release
+  gate parses all four as RDF and fails unless their graphs are isomorphic.
+- Removed redundant fallback linear node scans after IRI-index misses in all
+  four runtimes, eliminating quadratic construction exposed by the
+  medium/large workloads. All supported mutation/load paths maintain the index.
+
+#### Extension registry invalidation (#82)
+
+- Added explicit extension registration/unregistration, deterministic
+  Class-IRI conflict rejection, cache generations, and hit/miss metrics across
+  the applicable runtimes. Python supports opt-in entry points, Java supports
+  `ServiceLoader`, C# supports explicit assemblies/types, and Rust exposes an
+  honest metadata registry rather than simulating runtime reflection.
+
+#### Apple acquisition packaging (#99)
+
+- Added fail-closed classification for full iOS `sysdiagnose_*` trees versus
+  standalone FOSS `.logarchive` collections. Ambiguous and unsupported package
+  layouts return typed errors instead of being mislabeled as sysdiagnose.
+- Added `build_acquisition_package_graph` for bounded package-level CASE/UCO +
+  SOLVE-IT JSON-LD. Binary `.tracev3` data and full decoder output remain
+  external; CSV/JSONL event samples are capped at 1,000 records.
+- Shareable mode normalizes paths, removes common device/person identifiers,
+  omits or replaces message bodies, and returns safe counts/digests rather than
+  source rows. Inventory walks, hashes, input lines, and output writes are
+  bounded, package-base containment is enforced, and graph writes are atomic.
+- Updated MCP routing and Apple recipes to distinguish acquisition shapes,
+  retain timebase caveats, and require extension-aware SOLVE-IT validation.
+
+#### Compute requirements (#100)
+
+- Published the minimum baseline (4 CPU cores, 8 GB RAM, no GPU/VRAM, and
+  20 GB application/database disk excluding evidence) in `README.md`,
+  `docs/COMPUTE.md`, and machine-readable `catalog/compute.yaml`.
+- Documented an 8-core/16 GB recommended tier and the 32–64 GB RAM range for
+  large in-memory graphs; evidence storage remains separately sized.
 
 #### Docs
 
@@ -93,6 +623,8 @@ generator, and repair of the extension compatibility harness.
   1.5.0 release `develop` still carried `owl:versionIRI core:1.5.0`.
 - `draft_change_proposal` defaults `target_release` to `1.6.0`; `1.5.0` is
   released and can no longer be proposed against.
+
+Package versions bumped to **1.24.0**.
 
 ## [1.23.1] - 2026-07-28
 
@@ -2211,7 +2743,14 @@ digital forensics, cyber-investigation, and cyber-observable data.
 - GitHub Actions workflows: CI, CodeQL, dependency review, release
 - Dependabot configuration for automated dependency updates
 
-[Unreleased]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.23.0...HEAD
+[Unreleased]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.29.0...HEAD
+[1.29.0]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.28.0...v1.29.0
+[1.28.0]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.27.0...v1.28.0
+[1.27.0]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.26.0...v1.27.0
+[1.26.0]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.25.0...v1.26.0
+[1.25.0]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.24.0...v1.25.0
+[1.24.0]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.23.1...v1.24.0
+[1.23.1]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.23.0...v1.23.1
 [1.23.0]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.22.4...v1.23.0
 [1.22.4]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.22.3...v1.22.4
 [1.22.3]: https://github.com/vulnmaster/CASE-UCO-SDK/compare/v1.22.2...v1.22.3

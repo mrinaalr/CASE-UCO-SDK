@@ -50,6 +50,9 @@ End-to-end mapping recipes that walk through source input, modeling choices, ant
 | AI/ML Analysis Pipelines | [ai-analysis-pipeline.md](ai-analysis-pipeline.md) | Multi-step AI inference, image search, per-result scoring, ranked outputs | — |
 | Forensic Investigation Lifecycle | [forensic-lifecycle.md](forensic-lifecycle.md) | Ordered phases (survey, preservation, examination, analysis, reporting) | [forensic_lifecycle](https://github.com/casework/CASE-Examples/tree/master/examples/illustrations/forensic_lifecycle) |
 | SOLVE-IT Investigation Planning and Error Mitigation | [solve-it-investigation-planning.md](solve-it-investigation-planning.md) | State objectives, select techniques, record `SolveitInvestigativeAction` with `usedTechnique`/`appliedMitigation`, rate weaknesses (ASTM E3016-18) with `WeaknessEvaluation`; punned DFT-* technique classes for the UCO 1.5.0 metaclass style (`solveit` extension) | `solveit` |
+| Technique, Evidence, and Legal-Outcome Join | [technique-evidence-outcome.md](technique-evidence-outcome.md) | Join sourced SOLVE-IT techniques, hashed evidence, and `legalproc` outcomes; source-fidelity table for press / PACER / lab / CTI; LE product suggestions stay off the graph until the source names the method | `solveit`, `legalproc` |
+| CaseLinker ICAC Remodel | [caselinker-icac-remodel.md](caselinker-icac-remodel.md) | Remodel CaseLinker CAC graphs: CyberTip triggers, share-safe series matches, `legalproc` dual-typing, commander phase clocks, drop private vocab | `cac`, `legalproc` |
+| Criminal Discovery and Disclosure | [legal-discovery-disclosure.md](legal-discovery-disclosure.md) | Sourced Brady / Giglio / Jencks / Rule 16 obligations and productions (`legalproc` 0.3.0) | `legalproc` |
 | Network Investigation with Bundle | [network-investigation.md](network-investigation.md) | Full investigation with warrant, PCAP extraction, provenance | [network_connection](https://github.com/casework/CASE-Examples/tree/master/examples/illustrations/network_connection) |
 | Spear Phishing and Attack Narratives | [spear-phishing.md](spear-phishing.md) | Attack chain modeling with extended ontology patterns | [spear_phishing](https://github.com/casework/CASE-Examples/tree/master/examples/illustrations/spear_phishing) |
 | Fraud, Cryptocurrency, and Money Laundering | [fraud-crypto-laundering.md](fraud-crypto-laundering.md) | Pig-butchering scams, blockchain trace, exchange returns, geofence correlation; typed crypto facets + legal process via the `cryptoinv` extension | — |
@@ -68,6 +71,8 @@ End-to-end mapping recipes that walk through source input, modeling choices, ant
 ### Crimes Against Children (CAC Ontology)
 
 Requires `CASE_UCO_EXTENSIONS=cac`. Use `route_cac_content` via the MCP server to detect which recipes apply to submitted content. Validate output with `validate_graph(..., extensions=['cac'])` (uses `ontology/cac/validation-subset.json` by default) or `extensions=['cac:full']` for the complete manifest.
+
+CAC recipes talk about **offenders** who target children and other vulnerable people. MITRE ATT&CK is not CAC community language; it models **hackers** and **attackers**. Do not emit ATT&CK techniques on a CAC graph unless the source describes that rare overlap. Use [cyber-threat-intelligence.md](cyber-threat-intelligence.md) for ATT&CK, and [technique-evidence-outcome.md](technique-evidence-outcome.md) for examiner SOLVE-IT methods.
 
 | Recipe | File | Description |
 |---|---|---|
@@ -95,6 +100,9 @@ Requires `CASE_UCO_EXTENSIONS=cac`. Use `route_cac_content` via the MCP server t
 | Device and Workstation Modeling | [device.md](device.md) | Workstation hardware specs, network addresses, OS linking | [device](https://github.com/casework/CASE-Examples/tree/master/examples/illustrations/device) |
 | Mobile Device and SIM Card | [mobile-device-sim.md](mobile-device-sim.md) | Full handset + SIM + carrier + IMEI/IMSI modeling | [mobile_device_and_sim_card](https://github.com/casework/CASE-Examples/tree/master/examples/illustrations/mobile_device_and_sim_card) |
 | Mobile Device Forensics | [mobile-device.md](mobile-device.md) | Mobile device extractions, app data, messages, and contacts | — |
+| Cellebrite UFED XML Report | [cellebrite-ufed-xml.md](cellebrite-ufed-xml.md) | `report.xml` from a UFDR: `modelType`/`model`/`field` to typed observables, `taggedFiles`, and the `extraInfo`/`nodeInfo` chain of evidence | — |
+| Magnet AXIOM Export | [magnet-axiom-export.md](magnet-axiom-export.md) | AXIOM Examine XML export: `Artifact`/`Hit`/`Fragment` to typed observables, `Source` containment, `Recovery method` carving, EXIF GPS | — |
+| MSAB XRY and XAMN Export | [msab-xry-export.md](msab-xry-export.md) | Sealed `.xry` container, XRY/XAMN/XEC tool chain, XAMN content categories, and honest handling of the unpublished Extended XML schema | — |
 | Cell Site and Tower Data | [cell-site.md](cell-site.md) | Cell tower connections, SIM cards, CDR data, location tracking | [cell_site](https://github.com/casework/CASE-Examples/tree/master/examples/illustrations/cell_site) |
 | Location Modeling | [location.md](location.md) | Street addresses, GPS coordinates, custom location facets | [location](https://github.com/casework/CASE-Examples/tree/master/examples/illustrations/location) |
 | Multi-Platform Account Linking | [accounts.md](accounts.md) | Cross-platform identity correlation (social media, email, cloud) | [accounts](https://github.com/casework/CASE-Examples/tree/master/examples/illustrations/accounts) |

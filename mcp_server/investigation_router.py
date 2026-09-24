@@ -16,11 +16,13 @@ strict concept coverage afterward.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
 import semantic_retrieval
+from apple_acquisition import apple_collect_guidance
 from cac_content_router import (
     GENERIC_CAC_KEYWORDS,
     _normalize_text,
@@ -117,7 +119,11 @@ INVESTIGATION_FAMILIES: tuple[InvestigationFamily, ...] = (
         notes=(
             "Call route_cac_content for per-domain CAC recipes, modeling "
             "checklists, and CAC validation guidance — it covers 17 CAC "
-            "domain families in depth."
+            "domain families in depth. ATT&CK is not CAC community "
+            "language. A CAC offender targets children and other "
+            "vulnerable people; ATT&CK models hackers and attackers. "
+            "Do not emit ATT&CK techniques or call the subject a threat "
+            "actor unless the source describes that rare overlap."
         ),
     ),
     InvestigationFamily(
@@ -289,6 +295,8 @@ INVESTIGATION_FAMILIES: tuple[InvestigationFamily, ...] = (
         recipes=(
             "docs/recipes/legal-process-modeling.md",
             "docs/recipes/cac-pacer-document-ingestion.md",
+            "docs/recipes/technique-evidence-outcome.md",
+            "docs/recipes/legal-discovery-disclosure.md",
         ),
         extensions=("legalproc",),
         core_namespaces=("case-investigation", "uco-action", "uco-identity", "uco-observable"),
@@ -327,15 +335,25 @@ INVESTIGATION_FAMILIES: tuple[InvestigationFamily, ...] = (
             "smartphone", "android", "iphone", "app data",
             "sysdiagnose", "logarchive", "unified log", "unified logs",
             "tracev3", "ufade", "pymobiledevice3", "ileapp",
+            # Commercial mobile forensic suites and their export formats.
+            "ufdr", "physical analyzer", "report.xml", "decodeddata",
+            "modeltype", "taggedfiles", "extrainfo", "magnet", "magnet forensics",
+            "axiom process", "axiom examine", "case.mfdb", "portable case",
+            "artifact profile", "recovery method", "xry", "msab", "xamn",
+            "xec export", "extended xml",
         ),
         recipes=(
             "docs/recipes/starter-mobile-extraction.md",
             "docs/recipes/mobile-device.md",
             "docs/recipes/mobile-device-sim.md",
             "docs/recipes/sms-and-contacts.md",
+            "docs/recipes/cellebrite-ufed-xml.md",
+            "docs/recipes/magnet-axiom-export.md",
+            "docs/recipes/msab-xry-export.md",
             "docs/recipes/ios-sysdiagnose.md",
             "docs/recipes/apple-unified-logs.md",
             "docs/recipes/solve-it-investigation-planning.md",
+            "docs/recipes/technique-evidence-outcome.md",
         ),
         extensions=("solveit",),
         core_namespaces=("uco-observable", "uco-action", "uco-tool"),
@@ -391,9 +409,12 @@ INVESTIGATION_FAMILIES: tuple[InvestigationFamily, ...] = (
             "acquisition plan", "imaging procedure", "write blocker",
             "hash verification", "standard operating procedure", "sop",
             "peer review of examination", "competency test", "proficiency test",
+            "hash match", "photodna", "usedtechnique", "legal outcome",
+            "effectiveness",
         ),
         recipes=(
             "docs/recipes/solve-it-investigation-planning.md",
+            "docs/recipes/technique-evidence-outcome.md",
             "docs/recipes/forensic-lifecycle.md",
             "docs/recipes/forensic-tool.md",
             "docs/recipes/chain-of-custody.md",
@@ -613,7 +634,10 @@ INVESTIGATION_FAMILIES: tuple[InvestigationFamily, ...] = (
             "Enrich from the MITRE group/software pages (e.g. Lotus Blossom "
             "G0030, Sagerunex S1156) even when the report prose omits IDs. "
             "Contrast with network-intrusion (single incident with acquired "
-            "pcap/host evidence) and spear-phishing (delivery-chain narrative)."
+            "pcap/host evidence) and spear-phishing (delivery-chain narrative). "
+            "Do not use this family for crimes-against-children investigations. "
+            "ATT&CK is attacker/hacker tradecraft, not the language for a CAC "
+            "offender who targets children or other vulnerable people."
         ),
     ),
 )
@@ -789,9 +813,24 @@ def _installed_extensions(
     return found
 
 
+def keyword_in_text(normalized: str, keyword: str) -> bool:
+    """Substring match, but short tokens need token boundaries.
+
+    Otherwise ``ttp`` hits every ``https://`` IRI when a Layer-1 graph is
+    routed, and ``c2`` / ``846`` / ``554`` collide with statute fragments
+    and hex hashes.
+    """
+
+    needle = keyword.casefold()
+    haystack = normalized.casefold()
+    if len(needle) <= 4 or needle[0].isdigit():
+        return re.search(rf"(?<![a-z0-9]){re.escape(needle)}(?![a-z0-9])", haystack) is not None
+    return needle in haystack
+
+
 def score_family(text: str, family: InvestigationFamily) -> tuple[int, list[str]]:
     normalized = _normalize_text(text)
-    hits = [kw for kw in family.keywords if kw in normalized]
+    hits = [kw for kw in family.keywords if keyword_in_text(normalized, kw)]
     return len(hits), hits
 
 
@@ -1310,6 +1349,7 @@ def route_investigation_content(
             if profile in UPPER_PROFILE_HINTS
         }
 
+    apple_guidance = apple_collect_guidance(text)
     payload: dict[str, Any] = {
         "ok": True,
         "input_type": input_type,
@@ -1334,9 +1374,19 @@ def route_investigation_content(
             "upper_ontologies": "get_uco_profiles(query)",
             "per_source_mapping": "guide_mapping(evidence_source)",
             "validation": "validate_graph(graph_path, extensions=[...])",
+            "apple_package_classifier": (
+                "classify_apple_package_shape(package_root, profile='auto')"
+                if apple_guidance else None
+            ),
+            "apple_package_builder": (
+                "build_acquisition_package_graph(..., extensions=['solveit'])"
+                if apple_guidance else None
+            ),
         },
         **input_metadata,
     }
+    if apple_guidance:
+        payload["apple_collect_guidance"] = apple_guidance
     if integrity_failures:
         payload["extension_integrity_failures"] = integrity_failures
     if extraction_quality.get("noisy_extraction"):

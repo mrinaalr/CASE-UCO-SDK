@@ -17,11 +17,40 @@ source .venv/bin/activate
 pip install fastmcp
 ```
 
-### 2. Restart Cursor
+### 2. Shared listener (any MCP client)
 
-The `.cursor/mcp.json` configuration is already included in the repository. After installing FastMCP, restart Cursor to activate the MCP server.
+stdio is still the default for a single local harness. For Cursor, Hermes,
+Claude Desktop, VS Code, and other agents on the same machine, start one
+listener and point every client at it:
 
-### 3. Verify
+```bash
+# from the repo root (Linux / WSL)
+./scripts/run-mcp-server.sh
+# listens on http://127.0.0.1:8765/sse
+```
+
+Client config (no authentication):
+
+```json
+{
+  "mcpServers": {
+    "case-uco": { "url": "http://127.0.0.1:8765/sse" }
+  }
+}
+```
+
+Override bind address or port with `CASE_UCO_MCP_HOST`, `CASE_UCO_MCP_PORT`,
+or `CASE_UCO_MCP_TRANSPORT=http`. Keep `PATH` and `CASE_UCO_EXTENSIONS` on
+the Linux server process — never put a Linux `PATH` on a Windows `wsl.exe`
+stdio wrapper.
+
+### 3. Cursor stdio (optional single-client)
+
+The `.cursor/mcp.json` in this repo defaults to the shared SSE URL. After
+the listener is up, open Cursor's MCP panel and confirm "case-uco" is
+connected. Do not click Authenticate.
+
+### 4. Verify
 
 Open Cursor's MCP panel (Settings > Tools & MCP) and confirm the "case-uco" server shows as connected. You can also test from the command line:
 
@@ -42,9 +71,12 @@ fastmcp dev mcp_server/server.py
 | `get_recipes` | `scenario: str, limit?: int, include_content?: bool` | Find multiple ranked recipes for multi-domain scenarios |
 | `route_investigation_content` | `content_text?, source_path?, max_families?` | Classify ANY submission by investigation family (CAC, violent crime, financial/crypto, court filings, intrusion, mobile, email, filesystem, civil, corporate) and return recipes, extensions, namespaces, CDO upper-ontology profiles — or the extension-gap workflow for unseen data types |
 | `route_cac_content` | `content_text?, source_path?, output_format?, include_recipe_content?, max_recipes?` | Detect CAC domains in submitted content and return multiple CAC recipes plus validation guidance |
+| `classify_apple_package_shape` | `package_root, profile?` | Fail-closed classification of a bounded local Apple directory/inventory as full sysdiagnose or standalone FOSS logarchive package; safe metadata only |
+| `build_acquisition_package_graph` | `package_root, output_path, profile?, max_event_records?, shareable?, event_excerpt_path?, event_message_policy?, extensions?` | Write a bounded Apple/SOLVE-IT package graph with optional CSV/JSONL event sample and share-safe path/identifier/message handling |
 | `list_all_vocabs` | (none) | All vocabulary/enum types with members |
 | `process_document_file` | `source_path, output_path, file_kind?, upload_id?, progress_output?` | Process a supported local synthetic document (receipt image, PDF, Office, CSV/table) into bounded CASE/UCO-shaped JSON-LD |
 | `validate_graph` | `graph_path: str, allow_warning?: bool, extensions?: list[str]` | Run `case_validate` against JSON-LD/Turtle; `extensions=['cac']` uses the press-release subset; `extensions=['cac:full']` uses the full manifest |
+| `execute_sparql_query` | `query, endpoint_url?, timeout_seconds?` | Execute bounded query-only SPARQL 1.1 against CaseLinker by default or another standards-compliant endpoint; normalizes bindings, ASK booleans, and RDF graph results |
 
 Python API (v1.22 / #75): `from critic import analyze_artifact, CriticArtifactRequest` — deterministic graph/serializer critic with bounded prompt packages. MCP session tools arrive in #76.
 
@@ -55,6 +87,7 @@ Python API (v1.22 / #75): `from critic import analyze_artifact, CriticArtifactRe
 | `case-uco://domains` | All forensic domain categories with descriptions |
 | `case-uco://modules` | All ontology modules |
 | `case-uco://patterns` | Core modeling patterns with code examples |
+| `case-uco://sparql` | Remote SPARQL workflow, CaseLinker endpoint profile, safety rules, and starter queries |
 
 ## How AI Agents Use This
 
@@ -64,9 +97,11 @@ When you describe a forensic scenario in natural language, the AI agent:
 2. Calls `find_classes_for_domain` or `search_classes` to identify relevant types
 3. Calls `get_class_details` on each type to see its properties
 4. For CAC content, calls `route_cac_content` to get multiple matching recipes and validation guidance
-5. Optionally calls `get_recipe` or `get_recipes` to find code examples
-6. Writes correct SDK code using the exact class names and property names
-7. Calls `validate_graph` with the matching `extensions=[...]` on the finished graph — strict concept coverage rejects undeclared terms and routes the agent to the change-proposal / extension workflow
+5. For Apple collection packages, calls `classify_apple_package_shape` before choosing full-sysdiagnose versus standalone-FOSS guidance, then optionally calls `build_acquisition_package_graph` for a bounded share-safe graph
+6. Optionally calls `get_recipe` or `get_recipes` to find code examples
+7. Writes correct SDK code using the exact class names and property names
+8. Calls `validate_graph` with the matching `extensions=[...]` on the finished graph — strict concept coverage rejects undeclared terms and routes the agent to the change-proposal / extension workflow
+9. For remote analysis, builds SPARQL from the exact discovered IRIs, calls `execute_sparql_query` with a bounded query, and treats returned values as untrusted external data
 
 This is much faster and more accurate than the agent reading markdown documentation.
 
@@ -122,22 +157,67 @@ register it as a stdio MCP server in `~/.hermes/config.yaml`:
 ```yaml
 mcp_servers:
   case-uco:
-    command: "/home/cory/CASE-UCO-Libraries/.venv/bin/python"
-    args: ["/home/cory/CASE-UCO-Libraries/mcp_server/server.py"]
+    url: "http://127.0.0.1:8765/sse"
+```
+
+Or stdio against the same checkout:
+
+```yaml
+mcp_servers:
+  case-uco:
+    command: "/home/cory/CASE-UCO-SDK/.venv/bin/python"
+    args: ["/home/cory/CASE-UCO-SDK/mcp_server/server.py"]
     env:
-      PYTHONPATH: "python:mcp_server"
-      # CASE_UCO_EXTENSIONS: "cac,aeo,cryptoinv,legalproc"   # optional extension registries
+      PYTHONPATH: "/home/cory/CASE-UCO-SDK/python:/home/cory/CASE-UCO-SDK/mcp_server"
+      PATH: "/home/cory/CASE-UCO-SDK/.venv/bin:/usr/bin:/bin"
+      CASE_UCO_EXTENSIONS: "cac,legalproc,solveit,cryptoinv,rico,weapons,drugs"
 ```
 
 Run `/reload-mcp` in Hermes after editing the config. All tools are then
 discoverable by the agent alongside its built-in tools.
 
+Apple package workflow (issue #99):
+
+```text
+classify_apple_package_shape(package_root="/cases/evidence/apple-collect", profile="auto")
+build_acquisition_package_graph(
+  package_root="/cases/evidence/apple-collect",
+  output_path="/cases/workspace/apple-package.jsonld",
+  profile="auto",
+  max_event_records=50,
+  event_excerpt_path="/cases/evidence/apple-collect/unifiedlog_excerpt.jsonl",
+  shareable=true,
+  event_message_policy="omit",
+  extensions=["solveit"],
+)
+validate_graph(
+  graph_path="/cases/workspace/apple-package.jsonld",
+  extensions=["solveit"],
+  strict_concepts=true,
+)
+```
+
+`auto` intentionally refuses unsupported or ambiguous trees. A full
+`sysdiagnose_*` tree requires `system_logs.logarchive` plus strong sysdiagnose
+markers; standalone FOSS `logarchive` + crash pull + live syslog/apps inventory
+uses separate guidance and must not be called a full sysdiagnose. Binary
+`.tracev3` stores stay external. CSV/JSONL decoder output also stays external;
+only the bounded `max_event_records` sample is represented as `EventRecord` /
+`Event`. Shareable mode normalizes `filePath`, redacts common identifiers, and
+omits messages by default. Device-absolute time is not asserted unless inventory
+metadata explicitly establishes timesync anchoring.
+
 Law-enforcement deployment notes:
 
-- The server is local-only (stdio); it performs no network calls at runtime.
-  Egress posture is determined entirely by the agent's configured LLM
-  provider — pair this server with a local model backend by default, and use
-  commercial backends only in agency-approved, accredited environments.
+- The shared listener binds `127.0.0.1` by default (stdio still works for a
+  single harness). `check_existing_proposals` and the
+  opt-in `execute_sparql_query` tool perform outbound HTTPS requests. Secure
+  deployment profiles disable SPARQL egress unless
+  `CASE_UCO_SPARQL_ALLOW_NETWORK=1` is explicitly set; production deployments
+  must explicitly configure additional public targets in
+  `CASE_UCO_SPARQL_ALLOWED_HOSTS`. Pair this server with
+  a local model backend by default, and use external endpoints or commercial
+  backends only in agency-approved, accredited environments.
   Hosting an MCP server inside an agent does not by itself satisfy CJIS or
   any other compliance obligation.
 - `process_document_file` accepts bounded local files only and returns safe
@@ -151,7 +231,8 @@ Law-enforcement deployment notes:
 ### Filesystem workspace policy
 
 Production deployments should confine the file-handling tools
-(`process_document_file`, `validate_graph`) to explicit directories via
+(`process_document_file`, `classify_apple_package_shape`,
+`build_acquisition_package_graph`, `validate_graph`) to explicit directories via
 environment variables on the server process:
 
 ```yaml
@@ -236,6 +317,7 @@ The server wraps the existing Python registry API (`case_uco.registry`) and a do
 ```
 mcp_server/
 ├── server.py          FastMCP server with tool and resource definitions
+├── sparql_client.py   Bounded query-only remote SPARQL 1.1 client
 ├── domain_index.py    Task-to-class mappings, domain categories, recipe index
 ├── requirements.txt   Python dependencies (fastmcp, pypdf)
 └── README.md          This file
@@ -261,6 +343,9 @@ and symlink the binaries into a `PATH` directory (e.g. `~/.local/bin`). For
 air-gapped deployments, mirror these packages with your offline bundle.
 
 The server reads from `python/case_uco/_registry.json`, which is auto-generated by `case-uco-generate generate` and contains the full ontology schema.
+
+Remote query configuration and the validated graph-loading roadmap are in
+[`docs/SPARQL.md`](../docs/SPARQL.md).
 
 ## Troubleshooting
 

@@ -864,6 +864,41 @@ RECIPE_INDEX: list[dict[str, str]] = [
         "file": "docs/recipes/mobile-device.md",
     },
     {
+        "title": "Cellebrite UFED XML Report",
+        "description": "Map a UFED Physical Analyzer report.xml (from a UFDR) into typed observables, taggedFiles, and the extraInfo chain of evidence.",
+        "keywords": (
+            "cellebrite ufed ufdr physical analyzer report.xml pa report xml decodeddata "
+            "modeltype model field multimodelfield taggedfiles extrainfo nodeinfo party "
+            "instantmessage deleted_state ufed 4pc touch premium reader mobile extraction "
+            "chat sms call contact cookie visitedpage webbookmark celltower wirelessnetwork "
+            "installedapplication socialmediaactivity searcheditem deviceinfo iccid imsi imei"
+        ),
+        "file": "docs/recipes/cellebrite-ufed-xml.md",
+    },
+    {
+        "title": "Magnet AXIOM Export",
+        "description": "Map a Magnet AXIOM Examine XML export (Artifact/Hit/Fragment) into typed observables with source containment, carving status, and EXIF GPS.",
+        "keywords": (
+            "magnet axiom axiom process axiom examine artifact hit fragment xml export "
+            "case.mfdb mfdb portable case xmlexternalfiles xmlbase64 recovery method carving "
+            "parsing significant locations knowledgec windows timeline artifact profile "
+            "magnet forensics mobile extraction disk triage exif gps pictures web history "
+            "chrome cookies safari history whatsapp telegram signal"
+        ),
+        "file": "docs/recipes/magnet-axiom-export.md",
+    },
+    {
+        "title": "MSAB XRY and XAMN Export",
+        "description": "Model a sealed .xry container and the XRY/XAMN/XEC tool chain, mapping XAMN content categories while the Extended XML schema is unpublished.",
+        "keywords": (
+            "msab xry xamn xamn horizon xamn elements xec export extended xml sealed container "
+            "encrypted container forensic seal audit trail content category mobile extraction "
+            "xry extract xry logical xry physical berla ive import nuix export unpublished schema "
+            "epistemic reported unattributed exhibit number root exhibit"
+        ),
+        "file": "docs/recipes/msab-xry-export.md",
+    },
+    {
         "title": "Email and Messaging",
         "description": "Model email messages, attachments, and messaging platform data.",
         "keywords": "email message attachment chat messaging calendar",
@@ -1182,6 +1217,24 @@ RECIPE_INDEX: list[dict[str, str]] = [
         "file": "docs/recipes/solve-it-investigation-planning.md",
     },
     {
+        "title": "Technique, Evidence, and Legal-Outcome Join",
+        "description": "Join sourced SOLVE-IT examiner techniques, hashed digital evidence, and legalproc charges/sentences. Press releases omit usedTechnique; PACER records named tools only; lab exports assert DFT-* with real hashes. Keep ATT&CK attacker/hacker techniques on CTI graphs; do not use ATT&CK as CAC offender vocabulary.",
+        "keywords": "technique evidence outcome join usedTechnique solveit hash match photodna ufed cellebrite axiom ftk autopsy legalproc sentence effectiveness competency sparql lab importer pacer method claim empty contentdatafacet",
+        "file": "docs/recipes/technique-evidence-outcome.md",
+    },
+    {
+        "title": "CaseLinker ICAC Remodel",
+        "description": "Remodel CaseLinker CAC graphs so CyberTip joins, share-safe hashes, legalproc dual-typing, and commander phase clocks validate and answer SPARQL competency questions. ATT&CK is not CAC offender vocabulary.",
+        "keywords": "caselinker remodel icac cybertip investigationtrigger photodna known series victim count task force legalproc chargecluster dual type phase clock commander prosecutor detective",
+        "file": "docs/recipes/caselinker-icac-remodel.md",
+    },
+    {
+        "title": "Criminal Discovery and Disclosure Obligations",
+        "description": "Model sourced Brady, Giglio, Jencks, and Rule 16 disclosure duties and productions with legalproc. Do not infer Brady from unlabeled exam notes.",
+        "keywords": "brady giglio jencks rule 16 discovery disclosure obligation production suppression motion prosecutor certificate",
+        "file": "docs/recipes/legal-discovery-disclosure.md",
+    },
+    {
         "title": "Insider Threat, Trade Secret Theft, and Economic Espionage",
         "description": "Model insider exfiltration of trade secrets: corporate telemetry, personal cloud accounts, per-category 1832/1831 counts, foreign-government-benefit evidence, and jury verdicts.",
         "keywords": "insider threat trade secret economic espionage 1832 1831 exfiltration data loss prevention dlp badge access personal cloud account proprietary confidential employee resignation talent program foreign instrumentality startup competitor source code wechat jury verdict",
@@ -1349,11 +1402,123 @@ MAPPING_GUIDE_INDEX: list[dict] = [
         "code_skeleton": "device = graph.create(ObservableObject, has_facet=[DeviceFacet(manufacturer=..., model=...)])",
     },
     {
+        "source": "Cellebrite UFED XML report",
+        "keywords": [
+            "ufed", "cellebrite", "ufdr", "physical analyzer", "report.xml",
+            "decodeddata", "modeltype", "taggedfiles", "extrainfo", "nodeinfo",
+        ],
+        "pattern": "Tool + InvestigativeAction + ProvenanceRecord spine, then one typed observable per modelType, joined to source files with Contained_Within",
+        "classes": [
+            "Tool", "Organization", "InvestigativeAction", "ProvenanceRecord",
+            "MobilePhone", "DeviceFacet", "MobileDeviceFacet", "SIMCard", "SIMCardFacet",
+            "File", "FileFacet", "ContentDataFacet", "Message", "MessageFacet",
+            "Call", "CallFacet", "Contact", "ContactFacet", "ContactPhone",
+            "ObservableRelationship", "RecoveredObjectFacet",
+        ],
+        "anti_patterns": [
+            "Don't use Attached_To — it is absent from ObservableObjectRelationshipVocab; use Attachment_Of",
+            "Don't write the UFED Tags item into FileFacet.mimeType",
+            "Don't synthesize 1900-01-01 timestamps or repeated-digit hashes for missing values",
+            "Don't put deleted_state into observable:state — use RecoveredObjectFacet",
+            "Don't adopt the upstream drafting: namespace at example.org",
+        ],
+        "starter_kit": "docs/recipes/cellebrite-ufed-xml.md",
+        "code_skeleton": "msg = graph.create(Message, has_facet=[MessageFacet(from_=party, to=[peer], message_text=..., sent_time=...)])",
+    },
+    {
+        "source": "Magnet AXIOM XML export",
+        "keywords": [
+            "axiom", "magnet", "axiom examine", "axiom process", "artifact", "fragment",
+            "case.mfdb", "mfdb", "portable case", "recovery method", "carving",
+        ],
+        "pattern": "Tool + AnalyticTool + two InvestigativeActions, then one typed observable per Artifact family with Source containment and Recovery method carving status",
+        "classes": [
+            "Tool", "AnalyticTool", "Organization", "InvestigativeAction", "ProvenanceRecord",
+            "MobilePhone", "DeviceFacet", "FileSystem", "FileSystemFacet",
+            "RasterPicture", "FileFacet", "ContentDataFacet", "EXIFFacet",
+            "ControlledDictionary", "RecoveredObjectFacet", "Location",
+            "LatLongCoordinatesFacet", "URLHistory", "BrowserCookie", "CellSite",
+        ],
+        "anti_patterns": [
+            "Don't emit observables without the Tool/InvestigativeAction/ProvenanceRecord spine",
+            "Don't treat an AXIOM artifact name such as 'Significant Locations' as an ontology type",
+            "Don't assume the export locale is en-US — artifact and fragment names are localized",
+            "Don't claim Case.mfdb was parsed; Magnet publishes no schema for it",
+            "Don't put a plain Dictionary in exifData — it requires a ControlledDictionary",
+        ],
+        "starter_kit": "docs/recipes/magnet-axiom-export.md",
+        "code_skeleton": "pic = graph.create(RasterPicture, has_facet=[FileFacet(...), ContentDataFacet(hash=[Hash(...)]), EXIFFacet(exif_data=ControlledDictionary(entry=[...]))])",
+    },
+    {
+        "source": "MSAB XRY / XAMN Extended XML export",
+        "keywords": [
+            "xry", "msab", "xamn", "xec export", "extended xml", "sealed container",
+            "xamn horizon", "xry extract",
+        ],
+        "pattern": "Sealed container as a hashed File with isEncrypted, XRY/XAMN/XEC tool chain, nested exhibit numbers, artifacts joined with Extracted_From until a source path is confirmed",
+        "classes": [
+            "Tool", "AnalyticTool", "Organization", "InvestigativeAction", "ProvenanceRecord",
+            "File", "FileFacet", "ContentDataFacet", "MobilePhone", "SIMCard",
+            "SMSMessage", "Call", "Contact", "RasterPicture", "ObservableRelationship",
+        ],
+        "anti_patterns": [
+            "Don't invent Extended XML element names — MSAB does not publish the schema",
+            "Don't model the interior of the sealed .xry container",
+            "Don't use Contained_Within for an artifact whose source file you cannot name",
+            "Don't treat XAMN AI image classifications as observations — they are analysis results",
+            "Don't attribute an imported UFED artifact to XRY just because XAMN displayed it",
+        ],
+        "starter_kit": "docs/recipes/msab-xry-export.md",
+        "code_skeleton": "container = graph.create(File, has_facet=[FileFacet(extension='xry'), ContentDataFacet(is_encrypted=True, hash=[Hash(...)])])",
+    },
+    {
+        "source": "lab hash-match CSV or UFED-style summary",
+        "keywords": [
+            "hash match", "hashset", "photodna", "ncmec", "ufed", "cellebrite",
+            "lab export", "usedtechnique", "dft-1050", "dft-1020",
+        ],
+        "pattern": "SolveitInvestigativeAction + usedTechnique + Tool + ContentDataFacet hash + legalproc charge/sentence",
+        "classes": [
+            "Investigation", "SolveitInvestigativeAction", "Tool",
+            "ObservableObject", "FileFacet", "ContentDataFacet", "Hash",
+            "FederalCharge", "Sentence", "ProvenanceRecord",
+        ],
+        "anti_patterns": [
+            "Don't assert usedTechnique from a press release or product name alone",
+            "Don't emit ContentDataFacet without hash, size, MIME type, or payload",
+            "Don't collapse ATT&CK attacker techniques into SOLVE-IT examiner techniques",
+            "Don't use ATT&CK as the vocabulary for a CAC offender",
+        ],
+        "starter_kit": "docs/recipes/technique-evidence-outcome.md",
+        "code_skeleton": "from tools.technique_evidence_outcome import build_lab_join; graph = build_lab_join()",
+    },
+    {
+        "source": "CaseLinker ICAC / CyberTip graph",
+        "keywords": [
+            "caselinker", "cybertip", "investigation trigger", "icac remodel",
+            "chargecluster", "photodna", "phase clock",
+        ],
+        "pattern": "InvestigationTrigger + legalproc dual-type + hashed ContentDataFacet or omitted facet",
+        "classes": [
+            "NCMECCybertipReport", "InvestigationTrigger", "CACInvestigation",
+            "FederalCharge", "Sentence", "DisclosureObligation", "ICACtaskForce",
+        ],
+        "anti_patterns": [
+            "Don't keep caselinker:/resource/vocab/* predicates",
+            "Don't infer Brady from unlabeled exam notes",
+            "Don't mint PhotoDNA hex or usedTechnique from a CyberTipline method IRI",
+            "Don't map CAC offender conduct to ATT&CK or call the subject a threat actor",
+        ],
+        "starter_kit": "docs/recipes/caselinker-icac-remodel.md",
+        "code_skeleton": "from tools.caselinker_icac_remodel import join_cybertip_investigation",
+    },
+    {
         "source": "iOS sysdiagnose archive",
         "keywords": [
             "sysdiagnose", "system_logs", "logarchive", "iphone-os", "ufade",
             "pymobiledevice3", "summaries", "batterybdc", "tracev3",
             "ips", "stackshot", "crashes_and_spins", "runningboard",
+            "full sysdiagnose", "sysdiagnose_", "wifi/", "preferences/",
         ],
         "pattern": "Device + sysdiagnose FileFacet directory + AppleUnifiedLogArchive/EventLog",
         "classes": [
@@ -1364,6 +1529,7 @@ MAPPING_GUIDE_INDEX: list[dict] = [
         "anti_patterns": [
             "Don't flatten the sysdiagnose tree into one File observable — keep logarchive and high-value children linked",
             "Don't invent a SysdiagnoseFacet — use FileFacet directories plus AppleUnifiedLogArchive",
+            "Don't label a standalone logarchive + crash/syslog FOSS collect as a full sysdiagnose — classify the local package shape first",
         ],
         "starter_kit": "docs/recipes/ios-sysdiagnose.md",
         "code_skeleton": "logarchive = graph.create(AppleUnifiedLogArchive, name='system_logs.logarchive', has_facet=[FileFacet(is_directory=[True])])",
@@ -1374,6 +1540,7 @@ MAPPING_GUIDE_INDEX: list[dict] = [
             "unified log", "unified logs", "oslog", "unifiedlog_iterator", "notari",
             "ileapp", "signpost", "subsystem", "category", "tracev3",
             "timesync", "boot_uuid", "mach_continuous_time", "simpledump",
+            "standalone", "foss", "crash pull", "live syslog", "apps list",
         ],
         "pattern": "AppleUnifiedLogArchive → EventRecord + Event + AnalyticTool outputs (CSV/SQLite)",
         "classes": [
@@ -1384,6 +1551,8 @@ MAPPING_GUIDE_INDEX: list[dict] = [
         "anti_patterns": [
             "Don't invent UnifiedLogFacet — map rows with EventRecordFacet and Dictionary attributes",
             "Don't claim message text without running a parser on the binary logarchive",
+            "Don't expand million-row decoder output into one graph — retain CSV/JSONL externally and sample a bounded number of EventRecords",
+            "Don't assert device-absolute UTC without explicit timesync anchoring; preserve continuous time and boot UUID evidence",
         ],
         "starter_kit": "docs/recipes/apple-unified-logs.md",
         "code_skeleton": "record = graph.create(EventRecord, has_facet=[EventRecordFacet(event_record_text=..., event_record_service_name=...)])",

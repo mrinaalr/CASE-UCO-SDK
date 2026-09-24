@@ -9,6 +9,7 @@ from investigation_router import (
     detect_families,
     route_investigation_content,
     _installed_extensions,
+    keyword_in_text,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -209,6 +210,10 @@ def test_cac_content_points_to_cac_router() -> None:
     ids = [m["family_id"] for m in payload["matched_families"]]
     assert "cac-child-exploitation" in ids
     assert payload["next_tools"]["cac_deep_routing"] is not None
+    cac = next(m for m in payload["matched_families"] if m["family_id"] == "cac-child-exploitation")
+    assert "attack-technique" not in cac["extensions"]
+    assert "ATT&CK is not CAC community language" in cac["notes"]
+    assert "hackers and attackers" in cac["notes"]
 
 
 def test_insider_threat_routes_to_corporate_internal() -> None:
@@ -257,6 +262,7 @@ def test_cti_apt_routes_to_cyber_threat_intelligence_family() -> None:
     # modeled with the attack-technique extension (uco-action:Technique, #666).
     assert "attack-technique" in top["extensions"]
     assert "uco-tool" in top["core_namespaces"]
+    assert "Do not use this family for crimes-against-children" in top["notes"]
 
 
 def test_unseen_data_returns_extension_gap_guidance() -> None:
@@ -278,6 +284,60 @@ def test_installed_extensions_discovered() -> None:
     installed = _installed_extensions(PROJECT_ROOT)
     assert {"cac", "cryptoinv", "legalproc"} <= set(installed)
     assert installed["legalproc"]["namespaces"]["legalproc"] == "https://ontology.caseontology.org/case/criminal/"
+
+
+def test_full_sysdiagnose_routing_guidance_is_distinct() -> None:
+    payload = route_investigation_content(
+        PROJECT_ROOT,
+        content_text=(
+            "Full sysdiagnose_2026.08.11_iPhone-OS tree with "
+            "system_logs.logarchive, WiFi/, summaries/, crashes_and_spins/, "
+            "Preferences/, and BatteryBDC files."
+        ),
+    )
+    guidance = payload["apple_collect_guidance"]
+    assert guidance["claimed_shape"] == "ios-sysdiagnose"
+    assert guidance["recipes"][0] == "docs/recipes/ios-sysdiagnose.md"
+    assert payload["next_tools"]["apple_package_classifier"] is not None
+
+
+def test_standalone_foss_collect_is_not_claimed_as_sysdiagnose() -> None:
+    payload = route_investigation_content(
+        PROJECT_ROOT,
+        content_text=(
+            "FOSS iOS collection with standalone.logarchive, crash pull, "
+            "live syslog, and installed apps list; this is not a sysdiagnose. "
+            "The archive has no timesync."
+        ),
+    )
+    guidance = payload["apple_collect_guidance"]
+    assert guidance["claimed_shape"] == "apple-foss-logarchive"
+    assert "docs/recipes/ios-sysdiagnose.md" not in guidance["recipes"]
+    assert guidance["recipes"][0] == "docs/recipes/apple-unified-logs.md"
+    assert "omit absolute device UTC" in guidance["timesync_guidance"]
+
+
+def test_ambiguous_logarchive_routing_defers_to_local_classifier() -> None:
+    payload = route_investigation_content(
+        PROJECT_ROOT,
+        content_text="Apple iOS standalone .logarchive collected for review.",
+    )
+    guidance = payload["apple_collect_guidance"]
+    assert guidance["claimed_shape"] == "unconfirmed-apple-logarchive"
+    assert "classify_apple_package_shape" in guidance["authoritative_next_tool"]
+
+
+def test_short_keywords_do_not_match_https_iris_or_statute_digits() -> None:
+    graph_blob = (
+        "https://ontology.unifiedcyberontology.org/uco/core/ "
+        "18 U.S.C. 2252A Attorney generated hex 846dea554c2"
+    )
+    assert keyword_in_text(graph_blob, "ttp") is False
+    assert keyword_in_text(graph_blob, "c2") is False
+    assert keyword_in_text(graph_blob, "rat") is False
+    assert keyword_in_text("command and control C2 channel", "c2") is True
+    ids = [m["family_id"] for m in detect_families(graph_blob)]
+    assert "cyber-threat-intelligence" not in ids
 
 
 def test_gap_guidance_is_self_contained() -> None:

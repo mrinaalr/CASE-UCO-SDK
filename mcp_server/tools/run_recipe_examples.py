@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Upper-ontology exemplar quality gate (#69 / CQ-01–CQ-12).
+"""Recipe exemplar quality gate (#69 / #124 / CQ-01–CQ-12).
 
-Runs the nine v1.21 entries in ``docs/recipes/recipe-execution.json``
-(builders under ``examples/upper-ontology/``). Full operational catalog
-migration is v1.22. Builders run in isolated temporary directories with a
-subprocess timeout. Outputs are RDF-parsed (JSON-LD/Turtle via RDFLib)
-before validation. When ``--validate`` is set, ``case_validate`` must be
-available (fail-closed).
+Runs entries in ``docs/recipes/recipe-execution.json``. ``--all`` requires
+every operational recipe to have execution metadata and, with
+``--validate``, SHACL plus strict concept coverage. Builders run in
+isolated temporary directories with a subprocess timeout. Outputs are
+RDF-parsed (JSON-LD/Turtle via RDFLib) before validation. When
+``--validate`` is set, ``case_validate`` must be available (fail-closed).
 
 Usage:
   python mcp_server/tools/run_recipe_examples.py --category upper-ontology
@@ -34,6 +34,31 @@ MANIFEST = ROOT / "docs/recipes/recipe-execution.json"
 SCHEMA = ROOT / "docs/recipes/recipe-execution.schema.json"
 DEFAULT_TIMEOUT_SECONDS = 120
 _logger = logging.getLogger(__name__)
+
+
+def _repo_import_paths() -> tuple[str, str]:
+    """Return checkout paths needed by builders and validation imports."""
+    return str(ROOT / "python"), str(ROOT / "mcp_server")
+
+
+def _ensure_repo_import_paths() -> None:
+    """Make checkout packages importable when this file is run as a script."""
+    for path in reversed(_repo_import_paths()):
+        if path not in sys.path:
+            sys.path.insert(0, path)
+
+
+def _repo_subprocess_env() -> dict[str, str]:
+    """Return a child environment with checkout packages first on PYTHONPATH."""
+    env = os.environ.copy()
+    repo_paths = list(_repo_import_paths())
+    inherited = [
+        path
+        for path in env.get("PYTHONPATH", "").split(os.pathsep)
+        if path and path not in repo_paths
+    ]
+    env["PYTHONPATH"] = os.pathsep.join([*repo_paths, *inherited])
+    return env
 
 
 def _package_version(dist_name: str) -> str | None:
@@ -133,7 +158,7 @@ def _lint_relationship_kinds_if_present(
         return True
     lint_report = lint_relationship_kinds(
         graph_doc,
-        allow_open_vocabulary=True,
+        allow_open_vocabulary=False,
     )
     result["relationship_kind_lint"] = lint_report
     if not lint_report.get("ok", True):
@@ -324,15 +349,11 @@ def _run_entry_body(
         shutil.copy2(builder, tmp_builder)
         _copy_support_into_workspace(entry, tmp_dir)
 
-        env = os.environ.copy()
-        path_parts = [str(ROOT / "python"), str(ROOT / "mcp_server")]
-        if env.get("PYTHONPATH"):
-            path_parts.append(env["PYTHONPATH"])
-        env["PYTHONPATH"] = os.pathsep.join(path_parts)
+        inherited_pythonpath = os.environ.get("PYTHONPATH")
+        env = _repo_subprocess_env()
         result["pythonpath"] = env["PYTHONPATH"]
         result["pythonpath_components"] = ["repo:python", "repo:mcp_server"]
-        if env.get("PYTHONPATH") and env["PYTHONPATH"].count(os.pathsep) >= 2:
-            # Extra path segments beyond the two repo roots (caller-supplied).
+        if inherited_pythonpath:
             result["pythonpath_components"].append("env:PYTHONPATH")
 
         cmd = [python_exe, str(tmp_builder)]
@@ -394,11 +415,11 @@ def _run_entry_body(
             result["ok"] = True
             return
 
-        if entry.get("profiles") is None and not entry.get("extensions"):
+        if entry.get("profiles") is None and entry.get("extensions") is None:
             result["error"] = "validation_profiles_required"
             return
 
-        sys.path.insert(0, str(ROOT / "mcp_server"))
+        _ensure_repo_import_paths()
         from graph_validator import validate_graph_file, validator_available
 
         if not validator_available():
@@ -476,7 +497,16 @@ def _run_entry_body(
                 result["error"] = f"expect_invalid_conforms:{invalid_path}"
                 return
             match_err = _match_negative_expectation(
-                invalid_spec, invalid_report.validator_diagnostics or ""
+                invalid_spec,
+                "\n".join(
+                    part
+                    for part in (
+                        invalid_report.validator_diagnostics,
+                        invalid_report.safe_summary,
+                        " ".join(invalid_report.undeclared_concepts),
+                    )
+                    if part
+                ),
             )
             if match_err:
                 result["error"] = f"{match_err}:{invalid_path}"
@@ -572,6 +602,31 @@ def run_manifest_entries(
         "python_version": sys.version.split()[0],
         "rdflib_version": _package_version("rdflib"),
         "validator_version": _package_version("case-utils"),
+    }
+
+
+def operational_recipe_coverage(manifest: dict | None = None) -> dict[str, Any]:
+    """Report whether every operational recipe has execution metadata (#124)."""
+    from recipe_lint import operational_recipe_paths
+
+    data = manifest or load_manifest()
+    registered = {
+        Path(entry["recipe"]).name
+        for entry in data.get("recipes") or []
+        if entry.get("recipe")
+    }
+    operational = [
+        path.name
+        for path in operational_recipe_paths(ROOT)
+        if path.name != "INDEX.md"
+    ]
+    missing = sorted(name for name in operational if name not in registered)
+    return {
+        "operational_recipes": len(operational),
+        "registered_recipes": len(registered & set(operational)),
+        "registered_entries": len(data.get("recipes") or []),
+        "missing_recipes": missing,
+        "complete": not missing,
     }
 
 
@@ -717,6 +772,11 @@ def main() -> int:
             timeout_seconds=args.timeout,
             keep_generated=args.keep_generated,
         )
+        if args.all:
+            summary["operational_coverage"] = operational_recipe_coverage(manifest)
+            if not summary["operational_coverage"]["complete"]:
+                summary["failed"] = int(summary.get("failed") or 0) + 1
+                summary["error"] = "operational_coverage_incomplete"
         print(json.dumps(summary, indent=2))
         return 1 if summary["failed"] else 0
     except Exception as exc:

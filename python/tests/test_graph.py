@@ -13,7 +13,7 @@ from case_uco.uco.tool import Tool, AnalyticTool
 from case_uco.uco.tool import BuildInformationType
 from case_uco.uco.observable import ObservableObject, ApplicationFacet, DeviceFacet
 from case_uco.case.investigation import InvestigativeAction
-from case_uco.uco.core import ConfidenceFacet
+from case_uco.uco.core import ConfidenceFacet, ExternalReference
 
 
 def test_create_tool():
@@ -83,6 +83,58 @@ def test_typed_datetime_literal():
     obj = output["@graph"][0]
     assert obj["uco-tool:compilationDate"]["@type"] == "xsd:dateTime"
     assert obj["uco-tool:compilationDate"]["@value"].startswith("2024-01-02T03:04:05")
+
+
+def test_hex_binary_literal_is_canonical_uppercase():
+    """hashlib.hexdigest() is lowercase; XSD canonical hexBinary is uppercase.
+
+    SPARQL joins compare literals as terms, so a lowercase digest will not
+    join to the same digest written uppercase by another producer.
+    """
+    from case_uco.uco.observable import ContentDataFacet
+    from case_uco.uco.types import Hash
+
+    digest = "d747a7183ed4cfc29e68781469adcd43098fa319e6093ed3da416f20fe6c2178"
+    graph = CASEGraph()
+    graph.create(
+        ObservableObject,
+        has_facet=[ContentDataFacet(hash=[Hash(hash_method="SHA256", hash_value=digest)])],
+    )
+    serialized = graph.serialize()
+    assert digest.upper() in serialized
+    assert digest not in serialized
+
+
+def test_non_hex_value_is_not_uppercased():
+    """A value that is not valid hexBinary is passed through, not mangled."""
+    from case_uco.uco.observable import ContentDataFacet
+    from case_uco.uco.types import Hash
+
+    graph = CASEGraph()
+    graph.create(
+        ObservableObject,
+        has_facet=[ContentDataFacet(hash=[Hash(hash_method="SHA256", hash_value="not-a-hash")])],
+    )
+    assert "not-a-hash" in graph.serialize()
+
+
+def test_typed_anyuri_literal():
+    graph = CASEGraph()
+    graph.create(
+        ObservableObject,
+        external_reference=[
+            ExternalReference(reference_url="https://example.org/ncmec/series/1")
+        ],
+    )
+    output = json.loads(graph.serialize())
+    obj = output["@graph"][0]
+    ref = obj["uco-core:externalReference"]
+    if isinstance(ref, list):
+        ref = ref[0]
+    assert ref["uco-core:referenceURL"] == {
+        "@type": "xsd:anyURI",
+        "@value": "https://example.org/ncmec/series/1",
+    }
 
 
 def test_inherited_core_property_prefix():
