@@ -1,0 +1,376 @@
+{
+  "extension": "trajectories",
+  "modules": [
+    "trajectories"
+  ],
+  "classes": {
+    "State": {
+      "iri": "http://example.org/ontology/trajectories/State",
+      "module": "trajectories",
+      "description": "A vocabulary-agnostic state in a state machine or offense/investigation phase model. Domain phase types plug in as instances (often also skos:Concept).",
+      "parents": [
+        "UcoObject"
+      ],
+      "is_facet": false,
+      "properties": [],
+      "source": "trajectories"
+    },
+    "Transition": {
+      "iri": "http://example.org/ontology/trajectories/Transition",
+      "module": "trajectories",
+      "description": "A directed transition from one State to another, with trigger, optional guard, and optional multi-valued enactsAction.",
+      "parents": [
+        "UcoObject"
+      ],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "fromState",
+          "type": "State",
+          "type_iri": "http://example.org/ontology/trajectories/State",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "Source state."
+        },
+        {
+          "name": "toState",
+          "type": "State",
+          "type_iri": "http://example.org/ontology/trajectories/State",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "Target state."
+        },
+        {
+          "name": "trigger",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "Firing event/action (any UcoObject the transition reacts to)."
+        },
+        {
+          "name": "guard",
+          "type": "string",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#string",
+          "cardinality": "zero_or_one",
+          "required": false,
+          "description": "Optional enabling condition."
+        },
+        {
+          "name": "enactsAction",
+          "type": "Action",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/action/Action",
+          "cardinality": "zero_or_more",
+          "required": false,
+          "description": "Concrete Action instance(s) that constitute this transition (affordance via action:instrument). Multi-valued; no SHACL maxCount (v0.3.1)."
+        }
+      ],
+      "source": "trajectories"
+    },
+    "Trajectory": {
+      "iri": "http://example.org/ontology/trajectories/Trajectory",
+      "module": "trajectories",
+      "description": "Ordered per-case observed phase occupancy history (PhaseAssertions ordered by sequenceIndex).",
+      "parents": [
+        "UcoObject"
+      ],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "hasPhaseAssertion",
+          "type": "PhaseAssertion",
+          "type_iri": "http://example.org/ontology/trajectories/PhaseAssertion",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Observed phase assertions."
+        }
+      ],
+      "source": "trajectories"
+    },
+    "PhaseAssertion": {
+      "iri": "http://example.org/ontology/trajectories/PhaseAssertion",
+      "module": "trajectories",
+      "description": "Observed state occupancy with owl-time interval, prov:wasDerivedFrom evidence, and ConfidenceFacet. Disjoint with inferred model classes.",
+      "parents": [
+        "UcoObject"
+      ],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "assertsState",
+          "type": "State",
+          "type_iri": "http://example.org/ontology/trajectories/State",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "Occupied state."
+        },
+        {
+          "name": "atInterval",
+          "type": "ProperInterval",
+          "type_iri": "http://www.w3.org/2006/time#ProperInterval",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "owl-time interval."
+        },
+        {
+          "name": "sequenceIndex",
+          "type": "nonNegativeInteger",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "Order within trajectory."
+        },
+        {
+          "name": "isTerminal",
+          "type": "boolean",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#boolean",
+          "cardinality": "zero_or_one",
+          "required": false,
+          "description": "Marks the final observed occupancy in its Trajectory. When true, terminalPolarity is required."
+        },
+        {
+          "name": "terminalPolarity",
+          "type": "string",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#string",
+          "cardinality": "zero_or_one",
+          "required": false,
+          "description": "Outcome type for a terminal PhaseAssertion: 'completed' or 'disrupted' (SHACL sh:in)."
+        }
+      ],
+      "source": "trajectories"
+    },
+    "StateMachineModel": {
+      "iri": "http://example.org/ontology/trajectories/StateMachineModel",
+      "module": "trajectories",
+      "description": "Inferred analytic state-machine artifact with prov:wasGeneratedBy. Disjoint with PhaseAssertion.",
+      "parents": [
+        "UcoObject"
+      ],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "learnedFrom",
+          "type": "Trajectory",
+          "type_iri": "http://example.org/ontology/trajectories/Trajectory",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Input trajectories."
+        },
+        {
+          "name": "hasTransitionEstimate",
+          "type": "TransitionEstimate",
+          "type_iri": "http://example.org/ontology/trajectories/TransitionEstimate",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Estimates."
+        },
+        {
+          "name": "hasTransition",
+          "type": "Transition",
+          "type_iri": "http://example.org/ontology/trajectories/Transition",
+          "cardinality": "zero_or_more",
+          "required": false,
+          "description": "Model transitions."
+        },
+        {
+          "name": "initialState",
+          "type": "State",
+          "type_iri": "http://example.org/ontology/trajectories/State",
+          "cardinality": "zero_or_one",
+          "required": false,
+          "description": "s₀ start state of the model (SHACL maxCount 1)."
+        }
+      ],
+      "source": "trajectories"
+    },
+    "TransitionEstimate": {
+      "iri": "http://example.org/ontology/trajectories/TransitionEstimate",
+      "module": "trajectories",
+      "description": "Inferred transition probability/weight with provenance. Disjoint with PhaseAssertion.",
+      "parents": [
+        "UcoObject"
+      ],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "ofTransition",
+          "type": "Transition",
+          "type_iri": "http://example.org/ontology/trajectories/Transition",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "Estimated transition."
+        },
+        {
+          "name": "transitionProbability",
+          "type": "decimal",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#decimal",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "Probability in [0,1]."
+        },
+        {
+          "name": "sampleBasis",
+          "type": "string",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#string",
+          "cardinality": "zero_or_one",
+          "required": false,
+          "description": "Sample basis note."
+        }
+      ],
+      "source": "trajectories"
+    },
+    "BenefitAnatomy": {
+      "iri": "http://example.org/ontology/trajectories/BenefitAnatomy",
+      "module": "trajectories",
+      "description": "Inferred anatomy of one transition. benefitSource is derived from who supplied the gain, whether they kept it, whether presence is required, and whether an object changed hands. Disjoint with PhaseAssertion.",
+      "parents": [
+        "UcoObject"
+      ],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "onTransition",
+          "type": "Transition",
+          "type_iri": "http://example.org/ontology/trajectories/Transition",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "Transition this anatomy describes."
+        },
+        {
+          "name": "transferredObject",
+          "type": "string",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#string",
+          "cardinality": "zero_or_one",
+          "required": false,
+          "description": "Thing that passes. Omit when nothing passes."
+        },
+        {
+          "name": "preexisting",
+          "type": "boolean",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#boolean",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "True when the object existed before the act."
+        },
+        {
+          "name": "valueSurvivesVictim",
+          "type": "boolean",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#boolean",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "True when the value remains if the person is removed."
+        },
+        {
+          "name": "suppliedByPerson",
+          "type": "boolean",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#boolean",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "True when an identified person or named company supplies the gain."
+        },
+        {
+          "name": "personRetainsValue",
+          "type": "boolean",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#boolean",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "True when that person keeps the value."
+        },
+        {
+          "name": "requiresPresence",
+          "type": "boolean",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#boolean",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "True when the benefit requires the person to be present and producing."
+        },
+        {
+          "name": "advantageDefect",
+          "type": "string",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#string",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "deception, coercion, vulnerability, none_alleged, or not_in_instrument. Vulnerability is age, dependency, or incapacity alleged by the instrument. It is not a pass by itself."
+        },
+        {
+          "name": "benefitSource",
+          "type": "string",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#string",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "Derived: not_from_person, retained, victim_sourced, person_activity, person_used, victim_targeted, or none."
+        }
+      ],
+      "source": "trajectories"
+    },
+    "ExploitationAssessment": {
+      "iri": "http://example.org/ontology/trajectories/ExploitationAssessment",
+      "module": "trajectories",
+      "description": "Inferred benefit-at-expense test over one Trajectory. Passes only when the goal edge is a person's preexisting object, activity, or use, and the advantage defect is deception, coercion, or vulnerability. A crime that is not at a person's expense fails, including when a minor is named but is not the source. exploitationOnset is the arriving phase interval, and only on a pass. Disjoint with PhaseAssertion.",
+      "parents": [
+        "UcoObject"
+      ],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "assessesTrajectory",
+          "type": "Trajectory",
+          "type_iri": "http://example.org/ontology/trajectories/Trajectory",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "Trajectory under test."
+        },
+        {
+          "name": "goalRealizingTransition",
+          "type": "Transition",
+          "type_iri": "http://example.org/ontology/trajectories/Transition",
+          "cardinality": "zero_or_one",
+          "required": false,
+          "description": "Edge where the terminal benefit is realized. Only for a realized status."
+        },
+        {
+          "name": "hasBenefitAnatomy",
+          "type": "BenefitAnatomy",
+          "type_iri": "http://example.org/ontology/trajectories/BenefitAnatomy",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Anatomies considered, including the goal edge when present."
+        },
+        {
+          "name": "extractionTestStatus",
+          "type": "string",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#string",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "realized_at_expense, not_exploitation, not_realized, or withheld_partial."
+        },
+        {
+          "name": "passesExtractionTest",
+          "type": "boolean",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#boolean",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "True only when the exploitation test passes and the goal edge is victim_sourced."
+        },
+        {
+          "name": "passesExploitationTest",
+          "type": "boolean",
+          "type_iri": "http://www.w3.org/2001/XMLSchema#boolean",
+          "cardinality": "exactly_one",
+          "required": true,
+          "description": "True only when status is realized_at_expense, the goal edge derives victim_sourced, person_activity, or person_used, and the defect is deception, coercion, or vulnerability."
+        },
+        {
+          "name": "exploitationOnset",
+          "type": "Interval",
+          "type_iri": "http://www.w3.org/2006/time#Interval",
+          "cardinality": "zero_or_one",
+          "required": false,
+          "description": "Derived. Interval of the goal edge's arriving phase. Present only when the exploitation test passes."
+        }
+      ],
+      "source": "trajectories"
+    }
+  },
+  "vocabs": {}
+}

@@ -1,0 +1,224 @@
+# v0.0.0 — business-email-compromise proceeds, received and moved
+# United States v. Ahamefule Aso Odus and Uchechi Chidimma Odus
+# N.D. Ga. 1:18-cr-492, second superseding indictment, document 399
+# CourtListener document 385303248, filed 2022-12-07
+# https://www.courtlistener.com/docket/8453004/399/united-states-v-oye/
+# The indictment says these defendants laundered for other people who ran
+# the business-email compromise. The trick email is not their phase.
+# Account numbers in the indictment are not copied. Confidence 55.
+# Document 457453693 is a second file of this charging instrument.
+
+@prefix od: <http://example.org/kb/fraud-v0/odus/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+
+od:doc-385303248 a uco-core:UcoObject ;
+	uco-core:name "Second superseding indictment, N.D. Ga. 1:18-cr-492, document 399" ;
+	uco-core:description "CourtListener document_id 385303248. Local copy: workbench/casenoesis-data/collected/recap/fraud/385303248.pdf. Conspiracy window paragraph 1: February 2017 through September 2018. Count one is 18 U.S.C. 1956(h). NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). v0.0.0 uses paragraphs 2–6 and the April 2018 example in paragraphs 8–10." .
+
+od:evidence a uco-core:UcoObject ;
+	uco-core:name "Sham companies receiving business-email-compromise wires" ;
+	uco-core:description "Paragraphs 2–6 and 8–10. Business email compromise is defined as tricking an employee with an email that appears legitimate. These defendants and named conspirators are alleged to have laundered for others who conducted those schemes. They registered sham companies with the Georgia Secretary of State, opened bank accounts in those names, received wires, and converted proceeds by further wires, over-the-counter cash, and cashier's checks, including transactions over $10,000, to conceal source and control. One example: on or about 23 April 2018 an Austrian company with a Georgia office wired $57,000 into an account a conspirator controlled, and a defendant directed that those proceeds be sent to a sham trucking company." .
+
+od:alphabet a skos:ConceptScheme ; uco-core:name "Odus proceeds alphabet" .
+od:ShamRegistration a traj:State , skos:Concept ; skos:inScheme od:alphabet ; skos:prefLabel "ShamRegistration"@en ;
+	uco-core:description "Company registered with the Georgia Secretary of State. The indictment says it had no place of business, no legitimate income, and no wages." .
+od:ShamAccount a traj:State , skos:Concept ; skos:inScheme od:alphabet ; skos:prefLabel "ShamAccount"@en ;
+	uco-core:description "Bank account opened in the sham company's name." .
+od:ProceedsReceipt a traj:State , skos:Concept ; skos:inScheme od:alphabet ; skos:prefLabel "ProceedsReceipt"@en ;
+	uco-core:description "Wire in from a business-email compromise conducted by other conspirators." .
+od:RapidConversion a traj:State , skos:Concept ; skos:inScheme od:alphabet ; skos:prefLabel "RapidConversion"@en ;
+	uco-core:description "Further wire, cash withdrawal, or cashier's check. Charging-theory endpoint of the laundering paragraph." .
+
+od:inst-registry a uco-core:UcoObject ; uco-core:name "State company registry" .
+od:inst-bank a uco-observable:Account ; uco-core:name "Bank account and wire" .
+od:act-register a uco-action:Action ; uco-core:name "Register a sham company" ;
+	uco-core:description "An overt act dates one registration by Ahamefule Aso Odus to 2016-10-07, before the February 2017 conspiracy paragraph. A later registration by a conspirator is dated 2017-07-20. No company registration number is recorded." ;
+	uco-action:startTime "2016-10-07T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument od:inst-registry ; prov:wasDerivedFrom od:evidence .
+od:act-open a uco-action:Action ; uco-core:name "Open a sham-company account" ;
+	uco-action:instrument od:inst-bank ; prov:wasDerivedFrom od:evidence .
+od:act-convert a uco-action:Action ; uco-core:name "Convert proceeds by wire, cash, or cashier's check" ;
+	uco-action:instrument od:inst-bank ; prov:wasDerivedFrom od:evidence .
+
+od:interval a time:ProperInterval ; time:hasBeginning od:t0 ; time:hasEnd od:t1 .
+od:t0 a time:Instant ; time:inXSDDateTimeStamp "2017-02-01T00:00:00Z"^^xsd:dateTimeStamp .
+od:t1 a time:Instant ; time:inXSDDateTimeStamp "2018-09-30T23:59:00Z"^^xsd:dateTimeStamp .
+
+od:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+od:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+od:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+od:c3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+od:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — sham registration" ;
+	traj:assertsState od:ShamRegistration ; traj:atInterval od:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom od:evidence ; uco-core:hasFacet od:c0 .
+od:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — sham account" ;
+	traj:assertsState od:ShamAccount ; traj:atInterval od:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom od:evidence ; uco-core:hasFacet od:c1 .
+od:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — proceeds received" ;
+	uco-core:description "The business-email trick is alleged against other conspirators. This occupancy is receipt." ;
+	traj:assertsState od:ProceedsReceipt ; traj:atInterval od:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom od:evidence ; uco-core:hasFacet od:c2 .
+od:p3 a traj:PhaseAssertion ; uco-core:name "Occupancy 3 — conversion" ;
+	uco-core:description "Charging-theory endpoint. Not a verdict." ;
+	traj:assertsState od:RapidConversion ; traj:atInterval od:interval ; traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom od:evidence ; uco-core:hasFacet od:c3 .
+
+od:trajectory a traj:Trajectory ; uco-core:name "Odus proceeds trajectory (v0.0.0)" ;
+	uco-core:description "One scheme-level path for the laundering role. The intrusion email is upstream and is not a state in this alphabet." ;
+	traj:hasPhaseAssertion od:p0 , od:p1 , od:p2 , od:p3 .
+
+od:t0e a traj:Transition ; traj:fromState od:ShamRegistration ; traj:toState od:ShamAccount ; traj:trigger od:evidence ; traj:enactsAction od:act-open .
+od:t1e a traj:Transition ; traj:fromState od:ShamAccount ; traj:toState od:ProceedsReceipt ; traj:trigger od:evidence .
+od:t2e a traj:Transition ; traj:fromState od:ProceedsReceipt ; traj:toState od:RapidConversion ; traj:trigger od:evidence ; traj:enactsAction od:act-convert .
+
+#################################################################
+# Inferred SEP extraction test. This machine is the laundering end.
+#################################################################
+
+od:sep-run a prov:Activity ;
+	uco-core:name "SEP extraction test" ;
+	uco-core:description "Source-versus-target derivation. The wires are already the payers' money when they hit the sham account. Unfairness is not scored." .
+
+od:anat-receipt a traj:BenefitAnatomy ;
+	uco-core:name "Compromised-wire proceeds received" ;
+	uco-core:description "The indictment's sham account receives business-email-compromise wires. The payer is the source of those funds." ;
+	traj:onTransition od:t1e ;
+	traj:transferredObject "business-email-compromise wire proceeds" ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "The wire is the payer's preexisting money and keeps its value in the sham account. Nothing about this edge is the payer's removal." ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy od:sep-run .
+
+od:anat-convert a traj:BenefitAnatomy ;
+	uco-core:name "Proceeds converted" ;
+	uco-core:description "Terminal occupancy: wire, cash, or cashier's check. The value converted is the same payer money." ;
+	traj:onTransition od:t2e ;
+	traj:transferredObject "business-email-compromise wire proceeds" ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "Conversion keeps the value of money that already came from the payer. The benefit survives without removing the payer." ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy od:sep-run .
+
+od:sep-scheme a traj:ExploitationAssessment ;
+	uco-core:name "Odus proceeds extraction test" ;
+	uco-core:description "Goal-realizing edge is the conversion. Both the receipt and the conversion derive victim_sourced. This is the laundering end of a taking, not a separate kind of benefit." ;
+	traj:assessesTrajectory od:trajectory ;
+	traj:goalRealizingTransition od:t2e ;
+	traj:hasBenefitAnatomy od:anat-receipt , od:anat-convert ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest true ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset od:interval ;
+	prov:wasGeneratedBy od:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# Paragraphs 2-6 and the April 2018 example. No account number.
+#################################################################
+
+od:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Indictment, United States v. Odus" ;
+	legalproc:instrumentType "indictment" ;
+	uco-core:description "Filed 2022-12-07. CourtListener 385303248. Count one is concealment money laundering, 18 U.S.C. § 1956(h)." ;
+	prov:wasDerivedFrom od:doc-385303248 .
+od:charge-1956 a legalproc:FederalCharge ;
+	uco-core:name "Concealment money laundering conspiracy" ;
+	legalproc:statuteCitation "18 U.S.C. § 1956(h)" ;
+	legalproc:offenseForm "conspiracy" ;
+	legalproc:assertedIn od:charge-doc .
+od:person-ahamefule a uco-identity:Person ;
+	uco-core:name "Ahamefule Aso Odus" ;
+	uco-core:description "Named defendant. Paragraph 1." ;
+	uco-core:tag "charging-allegation" .
+od:person-uchechi a uco-identity:Person ;
+	uco-core:name "Uchechi Odus" ;
+	uco-core:description "Named defendant. Paragraph 1." ;
+	uco-core:tag "charging-allegation" .
+od:org-suntrust a uco-identity:Organization ;
+	uco-core:name "SunTrust Bank" ;
+	uco-core:description "The April 2018 example alleges a wire to a SunTrust account in the name of a sham company. No account number is recorded." ;
+	uco-core:tag "charging-allegation" .
+od:sham a uco-identity:Organization ;
+	uco-core:name "Sham company" ;
+	uco-core:description "Paragraphs 4 and the example: the defendants and conspirators created sham companies and opened accounts in those names. The example's company name is not repeated." ;
+	uco-core:tag "charging-allegation" .
+od:facet-bank a uco-observable:AccountFacet ;
+	uco-observable:accountIssuer od:org-suntrust ;
+	uco-core:description "SunTrust account alleged in the April 2018 example. No account identifier is recorded." .
+od:inst-bank uco-core:hasFacet od:facet-bank ; uco-core:tag "charging-allegation" .
+od:rel-opened a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "opened-in-the-name-of" ;
+	uco-core:source od:inst-bank ;
+	uco-core:target od:sham ;
+	uco-core:name "Account in a sham-company name" ;
+	prov:wasDerivedFrom od:evidence .
+od:act-register uco-action:performer od:person-ahamefule ; uco-action:result od:sham .
+od:act-open uco-action:performer od:person-ahamefule ; uco-action:object od:inst-bank .
+od:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Odus, N.D. Ga. 1:18-cr-492" ;
+	legalproc:caseIdentifier "1:18-cr-00492" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Sham-company account, then conversion of a business-email-compromise wire" ;
+	uco-core:object od:charge-doc , od:person-ahamefule , od:person-uchechi , od:sham , od:inst-bank , od:org-suntrust .
+
+#################################################################
+# v0.0.1. Dated receipt-and-conversion episodes from the overt
+# acts. Dollar amounts, account numbers, and payee names stay out.
+#################################################################
+
+od:act-convert uco-action:subaction od:exec-2018-01 , od:exec-2018-03 , od:exec-2018-04 , od:exec-2018-07 , od:exec-2018-08 .
+od:exec-2018-01 a uco-action:Action ;
+	uco-core:name "Receipt and conversion, 2018-01-17 to 2018-01-19" ;
+	uco-core:description "A business-email compromise on 2018-01-17, a wire the next day, and a withdrawal on 2018-01-19. Amounts and account numbers are not recorded." ;
+	uco-action:startTime "2018-01-17T00:00:00Z"^^xsd:dateTime ;
+	uco-action:endTime "2018-01-19T23:59:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom od:evidence .
+od:exec-2018-03 a uco-action:Action ;
+	uco-core:name "Receipt and conversion, 2018-03-15 to 2018-03-16" ;
+	uco-core:description "A business-email compromise on 2018-03-15 and a withdrawal the next day. Amounts are not recorded." ;
+	uco-action:startTime "2018-03-15T00:00:00Z"^^xsd:dateTime ;
+	uco-action:endTime "2018-03-16T23:59:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom od:evidence .
+od:exec-2018-04 a uco-action:Action ;
+	uco-core:name "Receipt, 2018-04-23" ;
+	uco-core:description "The April 2018 SunTrust example. The same day as the compromise and the charged wire. Amounts and the payee name are not recorded." ;
+	uco-action:startTime "2018-04-23T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument od:inst-bank ;
+	prov:wasDerivedFrom od:evidence .
+od:exec-2018-07 a uco-action:Action ;
+	uco-core:name "Receipt and conversion, 2018-07-26 to 2018-07-27" ;
+	uco-core:description "A business-email compromise on 2018-07-26 and charged acts in the Northern District of Georgia on 2018-07-27. Amounts are not recorded." ;
+	uco-action:startTime "2018-07-26T00:00:00Z"^^xsd:dateTime ;
+	uco-action:endTime "2018-07-27T23:59:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom od:evidence .
+od:exec-2018-08 a uco-action:Action ;
+	uco-core:name "Receipt and conversion, 2018-08-02 to 2018-08-03" ;
+	uco-core:description "A business-email compromise on 2018-08-02 and a charged act the next day. Amounts are not recorded." ;
+	uco-action:startTime "2018-08-02T00:00:00Z"^^xsd:dateTime ;
+	uco-action:endTime "2018-08-03T23:59:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom od:evidence .

@@ -1,0 +1,138 @@
+# Close read — one victim thread in a civil crypto forfeiture complaint
+# United States v. Binance user property, S.D. Ga. 4:24-cv-26
+# Complaint filed 2024-02-02, CourtListener document 385173671
+# Local: workbench/casenoesis-data/collected/recap/cyber/385173671.pdf
+# Civil in rem complaint. Victim 2 thread, paragraphs 50–58.
+# Phone, email, and wallet identifiers from the complaint are not copied.
+# Confidence 55 means the complaint says so.
+
+@prefix sg: <http://example.org/kb/method-v0/stormgain/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+@prefix cryptoinv: <http://example.org/ontology/cryptoinv/> .
+
+sg:doc a uco-core:UcoObject ;
+	uco-core:name "Civil forfeiture complaint, S.D. Ga. 4:24-cv-26" ;
+	uco-core:description "One thread: a person posing as a home buyer contacts a real-estate agent, then coaches the agent into a cryptocurrency app. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). A bank statement shown to the agent is dated November 2022. The interval runs from that month to the complaint filing. A second contact method in the same complaint was not phased." .
+
+sg:evidence a uco-core:UcoObject ;
+	uco-core:name "Home-buyer persona and Stormgain link" ;
+	uco-core:description "As stated for this victim thread: contact on WhatsApp as a potential buyer, text and calls, then coaching to invest through an app called Stormgain. The agent downloaded the app and linked a Coinbase wallet to a smart contract. Investigators believe the contract gave the orchestrators backdoor access to the wallet. The persona also sent a bank statement, a permanent-resident card, and travel images. Those identifiers are not repeated here." .
+
+sg:alphabet a skos:ConceptScheme ; uco-core:name "Stormgain thread alphabet" .
+sg:BuyerPersona a traj:State , skos:Concept ; skos:inScheme sg:alphabet ; skos:prefLabel "BuyerPersona"@en ;
+	uco-core:description "Contact as a potential real-estate buyer, by messaging app and calls." .
+sg:AppCoaching a traj:State , skos:Concept ; skos:inScheme sg:alphabet ; skos:prefLabel "AppCoaching"@en ;
+	uco-core:description "The persona directs the agent to a named trading app." .
+sg:WalletLink a traj:State , skos:Concept ; skos:inScheme sg:alphabet ; skos:prefLabel "WalletLink"@en ;
+	uco-core:description "The agent links an exchange wallet to a smart contract. Investigators believe that contract was a backdoor. Endpoint of this thread as alleged." .
+
+sg:inst-whatsapp a uco-observable:Application ; uco-core:name "WhatsApp" .
+sg:inst-app a uco-observable:Application ; uco-core:name "Stormgain application and a smart contract" .
+sg:act-contact a uco-action:Action ; uco-core:name "Contact as a buyer on a messaging app" ;
+	uco-action:instrument sg:inst-whatsapp ; prov:wasDerivedFrom sg:evidence .
+sg:act-link a uco-action:Action ; uco-core:name "Link an exchange wallet to a smart contract" ;
+	uco-action:instrument sg:inst-app ; prov:wasDerivedFrom sg:evidence .
+
+sg:interval a time:ProperInterval ; time:hasBeginning sg:t0 ; time:hasEnd sg:t1 .
+sg:t0 a time:Instant ; time:inXSDDateTimeStamp "2022-11-01T00:00:00Z"^^xsd:dateTimeStamp .
+sg:t1 a time:Instant ; time:inXSDDateTimeStamp "2024-02-02T23:59:00Z"^^xsd:dateTimeStamp .
+sg:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+sg:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+sg:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+sg:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — buyer persona" ;
+	traj:assertsState sg:BuyerPersona ; traj:atInterval sg:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom sg:evidence ; uco-core:hasFacet sg:c0 .
+sg:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — app coaching" ;
+	traj:assertsState sg:AppCoaching ; traj:atInterval sg:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom sg:evidence ; uco-core:hasFacet sg:c1 .
+sg:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — wallet link" ;
+	uco-core:description "Endpoint of this victim thread as the complaint tells it. Civil forfeiture, not a criminal charge." ;
+	traj:assertsState sg:WalletLink ; traj:atInterval sg:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom sg:evidence ; uco-core:hasFacet sg:c2 .
+sg:trajectory a traj:Trajectory ; uco-core:name "Stormgain wallet-link trajectory" ;
+	traj:hasPhaseAssertion sg:p0 , sg:p1 , sg:p2 .
+sg:e0 a traj:Transition ; traj:fromState sg:BuyerPersona ; traj:toState sg:AppCoaching ; traj:trigger sg:evidence ;
+	traj:enactsAction sg:act-contact .
+sg:e1 a traj:Transition ; traj:fromState sg:AppCoaching ; traj:toState sg:WalletLink ; traj:trigger sg:evidence ;
+	traj:enactsAction sg:act-link .
+
+sg:sep-run a prov:Activity ;
+	uco-core:name "Benefit-at-expense test" ;
+	uco-core:description "Civil forfeiture complaint. The phased endpoint is the wallet link. A withdrawal is not stated." .
+sg:anat-link a traj:BenefitAnatomy ;
+	uco-core:name "Wallet linked, withdrawal not stated" ;
+	uco-core:description "The complaint says investigators believe the contract gave backdoor access. It does not state that cryptocurrency left the wallet in this thread." ;
+	traj:onTransition sg:e1 ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:preexisting false ;
+	traj:valueSurvivesVictim true ;
+	traj:advantageDefect "deception" ;
+	traj:anatomyRule "No object is stated to have changed hands. The link is not the person's activity and not their absence. Derives none." ;
+	traj:benefitSource "none" ;
+	prov:wasGeneratedBy sg:sep-run .
+sg:sep a traj:ExploitationAssessment ;
+	uco-core:name "Stormgain benefit-at-expense test" ;
+	uco-core:description "The link is the completed edge in this graph. It does not derive a person's object or activity, so the exploitation test fails." ;
+	traj:assessesTrajectory sg:trajectory ;
+	traj:goalRealizingTransition sg:e1 ;
+	traj:hasBenefitAnatomy sg:anat-link ;
+	traj:extractionTestStatus "not_exploitation" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest false ;
+	prov:wasGeneratedBy sg:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# One victim thread in the civil complaint. No wallet address,
+# telephone number, email address, or identity document is recorded.
+#################################################################
+
+sg:complaint a uco-observable:File ;
+	uco-core:name "Civil forfeiture complaint, S.D. Ga. 4:24-cv-26" ;
+	uco-core:description "Filed 2024-02-02. CourtListener 385173671. Not a criminal indictment." ;
+	prov:wasDerivedFrom sg:doc .
+sg:wallet a uco-observable:ObservableObject ;
+	uco-core:name "Coinbase wallet linked to a smart contract" ;
+	uco-core:hasFacet sg:facet-wallet ;
+	uco-core:description "The complaint says the agent linked a Coinbase wallet to a smart contract. Investigators believe the contract gave backdoor access. No address is recorded. A withdrawal is not stated." ;
+	uco-core:tag "charging-allegation" .
+sg:facet-wallet a cryptoinv:CryptocurrencyWalletFacet ;
+	cryptoinv:walletType "hosted" ;
+	uco-core:description "Inference: Coinbase is named, and a hosted exchange wallet is the usual custody model for that name. The complaint does not use the word hosted." ;
+	uco-core:tag "inference" .
+sg:agent a uco-identity:Person , uco-victim:Victim ;
+	uco-core:name "Real-estate agent in this thread" ;
+	uco-core:description "The complaint's role label for this thread. The person's name is not recorded." ;
+	uco-core:tag "charging-allegation" .
+sg:rel-link a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "linked" ;
+	uco-core:source sg:wallet ;
+	uco-core:target sg:inst-app ;
+	uco-core:name "Wallet linked after app coaching" ;
+	prov:wasDerivedFrom sg:evidence .
+sg:act-contact uco-action:instrument sg:inst-whatsapp ; uco-action:object sg:agent .
+sg:act-link uco-action:object sg:wallet ; uco-action:instrument sg:inst-app .
+sg:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. cryptocurrency, S.D. Ga. 4:24-cv-26" ;
+	legalproc:caseIdentifier "4:24-cv-00026" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Buyer persona, Stormgain, wallet link" ;
+	uco-core:description "The benefit-at-expense test fails because the phased endpoint is the link, not a stated withdrawal." ;
+	uco-core:object sg:complaint , sg:wallet , sg:inst-whatsapp , sg:inst-app , sg:agent , sg:trajectory .

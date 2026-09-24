@@ -1,0 +1,272 @@
+# v0.0.0 — elder fraud by proximity, then bank rails
+# United States v. Jamie Jakia Cofer, S.D. Fla. 9:20-mj-08273-DLB
+# Criminal complaint and affidavit, CourtListener document 141451183
+# https://www.courtlistener.com/docket/17415926/1/united-states-v-cofer/
+# Account numbers, the iCloud address, and the phone number in the affidavit
+# are not copied into this graph.
+# Two concurrent methods. Charging allegations. Confidence 55.
+
+@prefix cf: <http://example.org/kb/fraud-v0/cofer/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix lay: <http://example.org/ontology/layered/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+
+cf:doc-141451183 a uco-core:UcoObject ;
+	uco-core:name "Criminal complaint, United States v. Cofer, S.D. Fla. 9:20-mj-08273" ;
+	uco-core:description "Complaint entered 2020-08-05, CourtListener document_id 141451183. Local copy: workbench/casenoesis-data/collected/recap/fraud/141451183.pdf. Counts 18 U.S.C. 1028A and 1029. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). v0.0.0 uses the affidavit's description of a home-health aide taking elderly clients' identifying information, accessing accounts, adding a card, depositing stolen checks at an ATM, and recruiting another person to provide a debit card and PIN." .
+
+cf:evidence-affidavit a uco-core:UcoObject ;
+	uco-core:name "Cofer affidavit, insider access and account use" ;
+	uco-core:description "As read: she worked as a home-health aide; stole client identifying information including name, date of birth, Social Security number, and bank and card information; accessed bank and card accounts; added herself on an account; made purchases; opened accounts; stole a phone and cards. At least five victims, four elderly. A card was approved in her name on one elderly client's American Express account and purchases were made. Stolen checks were deposited at an ATM into another account. She messaged J.N.H. about extra money, asked to use J.N.H.'s bank account, and received J.N.H.'s debit card and PIN. Specific account numbers and the online contact address are omitted here." .
+
+cf:activity-care-role a prov:Activity ;
+	uco-core:name "Pre-s0: home-health access to elderly clients" ;
+	uco-core:description "The care role is the access that supplies identifying information. It is not a traj:State." ;
+	prov:used cf:evidence-affidavit .
+
+cf:alphabet-account a skos:ConceptScheme ; uco-core:name "Cofer account-takeover alphabet" .
+cf:PiiTheft a traj:State , skos:Concept ; skos:inScheme cf:alphabet-account ; skos:prefLabel "PiiTheft"@en ;
+	uco-core:description "Identifying and account information taken from elderly clients." .
+cf:AccountAccess a traj:State , skos:Concept ; skos:inScheme cf:alphabet-account ; skos:prefLabel "AccountAccess"@en ;
+	uco-core:description "Unauthorized access to bank and credit-card accounts." .
+cf:AddOnCard a traj:State , skos:Concept ; skos:inScheme cf:alphabet-account ; skos:prefLabel "AddOnCard"@en ;
+	uco-core:description "A card in her name approved on a client's American Express account." .
+cf:Extraction a traj:State , skos:Concept ; skos:inScheme cf:alphabet-account ; skos:prefLabel "Extraction"@en ;
+	uco-core:description "Unauthorized purchases and ATM deposits of stolen checks. Charging-theory endpoint for this layer." .
+
+cf:alphabet-mule a skos:ConceptScheme ; uco-core:name "Cofer recruited-account alphabet" .
+cf:RecruitMessage a traj:State , skos:Concept ; skos:inScheme cf:alphabet-mule ; skos:prefLabel "RecruitMessage"@en ;
+	uco-core:description "A message offering extra money, then a request to use the other person's bank account." .
+cf:CredentialHandoff a traj:State , skos:Concept ; skos:inScheme cf:alphabet-mule ; skos:prefLabel "CredentialHandoff"@en ;
+	uco-core:description "The other person provided a debit card and PIN." .
+cf:CheckDeposit a traj:State , skos:Concept ; skos:inScheme cf:alphabet-mule ; skos:prefLabel "CheckDeposit"@en ;
+	uco-core:description "A stolen check was deposited into that account. The affidavit says the card was not returned." .
+
+cf:inst-care a uco-core:UcoObject ; uco-core:name "In-person care access" ;
+	uco-core:description "Physical proximity to clients and their records and cards. Not a remote platform." .
+cf:inst-bank a uco-observable:Account ; uco-core:name "Bank and card accounts" ;
+	uco-core:description "Existing client accounts, an add-on card, and ATM deposit of checks." .
+cf:inst-message a uco-observable:Message ; uco-core:name "Message to a recruited account holder" ;
+	uco-core:description "The affidavit says she messaged J.N.H. The platform is not named here." .
+
+cf:act-take-pii a uco-action:Action ; uco-core:name "Take client identifying information" ;
+	uco-action:instrument cf:inst-care ; prov:wasDerivedFrom cf:evidence-affidavit .
+cf:act-access a uco-action:Action ; uco-core:name "Access client accounts" ;
+	uco-action:instrument cf:inst-bank ; prov:wasDerivedFrom cf:evidence-affidavit .
+cf:act-add-card a uco-action:Action ; uco-core:name "Add a card in her name" ;
+	uco-action:instrument cf:inst-bank ; prov:wasDerivedFrom cf:evidence-affidavit .
+cf:act-extract a uco-action:Action ; uco-core:name "Spend and deposit" ;
+	uco-action:instrument cf:inst-bank ; prov:wasDerivedFrom cf:evidence-affidavit .
+cf:act-recruit a uco-action:Action ; uco-core:name "Ask to use another person's account" ;
+	uco-action:instrument cf:inst-message ; prov:wasDerivedFrom cf:evidence-affidavit .
+
+cf:interval a time:ProperInterval ; time:hasBeginning cf:t0 ; time:hasEnd cf:t1 .
+cf:t0 a time:Instant ; time:inXSDDateTimeStamp "2019-05-01T00:00:00Z"^^xsd:dateTimeStamp .
+cf:t1 a time:Instant ; time:inXSDDateTimeStamp "2019-10-24T23:59:00Z"^^xsd:dateTimeStamp .
+
+cf:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+cf:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+cf:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+cf:c3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+cf:c4 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+cf:c5 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+cf:c6 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+cf:p0 a traj:PhaseAssertion ; uco-core:name "Account occupancy 0 — identifying information" ;
+	uco-core:description "Charging allegation. Fed by the care role." ;
+	traj:assertsState cf:PiiTheft ; traj:atInterval cf:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom cf:evidence-affidavit ; uco-core:hasFacet cf:c0 .
+cf:p1 a traj:PhaseAssertion ; uco-core:name "Account occupancy 1 — account access" ;
+	traj:assertsState cf:AccountAccess ; traj:atInterval cf:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom cf:evidence-affidavit ; uco-core:hasFacet cf:c1 .
+cf:p2 a traj:PhaseAssertion ; uco-core:name "Account occupancy 2 — add-on card" ;
+	traj:assertsState cf:AddOnCard ; traj:atInterval cf:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom cf:evidence-affidavit ; uco-core:hasFacet cf:c2 .
+cf:p3 a traj:PhaseAssertion ; uco-core:name "Account occupancy 3 — purchases and ATM deposits" ;
+	uco-core:description "Charging-theory endpoint for the account layer. Not a verdict." ;
+	traj:assertsState cf:Extraction ; traj:atInterval cf:interval ; traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom cf:evidence-affidavit ; uco-core:hasFacet cf:c3 .
+cf:traj-account a traj:Trajectory ; uco-core:name "Cofer account-takeover trajectory" ;
+	traj:hasPhaseAssertion cf:p0 , cf:p1 , cf:p2 , cf:p3 .
+cf:t-access a traj:Transition ; traj:fromState cf:PiiTheft ; traj:toState cf:AccountAccess ; traj:trigger cf:evidence-affidavit ; traj:enactsAction cf:act-access .
+cf:t-card a traj:Transition ; traj:fromState cf:AccountAccess ; traj:toState cf:AddOnCard ; traj:trigger cf:evidence-affidavit ; traj:enactsAction cf:act-add-card .
+cf:t-extract a traj:Transition ; traj:fromState cf:AddOnCard ; traj:toState cf:Extraction ; traj:trigger cf:evidence-affidavit ; traj:enactsAction cf:act-extract .
+
+cf:m0 a traj:PhaseAssertion ; uco-core:name "Recruit occupancy 0 — message" ;
+	traj:assertsState cf:RecruitMessage ; traj:atInterval cf:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom cf:evidence-affidavit ; uco-core:hasFacet cf:c4 .
+cf:m1 a traj:PhaseAssertion ; uco-core:name "Recruit occupancy 1 — card and PIN" ;
+	traj:assertsState cf:CredentialHandoff ; traj:atInterval cf:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom cf:evidence-affidavit ; uco-core:hasFacet cf:c5 .
+cf:m2 a traj:PhaseAssertion ; uco-core:name "Recruit occupancy 2 — check deposit" ;
+	traj:assertsState cf:CheckDeposit ; traj:atInterval cf:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom cf:evidence-affidavit ; uco-core:hasFacet cf:c6 .
+cf:traj-mule a traj:Trajectory ; uco-core:name "Cofer recruited-account trajectory" ;
+	traj:hasPhaseAssertion cf:m0 , cf:m1 , cf:m2 .
+cf:t-handoff a traj:Transition ; traj:fromState cf:RecruitMessage ; traj:toState cf:CredentialHandoff ; traj:trigger cf:evidence-affidavit ; traj:enactsAction cf:act-recruit .
+cf:t-deposit a traj:Transition ; traj:fromState cf:CredentialHandoff ; traj:toState cf:CheckDeposit ; traj:trigger cf:evidence-affidavit ; traj:enactsAction cf:act-extract .
+
+#################################################################
+# Inferred SEP extraction test. Care access is context for how
+# the accounts were reached. It is not scored as unfairness.
+#################################################################
+
+cf:sep-run a prov:Activity ;
+	uco-core:name "SEP extraction test" ;
+	uco-core:description "Source-versus-target derivation from the affidavit allegations already in this graph. Unfairness is not scored." .
+
+cf:anat-extract a traj:BenefitAnatomy ;
+	uco-core:name "Client funds spent and deposited" ;
+	uco-core:description "Affidavit: purchases and ATM deposits from client accounts after an add-on card. The client is the source of the funds. In-person care access is how the accounts were reached." ;
+	traj:onTransition cf:t-extract ;
+	traj:transferredObject "client account funds" ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "The funds are already the client's and keep their value once spent or deposited. The benefit is the money, not the client's removal." ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy cf:sep-run .
+
+cf:sep-account a traj:ExploitationAssessment ;
+	uco-core:name "Cofer account-takeover extraction test" ;
+	uco-core:description "Goal-realizing edge is the spend and deposit. Anatomy derives victim_sourced." ;
+	traj:assessesTrajectory cf:traj-account ;
+	traj:goalRealizingTransition cf:t-extract ;
+	traj:hasBenefitAnatomy cf:anat-extract ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest true ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset cf:interval ;
+	prov:wasGeneratedBy cf:sep-run .
+
+cf:anat-deposit a traj:BenefitAnatomy ;
+	uco-core:name "Client funds through a recruited account" ;
+	uco-core:description "Affidavit: a recruited person provides a card and PIN, then a check is deposited. The source of the value is the client instrument, moved through the recruited account." ;
+	traj:onTransition cf:t-deposit ;
+	traj:transferredObject "client funds deposited through a recruited account" ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "The deposited value predates the handoff and survives without removing the client. The recruited account is the channel." ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy cf:sep-run .
+
+cf:sep-mule a traj:ExploitationAssessment ;
+	uco-core:name "Cofer recruited-account extraction test" ;
+	uco-core:description "Goal-realizing edge is the check deposit. Anatomy derives victim_sourced." ;
+	traj:assessesTrajectory cf:traj-mule ;
+	traj:goalRealizingTransition cf:t-deposit ;
+	traj:hasBenefitAnatomy cf:anat-deposit ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest true ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset cf:interval ;
+	prov:wasGeneratedBy cf:sep-run .
+
+cf:layer-account a lay:Layer ; uco-core:name "Layer 0 — account takeover" ;
+	lay:occupiesTrajectory cf:traj-account ; lay:domainAlphabet cf:alphabet-account ;
+	lay:layerIndex "0"^^xsd:nonNegativeInteger ; lay:coverage "partial" ; lay:concurrencyGroup "cofer-2019" .
+cf:layer-mule a lay:Layer ; uco-core:name "Layer 1 — recruited account" ;
+	lay:occupiesTrajectory cf:traj-mule ; lay:domainAlphabet cf:alphabet-mule ;
+	lay:layerIndex "1"^^xsd:nonNegativeInteger ; lay:coverage "partial" ; lay:concurrencyGroup "cofer-2019" .
+cf:couple a lay:Coupling ; uco-core:name "Both layers use stolen client instruments" ;
+	lay:couplingKind "sharesFactor" ; lay:fromLayer cf:layer-account ; lay:toLayer cf:layer-mule ;
+	prov:wasDerivedFrom cf:evidence-affidavit .
+cf:machine a lay:ExploitationStateMachine ;
+	uco-core:name "Cofer insider-to-account machine (v0.0.0)" ;
+	uco-core:description "Elder fraud whose first affordance is a care relationship, not a call script or a website. Bank accounts, an add-on card, an ATM, and a recruited debit card carry the money. compositionPattern concurrent. completeness partial." ;
+	lay:hasLayer cf:layer-account , cf:layer-mule ; lay:hasCoupling cf:couple ;
+	lay:compositionPattern "concurrent" ; lay:completeness "partial" .
+
+#################################################################
+# CASE/UCO context layer
+# Affidavit. No account number, email, telephone number, or Social Security number.
+#################################################################
+
+cf:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Criminal complaint, United States v. Cofer" ;
+	legalproc:instrumentType "complaint" ;
+	uco-core:description "Entered 2020-08-05. CourtListener 141451183." ;
+	prov:wasDerivedFrom cf:doc-141451183 .
+cf:charge-1028a a legalproc:FederalCharge ;
+	uco-core:name "Aggravated identity theft" ;
+	legalproc:statuteCitation "18 U.S.C. § 1028A(a)(1)" ;
+	legalproc:assertedIn cf:charge-doc .
+cf:charge-1029 a legalproc:FederalCharge ;
+	uco-core:name "Unauthorized access devices" ;
+	legalproc:statuteCitation "18 U.S.C. § 1029" ;
+	legalproc:assertedIn cf:charge-doc .
+cf:person-cofer a uco-identity:Person ;
+	uco-core:name "Jamie Jakia Cofer" ;
+	uco-core:description "Complaint caption. Also known as Anna Bell. The affidavit says she worked as a home health aide for senior citizens in South Florida." ;
+	uco-core:tag "charging-allegation" .
+cf:org-community a uco-identity:Organization ;
+	uco-core:name "Senior Community 1" ;
+	uco-core:description "The affidavit's own label for the Juno Beach community. It does not give a fuller name in the portion read." ;
+	uco-core:tag "charging-allegation" .
+cf:loc-juno a uco-location:Location ;
+	uco-core:name "Juno Beach, Florida" ;
+	uco-core:description "Affidavit: the community is in Juno Beach. The complaint places the offense in Palm Beach County." ;
+	uco-core:tag "charging-allegation" .
+cf:org-amex a uco-identity:Organization ;
+	uco-core:name "American Express" ;
+	uco-core:description "The affidavit alleges an additional card in Cofer's name on a client's American Express account. No account number is recorded." ;
+	uco-core:tag "charging-allegation" .
+cf:org-pnc a uco-identity:Organization ;
+	uco-core:name "PNC Bank" ;
+	uco-core:description "The affidavit alleges ATM deposits into a PNC account. No account number is recorded." ;
+	uco-core:tag "charging-allegation" .
+cf:org-iberia a uco-identity:Organization ;
+	uco-core:name "Iberia Bank" ;
+	uco-core:description "The affidavit alleges a stolen check drawn on an Iberia Bank account. No account number is recorded." ;
+	uco-core:tag "charging-allegation" .
+cf:clients a uco-identity:Identity , uco-victim:Victim ;
+	uco-core:name "Home-health clients" ;
+	uco-core:description "No client name is recorded." ;
+	uco-core:tag "charging-allegation" .
+cf:facet-bank a uco-observable:AccountFacet ;
+	uco-core:description "Bank account alleged in the affidavit. No account identifier is recorded. accountType is omitted because the UCO account-type vocabulary does not include bank." .
+cf:inst-bank uco-core:hasFacet cf:facet-bank ; uco-core:tag "charging-allegation" .
+cf:facet-msg a uco-observable:MessageFacet ;
+	uco-observable:messageType "message" ;
+	uco-observable:messageText "The affidavit alleges a request to use another person's account and receipt of a debit card and PIN. The message body, card number, and PIN are not copied." .
+cf:inst-message uco-core:hasFacet cf:facet-msg .
+cf:card a uco-observable:PaymentCard ;
+	uco-core:name "Additional card and a recruited debit card" ;
+	uco-core:description "No card number is recorded." ;
+	uco-core:tag "charging-allegation" .
+cf:rel-employed a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "worked-as-aide-at" ;
+	uco-core:source cf:person-cofer ;
+	uco-core:target cf:org-community ;
+	uco-core:name "Aide access" ;
+	prov:wasDerivedFrom cf:evidence-affidavit .
+cf:act-take-pii uco-action:performer cf:person-cofer ; uco-action:object cf:clients ; uco-action:location cf:loc-juno .
+cf:act-access uco-action:performer cf:person-cofer ; uco-action:instrument cf:inst-bank .
+cf:act-add-card uco-action:performer cf:person-cofer ; uco-action:result cf:card .
+cf:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Cofer, S.D. Fla. 9:20-mj-08273" ;
+	legalproc:caseIdentifier "9:20-mj-08273" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Care access, then client accounts" ;
+	uco-core:object cf:charge-doc , cf:person-cofer , cf:inst-bank , cf:card , cf:org-amex , cf:org-pnc , cf:org-iberia .

@@ -53,3 +53,6 @@ evaluation/critic/reports/*.json
 artifacts/bench/
 
 opencode.json
+
+# Local court-PDF copy. Graphs under workbench/machines/ stay tracked.
+workbench/casenoesis-data/

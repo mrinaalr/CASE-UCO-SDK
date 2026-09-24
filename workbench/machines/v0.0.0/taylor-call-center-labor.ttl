@@ -1,0 +1,143 @@
+# Close read — call-center labor counts only
+# United States v. Taylor, Brannon, and Klein, E.D. Mich. 2:25-cr-20560
+# Second superseding indictment, CourtListener document 488069557
+# Local: workbench/casenoesis-data/collected/recap/bulk/488069557.pdf
+# OCR is noisy. Read: paragraphs 7–8, 10–11, and 15–17, and the window in paragraph 44.
+# Paragraphs that allege sexual coercion are not states in this graph.
+# Charging allegations. Confidence 55. Coverage partial.
+
+@prefix ty: <http://example.org/kb/method-v0/taylor/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+
+ty:doc a uco-core:UcoObject ;
+	uco-core:name "Second superseding indictment, United States v. Taylor, E.D. Mich. 2:25-cr-20560" ;
+	uco-core:description "Kingdom of God Global Church call centers. Counts include conspiracy to commit forced labor and forced labor. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). Paragraph 44 alleges a window beginning no later than 2018 and continuing through at least July 2025. The file stamp is about 29 July 2026. This graph covers the unpaid call-center and attendant labor in paragraphs 7–8, 10–11, and 16–17. It does not represent allegations of sexual coercion." .
+
+ty:evidence a uco-core:UcoObject ;
+	uco-core:name "Unpaid call-center and attendant labor" ;
+	uco-core:description "As alleged in the paragraphs read: Taylor recruited people from across the country to work call-center shifts and as attendants he called armor bearers. Laborers were given a required number of calls and a required amount to raise. Both groups were commonly unpaid. Once a person started, the defendants required labor from victims numbered 1 through 8 in the indictment." .
+
+ty:alphabet a skos:ConceptScheme ; uco-core:name "Taylor call-center alphabet" .
+ty:RecruitLabor a traj:State , skos:Concept ; skos:inScheme ty:alphabet ; skos:prefLabel "RecruitLabor"@en ;
+	uco-core:description "Recruit call-center workers and attendants from across the country." .
+ty:Quota a traj:State , skos:Concept ; skos:inScheme ty:alphabet ; skos:prefLabel "Quota"@en ;
+	uco-core:description "Required call volume and fundraising amount." .
+ty:UnpaidLabor a traj:State , skos:Concept ; skos:inScheme ty:alphabet ; skos:prefLabel "UnpaidLabor"@en ;
+	uco-core:description "Call-center workers and attendants commonly unpaid. Endpoint of the labor paragraphs represented here." .
+
+ty:interval a time:ProperInterval ; time:hasBeginning ty:t0 ; time:hasEnd ty:t1 .
+ty:t0 a time:Instant ;
+	time:inXSDDateTimeStamp "2018-01-01T00:00:00Z"^^xsd:dateTimeStamp ;
+	uco-core:description "This timestamp is a bound. Paragraph 44 says the window begins no later than 2018. The instrument did not give this calendar day." .
+ty:t1 a time:Instant ;
+	time:inXSDDateTimeStamp "2025-07-31T23:59:00Z"^^xsd:dateTimeStamp ;
+	uco-core:description "This timestamp is a bound. Paragraph 44 says the window continues through at least July 2025. The instrument did not give this calendar day." .
+ty:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ty:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ty:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+ty:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — recruit" ;
+	traj:assertsState ty:RecruitLabor ; traj:atInterval ty:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ty:evidence ; uco-core:hasFacet ty:c0 .
+ty:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — quota" ;
+	traj:assertsState ty:Quota ; traj:atInterval ty:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ty:evidence ; uco-core:hasFacet ty:c1 .
+ty:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — unpaid" ;
+	uco-core:description "Endpoint of the labor paragraphs that were modeled. Not a verdict. Other allegations in the same indictment are omitted." ;
+	traj:assertsState ty:UnpaidLabor ; traj:atInterval ty:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom ty:evidence ; uco-core:hasFacet ty:c2 .
+ty:trajectory a traj:Trajectory ; uco-core:name "Taylor call-center trajectory (labor paragraphs only)" ;
+	traj:hasPhaseAssertion ty:p0 , ty:p1 , ty:p2 .
+ty:e0 a traj:Transition ; traj:fromState ty:RecruitLabor ; traj:toState ty:Quota ; traj:trigger ty:evidence .
+ty:e1 a traj:Transition ; traj:fromState ty:Quota ; traj:toState ty:UnpaidLabor ; traj:trigger ty:evidence .
+
+ty:sep-run a prov:Activity ;
+	uco-core:name "Benefit-at-expense test" ;
+	uco-core:description "Labor paragraphs only. The benefit tested is unpaid call-center and attendant work." .
+ty:anat-labor a traj:BenefitAnatomy ;
+	uco-core:name "Unpaid required labor" ;
+	uco-core:description "The paragraphs read say both groups were commonly unpaid and that labor was required once a person started." ;
+	traj:onTransition ty:e1 ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence true ;
+	traj:preexisting false ;
+	traj:valueSurvivesVictim false ;
+	traj:advantageDefect "coercion" ;
+	traj:anatomyRule "No chattel changes hands. The work requires the person to be present, they do not keep its value, and the instrument alleges the labor was required. Derives person_activity." ;
+	traj:benefitSource "person_activity" ;
+	prov:wasGeneratedBy ty:sep-run .
+ty:sep a traj:ExploitationAssessment ;
+	uco-core:name "Taylor benefit-at-expense test" ;
+	uco-core:description "Goal edge is the unpaid labor. Exploitation passes because the facts are activity at the person's expense under coercion. The object test fails." ;
+	traj:assessesTrajectory ty:trajectory ;
+	traj:goalRealizingTransition ty:e1 ;
+	traj:hasBenefitAnatomy ty:anat-labor ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset ty:interval ;
+	prov:wasGeneratedBy ty:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# Labor paragraphs 1 and 6-11. Other allegations in the indictment
+# are not modeled.
+#################################################################
+
+ty:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Second superseding indictment, United States v. Taylor" ;
+	legalproc:instrumentType "superseding-indictment" ;
+	uco-core:description "CourtListener 488069557. File stamp about 29 July 2026." ;
+	prov:wasDerivedFrom ty:doc .
+ty:charge-labor a legalproc:FederalCharge ;
+	uco-core:name "Conspiracy to commit forced labor" ;
+	legalproc:statuteCitation "18 U.S.C. §§ 1594(b) and 1589" ;
+	legalproc:offenseForm "conspiracy" ;
+	legalproc:assertedIn ty:charge-doc ;
+	uco-core:description "The count heading states conspiracy to commit forced labor under those sections." .
+ty:person-taylor a uco-identity:Person ;
+	uco-core:name "David Taylor" ;
+	uco-core:description "Caption, defendant 1." ;
+	uco-core:tag "charging-allegation" .
+ty:person-klein a uco-identity:Person ;
+	uco-core:name "Kathleen Klein" ;
+	uco-core:description "Caption. Paragraphs 7-8 allege she instructed call-center laborers with Taylor." ;
+	uco-core:tag "charging-allegation" .
+ty:org-church a uco-identity:Organization ;
+	uco-core:name "Kingdom of God Global Church" ;
+	uco-core:description "Paragraph 1: formerly known as Joshua. The paragraph is cut off in the extract at that former name. Only the name the paragraph states is recorded." ;
+	uco-core:tag "charging-allegation" .
+ty:loc-center a uco-location:Location ;
+	uco-core:name "Call center at 20320 Superior Road, Taylor" ;
+	uco-core:description "Paragraph 6. Other call centers are alleged in Missouri, Florida, and elsewhere. Those sites are not given street addresses here." ;
+	uco-core:tag "charging-allegation" .
+ty:workers a uco-identity:Identity , uco-victim:Victim ;
+	uco-core:name "Call-center laborers and attendants" ;
+	uco-core:description "Paragraphs 7-11: required call volume and fundraising, commonly unpaid. The indictment numbers victims 1 through 8. Those names are not recorded. Paragraph 10 uses the phrase armor bearers for attendants." ;
+	uco-core:tag "charging-allegation" .
+ty:rel-center a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "established" ;
+	uco-core:source ty:person-taylor ;
+	uco-core:target ty:loc-center ;
+	uco-core:name "Taylor established the call center" ;
+	prov:wasDerivedFrom ty:evidence .
+ty:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Taylor, E.D. Mich. 2:25-cr-20560" ;
+	legalproc:caseIdentifier "2:25-cr-20560" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Unpaid call-center and attendant labor" ;
+	uco-core:object ty:charge-doc , ty:person-taylor , ty:person-klein , ty:org-church , ty:loc-center , ty:workers , ty:trajectory .

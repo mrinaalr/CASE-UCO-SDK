@@ -1,0 +1,143 @@
+# Close read — civil forfeiture complaint stating a pig-butchering sequence
+# United States v. 266,907 Tether, E.D. Mich. 2:25-cv-13121
+# Complaint for forfeiture filed 2025-10-03, CourtListener document 454395974
+# Local: workbench/casenoesis-data/collected/recap/cyber/454395974.pdf
+# This is a civil in rem complaint, not a criminal indictment.
+# Paragraphs 19–21 state the typical sequence. Confidence 55 means the complaint says so.
+
+@prefix pb: <http://example.org/kb/method-v0/pigbutcher/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+@prefix cryptoinv: <http://example.org/ontology/cryptoinv/> .
+
+pb:doc a uco-core:UcoObject ;
+	uco-core:name "Civil forfeiture complaint, E.D. Mich. 2:25-cv-13121" ;
+	uco-core:description "Complaint alleges USDT associated with one address is derived from cryptocurrency investment fraud the complaint calls pig butchering. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). The interval is the complaint filing day. Paragraphs 19–21 describe a typical sequence and do not date one conspiracy." .
+
+pb:evidence a uco-core:UcoObject ;
+	uco-core:name "Typical pig-butchering sequence in the complaint" ;
+	uco-core:description "As stated: a seemingly innocuous or misdirected message, then a personal relationship using tactics the complaint compares to romance scams, then a fake cryptocurrency investment on a website or mobile app that shows a fictitious portfolio and large returns. Funds are not invested. When the victim tries to withdraw, access is restricted and most victims are locked out. The complaint uses the scammers' own words for the stages. Those words are not repeated as instructions here." .
+
+pb:alphabet a skos:ConceptScheme ; uco-core:name "Pig-butchering alphabet as stated in the complaint" .
+pb:UnsolicitedMessage a traj:State , skos:Concept ; skos:inScheme pb:alphabet ; skos:prefLabel "UnsolicitedMessage"@en ;
+	uco-core:description "First contact is a message that appears ordinary or misdirected." .
+pb:RelationshipStory a traj:State , skos:Concept ; skos:inScheme pb:alphabet ; skos:prefLabel "RelationshipStory"@en ;
+	uco-core:description "The sender builds a personal relationship." .
+pb:FakePlatform a traj:State , skos:Concept ; skos:inScheme pb:alphabet ; skos:prefLabel "FakePlatform"@en ;
+	uco-core:description "A website or app shows a fictitious portfolio and abnormal returns." .
+pb:Lockout a traj:State , skos:Concept ; skos:inScheme pb:alphabet ; skos:prefLabel "Lockout"@en ;
+	uco-core:description "Withdrawal is refused and the victim is locked out. Endpoint of the typical sequence the complaint states." .
+
+pb:inst-message a uco-observable:Message ; uco-core:name "Unsolicited message" .
+pb:inst-app a uco-observable:Application ; uco-core:name "Website or mobile investment app" .
+pb:act-msg a uco-action:Action ; uco-core:name "Open with an unsolicited message" ;
+	uco-action:instrument pb:inst-message ; prov:wasDerivedFrom pb:evidence .
+pb:act-app a uco-action:Action ; uco-core:name "Show a fictitious portfolio" ;
+	uco-action:instrument pb:inst-app ; prov:wasDerivedFrom pb:evidence .
+
+pb:interval a time:ProperInterval ; time:hasBeginning pb:t0 ; time:hasEnd pb:t1 .
+pb:t0 a time:Instant ; time:inXSDDateTimeStamp "2025-10-03T00:00:00Z"^^xsd:dateTimeStamp .
+pb:t1 a time:Instant ; time:inXSDDateTimeStamp "2025-10-03T23:59:00Z"^^xsd:dateTimeStamp .
+pb:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+pb:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+pb:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+pb:c3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+pb:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — message" ;
+	traj:assertsState pb:UnsolicitedMessage ; traj:atInterval pb:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom pb:evidence ; uco-core:hasFacet pb:c0 .
+pb:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — relationship" ;
+	traj:assertsState pb:RelationshipStory ; traj:atInterval pb:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom pb:evidence ; uco-core:hasFacet pb:c1 .
+pb:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — fake platform" ;
+	traj:assertsState pb:FakePlatform ; traj:atInterval pb:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom pb:evidence ; uco-core:hasFacet pb:c2 .
+pb:p3 a traj:PhaseAssertion ; uco-core:name "Occupancy 3 — lockout" ;
+	uco-core:description "Endpoint of the typical sequence. The civil case then seeks the USDT. That seizure is not an offense state." ;
+	traj:assertsState pb:Lockout ; traj:atInterval pb:interval ; traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom pb:evidence ; uco-core:hasFacet pb:c3 .
+pb:trajectory a traj:Trajectory ; uco-core:name "Pig-butchering sequence as stated in the forfeiture complaint" ;
+	traj:hasPhaseAssertion pb:p0 , pb:p1 , pb:p2 , pb:p3 .
+pb:e0 a traj:Transition ; traj:fromState pb:UnsolicitedMessage ; traj:toState pb:RelationshipStory ; traj:trigger pb:evidence ; traj:enactsAction pb:act-msg .
+pb:e1 a traj:Transition ; traj:fromState pb:RelationshipStory ; traj:toState pb:FakePlatform ; traj:trigger pb:evidence ; traj:enactsAction pb:act-app .
+pb:e2 a traj:Transition ; traj:fromState pb:FakePlatform ; traj:toState pb:Lockout ; traj:trigger pb:evidence .
+
+pb:sep-run a prov:Activity ;
+	uco-core:name "Benefit-at-expense test" ;
+	uco-core:description "Civil forfeiture complaint. The sequence ends when the person cannot withdraw what they sent." .
+pb:anat-lock a traj:BenefitAnatomy ;
+	uco-core:name "Cryptocurrency sent to the platform" ;
+	uco-core:description "The complaint's typical sequence: the person sends cryptocurrency to a platform they cannot withdraw from." ;
+	traj:onTransition pb:e2 ;
+	traj:transferredObject "cryptocurrency the person sent" ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:advantageDefect "deception" ;
+	traj:anatomyRule "The cryptocurrency is the person's beforehand and keeps its value after lockout. They do not keep it. Presence is not required. Derives victim_sourced." ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy pb:sep-run .
+pb:sep a traj:ExploitationAssessment ;
+	uco-core:name "Pig-butchering benefit-at-expense test" ;
+	uco-core:description "Goal edge is the lockout. This is a civil complaint, not a criminal charge. The test still applies to the alleged taking." ;
+	traj:assessesTrajectory pb:trajectory ;
+	traj:goalRealizingTransition pb:e2 ;
+	traj:hasBenefitAnatomy pb:anat-lock ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest true ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset pb:interval ;
+	prov:wasGeneratedBy pb:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# Civil forfeiture complaint. The in-rem amount is stated.
+# No cryptocurrency address is recorded.
+#################################################################
+
+pb:complaint a uco-observable:File ;
+	uco-core:name "Complaint for forfeiture, E.D. Mich. 2:25-cv-13121" ;
+	uco-core:description "Filed 2025-10-03. CourtListener 454395974. This is a civil forfeiture complaint, not a criminal indictment." ;
+	uco-core:hasFacet pb:facet-complaint ;
+	prov:wasDerivedFrom pb:doc .
+pb:facet-complaint a uco-observable:FileFacet ;
+	uco-core:description "The pleading. No address from the defendant-in-rem paragraph is copied." .
+pb:property a uco-observable:ObservableObject ;
+	uco-core:name "266,907 USDT named as defendant in rem" ;
+	uco-core:hasFacet pb:facet-holding ;
+	uco-core:description "The complaint's opening paragraph names 266,907 Tether (USDT). The address is not recorded." ;
+	uco-core:tag "charging-allegation" .
+pb:facet-holding a cryptoinv:VirtualAssetHoldingFacet ;
+	cryptoinv:assetSymbol "USDT" ;
+	cryptoinv:assetQuantity "266907"^^xsd:decimal ;
+	uco-core:description "Quantity as stated for the in-rem property. Not a victim-by-victim ledger." .
+pb:org-tether a uco-identity:Organization ;
+	uco-core:name "Tether Limited" ;
+	uco-core:description "The complaint's background says Tether (USDT) is issued by Tether Limited. That is a description of the token, not an allegation that Tether Limited participated in the scheme." ;
+	uco-core:tag "charging-allegation" .
+pb:facet-msg a uco-observable:MessageFacet ;
+	uco-observable:messageType "unsolicited message" ;
+	uco-observable:messageText "The complaint states a typical sequence that opens with an unsolicited message. No message body is copied." .
+pb:inst-message uco-core:hasFacet pb:facet-msg ; uco-core:tag "charging-allegation" .
+pb:act-msg uco-action:instrument pb:inst-message .
+pb:act-app uco-action:instrument pb:inst-app ; uco-action:object pb:property .
+pb:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. cryptocurrency, E.D. Mich. 2:25-cv-13121" ;
+	legalproc:caseIdentifier "2:25-cv-13121" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Civil forfeiture: message, fake platform, lockout" ;
+	uco-core:object pb:complaint , pb:property , pb:inst-message , pb:inst-app , pb:trajectory .

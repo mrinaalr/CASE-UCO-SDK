@@ -1,0 +1,153 @@
+# Close read — labor-leasing enterprise, partial
+# United States v. Askarkhodjaev et al., W.D. Mo. 4:09-cr-00143
+# First superseding indictment, CourtListener document 6053810, filed 2010-01-07
+# Local: workbench/casenoesis-data/collected/recap/bulk/6053810.pdf
+# Read: background paragraphs on Giant Labor Solutions and the visa-fee recruitment paragraphs.
+# The indictment is 126 pages. Racketeering acts after the background were not phased.
+# Charging allegations. Confidence 55. Coverage partial.
+
+@prefix ak: <http://example.org/kb/method-v0/askarkhodjaev/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+@prefix rico: <http://example.org/ontology/rico/> .
+
+ak:doc a uco-core:UcoObject ;
+	uco-core:name "Superseding indictment, United States v. Askarkhodjaev, W.D. Mo. 4:09-cr-00143" ;
+	uco-core:description "RICO labor-leasing enterprise. Giant Labor Solutions in Kansas City. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). Interval is the span named in the background and visa paragraphs that were read, January 2001 through May 2009, not a claim that every act falls on those endpoints." .
+
+ak:evidence a uco-core:UcoObject ;
+	uco-core:name "Visa recruitment and labor-leasing background" ;
+	uco-core:description "As alleged in the background: fraudulent labor-leasing contracts for hotel, casino, and construction clients. Workforce on J-1, B-1/B-2, F-1, and H-2B visas. Workers brought in and left to overstay, and assigned to sites the enterprise was not authorized to use. Fraudulent H-2B petitions. Recruitment through a travel website, with fees from about $400 to $3,000 depending on visa type. The website address is not repeated." .
+
+ak:alphabet a skos:ConceptScheme ; uco-core:name "Askarkhodjaev alphabet" .
+ak:LeasingContracts a traj:State , skos:Concept ; skos:inScheme ak:alphabet ; skos:prefLabel "LeasingContracts"@en ;
+	uco-core:description "Labor-leasing contracts with hospitality and construction clients." .
+ak:FraudulentVisas a traj:State , skos:Concept ; skos:inScheme ak:alphabet ; skos:prefLabel "FraudulentVisas"@en ;
+	uco-core:description "Petitions and visa categories that do not match the work." .
+ak:FeeRecruitment a traj:State , skos:Concept ; skos:inScheme ak:alphabet ; skos:prefLabel "FeeRecruitment"@en ;
+	uco-core:description "Workers recruited online and charged a fee by visa type." .
+ak:UnauthorizedPlacement a traj:State , skos:Concept ; skos:inScheme ak:alphabet ; skos:prefLabel "UnauthorizedPlacement"@en ;
+	uco-core:description "Workers overstay and are placed at job sites the enterprise was not authorized to staff. Endpoint of the background that was read." .
+
+ak:inst-web a uco-observable:Application ; uco-core:name "Recruitment website" .
+ak:act-fee a uco-action:Action ; uco-core:name "Recruit workers and charge a visa fee" ;
+	uco-action:instrument ak:inst-web ; prov:wasDerivedFrom ak:evidence .
+
+ak:interval a time:ProperInterval ; time:hasBeginning ak:t0 ; time:hasEnd ak:t1 .
+ak:t0 a time:Instant ; time:inXSDDateTimeStamp "2001-01-01T00:00:00Z"^^xsd:dateTimeStamp .
+ak:t1 a time:Instant ; time:inXSDDateTimeStamp "2009-05-27T23:59:00Z"^^xsd:dateTimeStamp .
+ak:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ak:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ak:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ak:c3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+ak:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — leasing contracts" ;
+	traj:assertsState ak:LeasingContracts ; traj:atInterval ak:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ak:evidence ; uco-core:hasFacet ak:c0 .
+ak:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — fraudulent visas" ;
+	traj:assertsState ak:FraudulentVisas ; traj:atInterval ak:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ak:evidence ; uco-core:hasFacet ak:c1 .
+ak:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — fee recruitment" ;
+	traj:assertsState ak:FeeRecruitment ; traj:atInterval ak:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ak:evidence ; uco-core:hasFacet ak:c2 .
+ak:p3 a traj:PhaseAssertion ; uco-core:name "Occupancy 3 — unauthorized placement" ;
+	uco-core:description "Endpoint of the portion read. The rest of the superseding indictment is not in this trajectory. Not a verdict." ;
+	traj:assertsState ak:UnauthorizedPlacement ; traj:atInterval ak:interval ; traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom ak:evidence ; uco-core:hasFacet ak:c3 .
+ak:trajectory a traj:Trajectory ; uco-core:name "Askarkhodjaev visa-labor trajectory (partial)" ;
+	traj:hasPhaseAssertion ak:p0 , ak:p1 , ak:p2 , ak:p3 .
+ak:e0 a traj:Transition ; traj:fromState ak:LeasingContracts ; traj:toState ak:FraudulentVisas ; traj:trigger ak:evidence .
+ak:e1 a traj:Transition ; traj:fromState ak:FraudulentVisas ; traj:toState ak:FeeRecruitment ; traj:trigger ak:evidence ; traj:enactsAction ak:act-fee .
+ak:e2 a traj:Transition ; traj:fromState ak:FeeRecruitment ; traj:toState ak:UnauthorizedPlacement ; traj:trigger ak:evidence .
+
+ak:sep-run a prov:Activity ;
+	uco-core:name "Benefit-at-expense test" ;
+	uco-core:description "Partial read. The fee is stated. The background does not say whether workers kept the value of the later work, so that edge is not the goal." .
+ak:anat-fee a traj:BenefitAnatomy ;
+	uco-core:name "Visa recruitment fee" ;
+	uco-core:description "Workers are recruited and charged a fee of about $400 to $3,000 by visa type, against petitions the indictment calls fraudulent." ;
+	traj:onTransition ak:e1 ;
+	traj:transferredObject "visa recruitment fee" ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:advantageDefect "deception" ;
+	traj:anatomyRule "The fee is the worker's beforehand, they do not keep it, and the value remains. The petitions are alleged to be false. Derives victim_sourced." ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy ak:sep-run .
+ak:sep a traj:ExploitationAssessment ;
+	uco-core:name "Askarkhodjaev benefit-at-expense test" ;
+	uco-core:description "Goal edge is the fee. The placement edge is the terminal occupancy of this partial read, and it is not scored as labor because the paragraphs do not say who kept the wage." ;
+	traj:assessesTrajectory ak:trajectory ;
+	traj:goalRealizingTransition ak:e1 ;
+	traj:hasBenefitAnatomy ak:anat-fee ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest true ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset ak:interval ;
+	prov:wasGeneratedBy ak:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# Background and visa-fee paragraphs of the superseding indictment.
+# No date of birth and no recruitment-site address.
+#################################################################
+
+ak:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Superseding indictment, United States v. Askarkhodjaev" ;
+	legalproc:instrumentType "superseding-indictment" ;
+	uco-core:description "CourtListener 6053810, filed 2010-01-07. This close read is partial." ;
+	prov:wasDerivedFrom ak:doc .
+ak:charge-rico a legalproc:FederalCharge ;
+	uco-core:name "Racketeering conspiracy" ;
+	legalproc:statuteCitation "18 U.S.C. § 1962(d)" ;
+	legalproc:offenseForm "conspiracy" ;
+	legalproc:assertedIn ak:charge-doc .
+ak:person-askar a uco-identity:Person ;
+	uco-core:name "Abrorkhodja Askarkhodjaev" ;
+	uco-core:description "Caption, defendant 1. Also known as Alex. No date of birth is recorded." ;
+	uco-core:tag "charging-allegation" .
+ak:enterprise a rico:RacketeeringEnterprise ;
+	uco-core:name "Giant Labor Solutions, LLC" ;
+	rico:enterpriseType "legal-entity" ;
+	uco-core:description "The background alleges he owned and controlled this labor-leasing company in Kansas City. The charged enterprise is the company named in that background, not a finding that every associate formed a separate association-in-fact." ;
+	uco-core:tag "charging-allegation" .
+ak:loc-kc a uco-location:Location ;
+	uco-core:name "607 Westport Road, Suite 600, Kansas City, Missouri" ;
+	uco-core:description "Address the background gives for Giant Labor Solutions, LLC." ;
+	uco-core:tag "charging-allegation" .
+ak:rel-owns a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "Member_Of" ;
+	uco-core:source ak:person-askar ;
+	uco-core:target ak:enterprise ;
+	uco-core:name "Controlled the labor-leasing company" ;
+	prov:wasDerivedFrom ak:evidence .
+ak:rel-office a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "located-in" ;
+	uco-core:source ak:enterprise ;
+	uco-core:target ak:loc-kc ;
+	prov:wasDerivedFrom ak:evidence .
+ak:act-fee uco-action:performer ak:person-askar ; uco-action:instrument ak:inst-web .
+ak:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Askarkhodjaev, W.D. Mo. 4:09-cr-00143" ;
+	legalproc:caseIdentifier "4:09-cr-00143" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Visa recruitment fee, partial read" ;
+	uco-core:description "The benefit-at-expense goal is the fee. The placement edge is not scored as labor because these paragraphs do not say who kept the wage." ;
+	uco-core:object ak:charge-doc , ak:person-askar , ak:enterprise , ak:inst-web , ak:trajectory .
