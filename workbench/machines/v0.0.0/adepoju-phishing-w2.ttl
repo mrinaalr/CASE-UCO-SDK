@@ -3,7 +3,8 @@
 # Indictment, CourtListener document 442720807, filed 2021-10-07
 # https://www.courtlistener.com/docket/61088260/1/united-states-v-adepoju/
 # Read through paragraph 12. Later paragraphs are not phased.
-# OCR years 2077 and 2078 are read as 2017 and 2018 from the surrounding dates.
+# Unreadable year tokens are not guessed. The interval end is the last
+# day the instrument states.
 # Charging allegations. Confidence 55. Employee counts and one wire amount are
 # in the indictment; account numbers and W-2 contents are not copied.
 
@@ -25,7 +26,7 @@
 
 ap:doc-442720807 a uco-core:UcoObject ;
 	uco-core:name "Indictment, United States v. Adepoju, N.D. Ill. 1:21-cr-00630" ;
-	uco-core:description "CourtListener document_id 442720807. Local copy: workbench/casenoesis-data/collected/recap/fraud/442720807.pdf. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). Scheme window in paragraph 2: no later than February 2017 through at least April 2019." .
+	uco-core:description "CourtListener document_id 442720807. Local copy: workbench/casenoesis-data/collected/recap/fraud/442720807.pdf. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). Paragraph 2 gives no later than in or around February 2017, a month. The last day the instrument states is March 29, 2018. The paragraph 2 closing token is not a readable year and is not stored." .
 
 ap:evidence-phish a uco-core:UcoObject ;
 	uco-core:name "Phishing emails for W-2s and a wire" ;
@@ -36,8 +37,12 @@ ap:evidence-romance a uco-core:UcoObject ;
 	uco-core:description "Paragraphs 11–12, as read. Defendants contacted people through dating websites and social media, used other people's names and photographs, and after a false relationship asked them to open bank accounts to receive deposits or to send money. Paragraph 12 is only partly read. One person who received the Company D wire is also named among the romance contacts." .
 
 ap:interval a time:ProperInterval ; time:hasBeginning ap:t0 ; time:hasEnd ap:t1 .
-ap:t0 a time:Instant ; time:inXSDDateTimeStamp "2017-02-01T00:00:00Z"^^xsd:dateTimeStamp .
-ap:t1 a time:Instant ; time:inXSDDateTimeStamp "2019-04-30T23:59:00Z"^^xsd:dateTimeStamp .
+ap:t0 a time:Instant ;
+	time:inXSDDateTimeStamp "2017-02-01T00:00:00Z"^^xsd:dateTimeStamp ;
+	uco-core:description "The instrument says no later than in or around February 2017. That is a month, not a day. This instant is the first moment of that month." .
+ap:t1 a time:Instant ;
+	time:inXSDDateTimeStamp "2018-03-29T23:59:00Z"^^xsd:dateTimeStamp ;
+	uco-core:description "The instrument states on or about March 29, 2018. That is a day. This instant is the end of that day, the last day the instrument states." .
 
 ap:alphabet-phish a skos:ConceptScheme ; uco-core:name "Adepoju phishing alphabet" .
 ap:ExecutiveImpersonation a traj:State , skos:Concept ; skos:inScheme ap:alphabet-phish ; skos:prefLabel "ExecutiveImpersonation"@en ;

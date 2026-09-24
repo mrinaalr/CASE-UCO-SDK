@@ -38,7 +38,9 @@ ma:evidence-recruit a uco-core:UcoObject ;
 	uco-core:description "Overt acts from 10 May 2020: she and persons unknown persuaded other people to loan or invest more than $590,000, framed as securing the portfolio from Customs, paying taxes and fees on a Mexican lottery win, and financing the officer's return. She telephoned one person and offered a fictitious Florida residence as collateral. Electronic transfers of $20,000, $50,000, and later $125,000 are alleged. She mailed funds onward to a Minnesota post office box. A text from her phone number identified the sender as the general and requested more money." .
 
 ma:interval-romance a time:ProperInterval ; time:hasBeginning ma:t-early ; time:hasEnd ma:t-warn .
-ma:t-early a time:Instant ; time:inXSDDateTimeStamp "2020-02-01T00:00:00Z"^^xsd:dateTimeStamp .
+ma:t-early a time:Instant ;
+	time:inXSDDateTimeStamp "2020-02-08T00:00:00Z"^^xsd:dateTimeStamp ;
+	uco-core:description "The earliest day the instrument states is on or about February 8, 2020. A separate act is alleged only as a date prior to February 28, 2020. That day is not stated, so it is not stored." .
 ma:t-warn a time:Instant ; time:inXSDDateTimeStamp "2020-05-07T23:59:00Z"^^xsd:dateTimeStamp .
 ma:interval-recruit a time:ProperInterval ; time:hasBeginning ma:t-recruit ; time:hasEnd ma:t-end .
 ma:t-recruit a time:Instant ; time:inXSDDateTimeStamp "2020-05-10T00:00:00Z"^^xsd:dateTimeStamp .
@@ -103,8 +105,9 @@ ma:q1 a traj:PhaseAssertion ; uco-core:name "Recruit occupancy 1" ;
 	traj:assertsState ma:InboundTransfer ; traj:atInterval ma:interval-recruit ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
 	prov:wasDerivedFrom ma:evidence-recruit ; uco-core:hasFacet ma:c4 .
 ma:q2 a traj:PhaseAssertion ; uco-core:name "Recruit occupancy 2" ;
-	uco-core:description "Onward mailing. Not terminal." ;
+	uco-core:description "Onward mailing of funds the overt acts say she had already received. Charging-theory endpoint of the recruiter path. Not a verdict." ;
 	traj:assertsState ma:OnwardMail ; traj:atInterval ma:interval-recruit ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
 	prov:wasDerivedFrom ma:evidence-recruit ; uco-core:hasFacet ma:c5 .
 ma:traj-recruit a traj:Trajectory ; uco-core:name "Matson recruiting later funders" ;
 	traj:hasPhaseAssertion ma:q0 , ma:q1 , ma:q2 .
@@ -180,12 +183,12 @@ ma:sep-romance a traj:ExploitationAssessment ;
 
 ma:anat-inbound a traj:BenefitAnatomy ;
 	uco-core:name "Electronic transfers from later funders" ;
-	uco-core:description "Indictment: later people send electronic transfers under the same story, and those funds are mailed onward. This trajectory was left without a terminal occupancy." ;
+	uco-core:description "Indictment overt acts: later people send electronic transfers under the same story, and those funds are mailed onward. The transfers are alleged as completed." ;
 	traj:onTransition ma:e2 ;
 	traj:transferredObject "electronic transfers from later funders" ;
 	traj:preexisting true ;
 	traj:valueSurvivesVictim true ;
-	traj:anatomyRule "The transfers are the funders' preexisting money and keep their value on receipt. The edge derives victim_sourced. The trajectory-level test is still withheld because the close read marked no terminal occupancy." ;
+	traj:anatomyRule "The transfers are the funders' preexisting money and keep their value on receipt. The edge derives victim_sourced. Overt acts k, m, and p allege the transfers were completed." ;
 	traj:suppliedByPerson true ;
 	traj:personRetainsValue false ;
 	traj:requiresPresence false ;
@@ -195,12 +198,14 @@ ma:anat-inbound a traj:BenefitAnatomy ;
 
 ma:sep-recruit a traj:ExploitationAssessment ;
 	uco-core:name "Matson recruiter extraction test" ;
-	uco-core:description "No terminal occupancy on the recruiter trajectory. The extraction test is withheld. The inbound-transfer edge still derives victim_sourced." ;
+	uco-core:description "v0.0.1. Overt acts k, m, and p allege completed electronic transfers, and overt act n alleges those funds were mailed onward. The goal edge is the inbound transfer. Further requests in September 2020 are not asserted as paid." ;
 	traj:assessesTrajectory ma:traj-recruit ;
+	traj:goalRealizingTransition ma:e2 ;
 	traj:hasBenefitAnatomy ma:anat-inbound ;
-	traj:extractionTestStatus "withheld_partial" ;
-	traj:passesExtractionTest false ;
-	traj:passesExploitationTest false ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest true ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset ma:interval-recruit ;
 	prov:wasGeneratedBy ma:sep-run .
 
 #################################################################
@@ -213,6 +218,15 @@ ma:charge-doc a legalproc:ChargingInstrument ;
 	uco-core:name "Indictment, United States v. Matson" ;
 	legalproc:instrumentType "indictment" ;
 	uco-core:description "Filed 2021-11-24. CourtListener 186541465. Redacted public copy." ;
+	prov:wasDerivedFrom ma:doc-186541465 .
+ma:charge-count1 a legalproc:FederalCharge ;
+	uco-core:name "Count 1, conspiracy" ;
+	uco-core:description "Count 1 closes in violation of Title 18, United States Code, Section 1349. The same count cites Section 1341 for the mail. No account number is recorded." ;
+	legalproc:statuteCitation "18 U.S.C. § 1349" ;
+	legalproc:countNumber "1"^^xsd:nonNegativeInteger ;
+	legalproc:countLabel "Count 1" ;
+	legalproc:offenseForm "conspiracy" ;
+	legalproc:assertedIn ma:charge-doc ;
 	prov:wasDerivedFrom ma:doc-186541465 .
 ma:person-matson a uco-identity:Person ;
 	uco-core:name "Linda Matson" ;
@@ -234,13 +248,13 @@ ma:facet-phone a uco-observable:PhoneAccountFacet ;
 	uco-core:description "Telephone and text. No number is recorded." .
 ma:inst-phone uco-core:hasFacet ma:facet-phone ; uco-core:tag "charging-allegation" .
 ma:facet-wire a uco-observable:AccountFacet ;
-	uco-core:description "Electronic transfers alleged in June 2020, including $20,000 and $50,000. No account number and no sender name are recorded." .
+	uco-core:description "Electronic transfers alleged on 2020-06-15 ($20,000), 2020-06-23 ($50,000), and 2020-08-03 ($125,000). No account number and no sender name are recorded." .
 ma:inst-wire uco-core:hasFacet ma:facet-wire ; uco-core:tag "charging-allegation" .
 ma:act-mail uco-action:performer ma:person-matson ; uco-action:instrument ma:inst-mail ; uco-action:location ma:loc-stlouis .
 ma:act-recruit uco-action:performer ma:person-matson ; uco-action:instrument ma:inst-phone ; uco-action:location ma:loc-dayton .
 ma:funds-inbound a uco-observable:ObservableObject ;
 	uco-core:name "Inbound electronic transfers" ;
-	uco-core:description "Overt acts allege about $20,000 around 15 June 2020 and about $50,000 around 23 June 2020. No account number and no sender name are recorded." ;
+	uco-core:description "Overt acts allege $20,000 on 2020-06-15, $50,000 on 2020-06-23, and $125,000 on 2020-08-03. No account number and no sender name are recorded. Requests on 2020-09-14 and 2020-09-25 are not alleged as paid." ;
 	uco-core:tag "charging-allegation" .
 ma:act-transfer uco-action:performer ma:person-matson ;
 	uco-action:object ma:funds-inbound ;
@@ -251,3 +265,43 @@ ma:investigation a case-investigation:Investigation ;
 	case-investigation:investigationForm "case" ;
 	case-investigation:focus "Romance mail, a postal warning, then later funders" ;
 	uco-core:object ma:charge-doc , ma:person-matson , ma:inst-mail , ma:inst-phone , ma:inst-wire , ma:traj-romance , ma:traj-recruit .
+
+#################################################################
+# v0.0.1 dated overt acts. No funder initials and no box number.
+#################################################################
+
+ma:loc-minnesota a uco-location:Location ;
+	uco-core:name "Brooklyn Park, Minnesota" ;
+	uco-core:description "Overt act n alleges a 2020-06-25 mailing from Dayton, Ohio to a post office box in Brooklyn Park. No box number is recorded. Earlier mail in the romance layer is alleged toward St. Louis." .
+
+ma:act-transfer uco-action:subaction ma:exec-xfer-0615 , ma:exec-xfer-0623 , ma:exec-xfer-0803 .
+ma:exec-xfer-0615 a uco-action:Action ;
+	uco-core:name "Inbound transfer, 2020-06-15" ;
+	uco-core:description "Overt act k. $20,000 electronic transfer into her account after a request." ;
+	uco-action:startTime "2020-06-15T00:00:00Z"^^xsd:dateTime ;
+	uco-action:object ma:funds-inbound ;
+	uco-action:result ma:inst-wire ;
+	prov:wasDerivedFrom ma:evidence-recruit .
+ma:exec-xfer-0623 a uco-action:Action ;
+	uco-core:name "Inbound transfer, 2020-06-23" ;
+	uco-core:description "Overt act m. $50,000 electronic transfer. The request the day before used the fictitious officer persona." ;
+	uco-action:startTime "2020-06-23T00:00:00Z"^^xsd:dateTime ;
+	uco-action:object ma:funds-inbound ;
+	uco-action:result ma:inst-wire ;
+	prov:wasDerivedFrom ma:evidence-recruit .
+ma:exec-xfer-0803 a uco-action:Action ;
+	uco-core:name "Inbound transfer, 2020-08-03" ;
+	uco-core:description "Overt act p. $125,000 electronic transfer from a financial account in Florida to her account in Ohio." ;
+	uco-action:startTime "2020-08-03T00:00:00Z"^^xsd:dateTime ;
+	uco-action:object ma:funds-inbound ;
+	uco-action:result ma:inst-wire ;
+	prov:wasDerivedFrom ma:evidence-recruit .
+ma:exec-mail-0625 a uco-action:Action ;
+	uco-core:name "Onward mailing, 2020-06-25" ;
+	uco-core:description "Overt act n. She mailed funds obtained from the later funders from Dayton, Ohio to a post office box in Brooklyn Park, Minnesota." ;
+	uco-action:startTime "2020-06-25T00:00:00Z"^^xsd:dateTime ;
+	uco-action:performer ma:person-matson ;
+	uco-action:instrument ma:inst-mail ;
+	uco-action:location ma:loc-dayton , ma:loc-minnesota ;
+	prov:wasDerivedFrom ma:evidence-recruit .
+ma:act-mail uco-action:subaction ma:exec-mail-0625 .

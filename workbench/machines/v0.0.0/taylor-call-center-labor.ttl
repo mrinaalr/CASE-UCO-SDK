@@ -37,8 +37,12 @@ ty:UnpaidLabor a traj:State , skos:Concept ; skos:inScheme ty:alphabet ; skos:pr
 	uco-core:description "Call-center workers and attendants commonly unpaid. Endpoint of the labor paragraphs represented here." .
 
 ty:interval a time:ProperInterval ; time:hasBeginning ty:t0 ; time:hasEnd ty:t1 .
-ty:t0 a time:Instant ; time:inXSDDateTimeStamp "2018-01-01T00:00:00Z"^^xsd:dateTimeStamp .
-ty:t1 a time:Instant ; time:inXSDDateTimeStamp "2025-07-31T23:59:00Z"^^xsd:dateTimeStamp .
+ty:t0 a time:Instant ;
+	time:inXSDDateTimeStamp "2018-01-01T00:00:00Z"^^xsd:dateTimeStamp ;
+	uco-core:description "This timestamp is a bound. Paragraph 44 says the window begins no later than 2018. The instrument did not give this calendar day." .
+ty:t1 a time:Instant ;
+	time:inXSDDateTimeStamp "2025-07-31T23:59:00Z"^^xsd:dateTimeStamp ;
+	uco-core:description "This timestamp is a bound. Paragraph 44 says the window continues through at least July 2025. The instrument did not give this calendar day." .
 ty:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
 ty:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
 ty:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .

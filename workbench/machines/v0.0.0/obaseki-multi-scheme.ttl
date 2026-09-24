@@ -54,7 +54,7 @@ ob:evidence-romance
 ob:evidence-bec
 	a uco-core:UcoObject ;
 	uco-core:name "BEC logistics and one blocked transfer" ;
-	uco-core:description "As alleged: an April 2019 in-person meeting in the Eastern District of Texas about BEC logistics; a transfer of about $301,000 from a victim company was blocked by the financial institution. Victim initials in the indictment are not repeated here." .
+	uco-core:description "As alleged: in or around September 2019, a transfer of about $301,000 from a victim company was blocked by the financial institution. September 2019 is a month, not a day. The manner alleges in-person meetings and does not date them. Victim initials in the indictment are not repeated here." .
 
 ob:evidence-ui
 	a uco-core:UcoObject ;
@@ -77,10 +77,14 @@ ob:instant-start a time:Instant ; time:inXSDDateTimeStamp "2017-01-01T00:00:00Z"
 ob:instant-end a time:Instant ; time:inXSDDateTimeStamp "2022-11-10T23:59:00Z"^^xsd:dateTimeStamp .
 
 ob:interval-bec-2019 a time:ProperInterval ;
-	time:hasBeginning ob:instant-2019-04 ;
-	time:hasEnd ob:instant-2019-04-end .
-ob:instant-2019-04 a time:Instant ; time:inXSDDateTimeStamp "2019-04-01T00:00:00Z"^^xsd:dateTimeStamp .
-ob:instant-2019-04-end a time:Instant ; time:inXSDDateTimeStamp "2019-04-30T23:59:00Z"^^xsd:dateTimeStamp .
+	time:hasBeginning ob:instant-2019-09 ;
+	time:hasEnd ob:instant-2019-09-end .
+ob:instant-2019-09 a time:Instant ;
+	time:inXSDDateTimeStamp "2019-09-01T00:00:00Z"^^xsd:dateTimeStamp ;
+	uco-core:description "The instrument says in or around September 2019 for the blocked transfer. That is a month, not a day. This instant is the first moment of that month." .
+ob:instant-2019-09-end a time:Instant ;
+	time:inXSDDateTimeStamp "2019-09-30T23:59:00Z"^^xsd:dateTimeStamp ;
+	uco-core:description "The instrument says in or around September 2019 for the blocked transfer. That is a month, not a day. This instant is the last moment of that month." .
 
 ob:confidence-romance-0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
 ob:confidence-romance-1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
@@ -107,7 +111,7 @@ ob:alphabet-bec a skos:ConceptScheme ;
 	uco-core:name "Obaseki BEC alphabet (one thread)" .
 ob:BecPlanning a traj:State , skos:Concept ;
 	skos:inScheme ob:alphabet-bec ; skos:prefLabel "BecPlanning"@en ;
-	uco-core:description "In-person logistics meeting, April 2019, Eastern District of Texas." .
+	uco-core:description "Manner alleges in-person meetings and does not date them. The dated allegation for this layer is in or around September 2019." .
 ob:BecTransferAttempt a traj:State , skos:Concept ;
 	skos:inScheme ob:alphabet-bec ; skos:prefLabel "BecTransferAttempt"@en ;
 	uco-core:description "Attempted diversion of about $301,000 from a victim company." .
@@ -210,7 +214,7 @@ ob:t-romance a traj:Transition ;
 
 ob:phase-bec-0 a traj:PhaseAssertion ;
 	uco-core:name "BEC occupancy 0 — planning" ;
-	uco-core:description "Charging allegation. April 2019 in-person logistics meeting in the Eastern District of Texas." ;
+	uco-core:description "Charging allegation. In or around September 2019, a month the instrument states, not a day. In-person meetings are alleged without a date." ;
 	traj:assertsState ob:BecPlanning ;
 	traj:atInterval ob:interval-bec-2019 ;
 	traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;

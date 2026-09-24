@@ -40,6 +40,8 @@ hu:inst-portal a uco-observable:Application ; uco-core:name "Lender internet por
 	uco-core:description "The program interface is the instrument. There is no call script and no impersonation of a relative or executive." .
 hu:inst-schedule a uco-observable:File ; uco-core:name "IRS Schedule C attached to the application" .
 hu:act-submit a uco-action:Action ; uco-core:name "Submit the application through the portal" ;
+	uco-core:description "Counts in the indictment place both the false application and the portal submission on 2021-04-30. A plea agreement numbered 1:25-cr-46 in the Eastern District of Virginia is a different case and is not this submission." ;
+	uco-action:startTime "2021-04-30T00:00:00Z"^^xsd:dateTime ;
 	uco-action:instrument hu:inst-portal , hu:inst-schedule ; prov:wasDerivedFrom hu:evidence .
 
 hu:interval a time:ProperInterval ; time:hasBeginning hu:t0 ; time:hasEnd hu:t1 .

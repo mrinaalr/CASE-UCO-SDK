@@ -153,3 +153,25 @@ px:investigation a case-investigation:Investigation ;
 	case-investigation:investigationForm "case" ;
 	case-investigation:focus "Promoter network, false bitcoin-trading pitch, portal" ;
 	uco-core:object px:charge-doc , px:person-palafox , px:org-pgi , px:inst-portal , px:trajectory .
+
+#################################################################
+# v0.0.1. Count 14 dates one concealment wire. Account numbers
+# and the account holder's relationship are not recorded.
+# This does not move the investor-payment onset.
+#################################################################
+
+px:evidence-count14 a uco-core:UcoObject ;
+	uco-core:name "Count 14, concealment wire" ;
+	uco-core:description "Paragraph 32. On or about 2021-09-24, a $200,000 wire from a U.S. bank account to a Philippine bank account, charged under 18 U.S.C. § 1956(a)(1)(B)(i) as concealment of wire-fraud proceeds. The account ending and the family relationship stated in the indictment are not recorded." .
+px:act-conceal a uco-action:Action ;
+	uco-core:name "Concealment wire, 2021-09-24" ;
+	uco-core:description "Charged financial transaction inside the December 2019–October 2021 window. Not a new pathway state." ;
+	uco-action:startTime "2021-09-24T00:00:00Z"^^xsd:dateTime ;
+	uco-action:performer px:person-palafox ;
+	prov:wasDerivedFrom px:evidence-count14 .
+px:charge-1956 a legalproc:FederalCharge ;
+	uco-core:name "Count 14, concealment" ;
+	legalproc:statuteCitation "18 U.S.C. § 1956(a)(1)(B)(i)" ;
+	legalproc:countLabel "Count 14" ;
+	legalproc:assertedIn px:charge-doc ;
+	prov:wasDerivedFrom px:evidence-count14 .

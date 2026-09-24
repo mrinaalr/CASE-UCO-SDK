@@ -44,6 +44,8 @@ od:RapidConversion a traj:State , skos:Concept ; skos:inScheme od:alphabet ; sko
 od:inst-registry a uco-core:UcoObject ; uco-core:name "State company registry" .
 od:inst-bank a uco-observable:Account ; uco-core:name "Bank account and wire" .
 od:act-register a uco-action:Action ; uco-core:name "Register a sham company" ;
+	uco-core:description "An overt act dates one registration by Ahamefule Aso Odus to 2016-10-07, before the February 2017 conspiracy paragraph. A later registration by a conspirator is dated 2017-07-20. No company registration number is recorded." ;
+	uco-action:startTime "2016-10-07T00:00:00Z"^^xsd:dateTime ;
 	uco-action:instrument od:inst-registry ; prov:wasDerivedFrom od:evidence .
 od:act-open a uco-action:Action ; uco-core:name "Open a sham-company account" ;
 	uco-action:instrument od:inst-bank ; prov:wasDerivedFrom od:evidence .
@@ -183,3 +185,40 @@ od:investigation a case-investigation:Investigation ;
 	case-investigation:investigationForm "case" ;
 	case-investigation:focus "Sham-company account, then conversion of a business-email-compromise wire" ;
 	uco-core:object od:charge-doc , od:person-ahamefule , od:person-uchechi , od:sham , od:inst-bank , od:org-suntrust .
+
+#################################################################
+# v0.0.1. Dated receipt-and-conversion episodes from the overt
+# acts. Dollar amounts, account numbers, and payee names stay out.
+#################################################################
+
+od:act-convert uco-action:subaction od:exec-2018-01 , od:exec-2018-03 , od:exec-2018-04 , od:exec-2018-07 , od:exec-2018-08 .
+od:exec-2018-01 a uco-action:Action ;
+	uco-core:name "Receipt and conversion, 2018-01-17 to 2018-01-19" ;
+	uco-core:description "A business-email compromise on 2018-01-17, a wire the next day, and a withdrawal on 2018-01-19. Amounts and account numbers are not recorded." ;
+	uco-action:startTime "2018-01-17T00:00:00Z"^^xsd:dateTime ;
+	uco-action:endTime "2018-01-19T23:59:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom od:evidence .
+od:exec-2018-03 a uco-action:Action ;
+	uco-core:name "Receipt and conversion, 2018-03-15 to 2018-03-16" ;
+	uco-core:description "A business-email compromise on 2018-03-15 and a withdrawal the next day. Amounts are not recorded." ;
+	uco-action:startTime "2018-03-15T00:00:00Z"^^xsd:dateTime ;
+	uco-action:endTime "2018-03-16T23:59:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom od:evidence .
+od:exec-2018-04 a uco-action:Action ;
+	uco-core:name "Receipt, 2018-04-23" ;
+	uco-core:description "The April 2018 SunTrust example. The same day as the compromise and the charged wire. Amounts and the payee name are not recorded." ;
+	uco-action:startTime "2018-04-23T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument od:inst-bank ;
+	prov:wasDerivedFrom od:evidence .
+od:exec-2018-07 a uco-action:Action ;
+	uco-core:name "Receipt and conversion, 2018-07-26 to 2018-07-27" ;
+	uco-core:description "A business-email compromise on 2018-07-26 and charged acts in the Northern District of Georgia on 2018-07-27. Amounts are not recorded." ;
+	uco-action:startTime "2018-07-26T00:00:00Z"^^xsd:dateTime ;
+	uco-action:endTime "2018-07-27T23:59:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom od:evidence .
+od:exec-2018-08 a uco-action:Action ;
+	uco-core:name "Receipt and conversion, 2018-08-02 to 2018-08-03" ;
+	uco-core:description "A business-email compromise on 2018-08-02 and a charged act the next day. Amounts are not recorded." ;
+	uco-action:startTime "2018-08-02T00:00:00Z"^^xsd:dateTime ;
+	uco-action:endTime "2018-08-03T23:59:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom od:evidence .

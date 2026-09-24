@@ -271,11 +271,27 @@ al:charge-1349 a legalproc:FederalCharge ;
 
 al:charge-1341 a legalproc:FederalCharge ;
 	uco-core:name "Mail fraud counts" ;
-	uco-core:description "The indictment labels mail fraud as Counts 2–6 under 18 U.S.C. § 1341. No count in that range is copied as a separate object." ;
+	uco-core:description "Counts 2–6, 18 U.S.C. § 1341. The dated FedEx executions are subactions of the package shipment. No consumer initial is recorded." ;
 	legalproc:statuteCitation "18 U.S.C. § 1341" ;
 	legalproc:countLabel "Counts 2-6" ;
 	legalproc:assertedIn al:charge-doc ;
-	prov:wasDerivedFrom al:evidence-manner .
+	prov:wasDerivedFrom al:evidence-counts .
+
+al:charge-1343 a legalproc:FederalCharge ;
+	uco-core:name "Wire fraud counts" ;
+	uco-core:description "Counts 7–12, 18 U.S.C. § 1343. Each is a telephone call from Peru. No consumer initial is recorded." ;
+	legalproc:statuteCitation "18 U.S.C. § 1343" ;
+	legalproc:countLabel "Counts 7-12" ;
+	legalproc:assertedIn al:charge-doc ;
+	prov:wasDerivedFrom al:evidence-counts .
+
+al:charge-1951 a legalproc:FederalCharge ;
+	uco-core:name "Extortion counts" ;
+	uco-core:description "Counts 13–18, 18 U.S.C. § 1951(a). Payments and one call, each alleged to rest in part on a threat of arrest, deportation, or other immigration consequences. No consumer initial is recorded." ;
+	legalproc:statuteCitation "18 U.S.C. § 1951(a)" ;
+	legalproc:countLabel "Counts 13-18" ;
+	legalproc:assertedIn al:charge-doc ;
+	prov:wasDerivedFrom al:evidence-counts .
 
 al:person-alcedo a uco-identity:Person ;
 	uco-core:name "Carla Magaly Alcedo Mendoza" ;
@@ -289,6 +305,10 @@ al:org-call-center a uco-identity:Organization ;
 	uco-core:tag "charging-allegation" ;
 	prov:wasDerivedFrom al:evidence-manner .
 
+al:loc-peru a uco-location:Location ;
+	uco-core:name "Peru" ;
+	uco-core:description "Counts 7–12 and 17 place the caller in Peru. The call center itself is in Lima. The count table does not repeat the city." ;
+	uco-core:tag "charging-allegation" .
 al:loc-lima a uco-location:Location ;
 	uco-core:name "Lima, Peru" ;
 	uco-core:description "Paragraph 1 places the call center in Lima, Peru." ;
@@ -382,4 +402,96 @@ al:investigation a case-investigation:Investigation ;
 	case-investigation:investigationForm "case" ;
 	case-investigation:focus "Telephone English-course pathway" ;
 	uco-core:object al:charge-doc , al:person-alcedo , al:org-call-center , al:inst-telephone , al:inst-script , al:inst-fedex , al:inst-card , al:package , al:trajectory-scheme ;
-	uco-core:description "Close read of the manner and means. Occupancies remain charging allegations." .
+	uco-core:description "Close read of the manner and means. Occupancies remain charging allegations. v0.0.1 adds the dated count executions." .
+
+#################################################################
+# v0.0.1 dated executions from the count tables (pages 7–10).
+# Month precision. No consumer initials. Onset stays the
+# conspiracy window: these dates are executions of states the
+# pathway already has, not a new goal edge.
+#################################################################
+
+al:evidence-counts a uco-core:UcoObject ;
+	uco-core:name "Count tables, mail, wire, and extortion" ;
+	uco-core:description "Indictment counts 2–18. Approximate months only. Consumer initials in the table are not copied." .
+
+al:act-ship-package uco-action:subaction al:exec-mail-2016-12 , al:exec-mail-2017-02 , al:exec-mail-2017-06 .
+al:exec-mail-2016-12 a uco-action:Action ;
+	uco-core:name "FedEx packages, approximately December 2016" ;
+	uco-core:description "Counts 2–4. Three packages via FedEx to people in the Southern District of Florida." ;
+	uco-action:actionCount "3"^^xsd:nonNegativeInteger ;
+	uco-action:startTime "2016-12-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument al:inst-fedex ;
+	uco-action:performer al:person-alcedo ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-mail-2017-02 a uco-action:Action ;
+	uco-core:name "FedEx package, approximately February 2017" ;
+	uco-core:description "Count 5. Package via FedEx to a person in the Southern District of Florida." ;
+	uco-action:startTime "2017-02-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument al:inst-fedex ;
+	uco-action:performer al:person-alcedo ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-mail-2017-06 a uco-action:Action ;
+	uco-core:name "FedEx package, approximately June 2017" ;
+	uco-core:description "Count 6. Package via FedEx to a person in the Southern District of Florida." ;
+	uco-action:startTime "2017-06-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument al:inst-fedex ;
+	uco-action:performer al:person-alcedo ;
+	prov:wasDerivedFrom al:evidence-counts .
+
+al:act-selection-call uco-action:subaction al:exec-call-2016-11 , al:exec-call-2016-12 , al:exec-call-2017-02 , al:exec-call-2017-06 .
+al:exec-call-2016-11 a uco-action:Action ;
+	uco-core:name "Call from Peru, approximately November 2016" ;
+	uco-core:description "Count 7. Telephone call between a caller in Peru and a person in the Southern District of Florida." ;
+	uco-action:startTime "2016-11-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location al:loc-peru ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-call-2016-12 a uco-action:Action ;
+	uco-core:name "Calls from Peru, approximately December 2016" ;
+	uco-core:description "Counts 8–10. Three telephone calls from Peru to people in the Southern District of Florida." ;
+	uco-action:actionCount "3"^^xsd:nonNegativeInteger ;
+	uco-action:startTime "2016-12-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location al:loc-peru ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-call-2017-02 a uco-action:Action ;
+	uco-core:name "Call from Peru, approximately February 2017" ;
+	uco-core:description "Count 11. Telephone call from Peru to a person in the Southern District of Florida." ;
+	uco-action:startTime "2017-02-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location al:loc-peru ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-call-2017-06 a uco-action:Action ;
+	uco-core:name "Call from Peru, approximately June 2017" ;
+	uco-core:description "Count 12. Telephone call from Peru to a person in the Southern District of Florida." ;
+	uco-action:startTime "2017-06-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location al:loc-peru ;
+	prov:wasDerivedFrom al:evidence-counts .
+
+al:act-take-card uco-action:subaction al:exec-pay-2016-11 , al:exec-pay-2016-12 , al:exec-pay-2017-02 , al:exec-pay-2017-06 .
+al:exec-pay-2016-11 a uco-action:Action ;
+	uco-core:name "Payment after arrest and deportation threat, approximately November 2016" ;
+	uco-core:description "Count 13. Payment from a person in the Southern District of Florida, alleged to rest in part on a threat of arrest and deportation." ;
+	uco-action:startTime "2016-11-01T00:00:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-pay-2016-12 a uco-action:Action ;
+	uco-core:name "Payments after arrest or deportation threats, approximately December 2016" ;
+	uco-core:description "Counts 14 and 15. Two payments. One is alleged to rest in part on a threat of deportation, the other on a threat of arrest." ;
+	uco-action:actionCount "2"^^xsd:nonNegativeInteger ;
+	uco-action:startTime "2016-12-01T00:00:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-pay-2017-02 a uco-action:Action ;
+	uco-core:name "Payment after an immigration threat, approximately February 2017" ;
+	uco-core:description "Count 16. Payment alleged to rest in part on a threat of arrest and immigration consequences. Count 17, the same month, is a call from Peru threatening arrest unless payment was made, and is recorded on the threat action." ;
+	uco-action:startTime "2017-02-01T00:00:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-pay-2017-06 a uco-action:Action ;
+	uco-core:name "Payment after an arrest threat, approximately June 2017" ;
+	uco-core:description "Count 18. Payment alleged to rest in part on a threat of arrest." ;
+	uco-action:startTime "2017-06-01T00:00:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:act-impersonate-and-threaten uco-action:subaction al:exec-threat-call-2017-02 .
+al:exec-threat-call-2017-02 a uco-action:Action ;
+	uco-core:name "Arrest threat on a call from Peru, approximately February 2017" ;
+	uco-core:description "Count 17. Telephone call from Peru threatening arrest unless a payment was made. Not itself the payment." ;
+	uco-action:startTime "2017-02-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location al:loc-peru ;
+	prov:wasDerivedFrom al:evidence-counts .

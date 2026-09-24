@@ -2,8 +2,9 @@
 # United States v. Rojas and Gastelo, C.D. Cal. 2:25-cr-00110
 # Indictment filed 2025-02-19, CourtListener document 458211891
 # Local: workbench/casenoesis-data/collected/recap/bulk/458211891.pdf
-# Manner paragraph 5, items a through i. Overt acts name two adult workers.
-# A child mentioned in the indictment is the defendants' child. That fact is not a state.
+# Manner paragraph 5, items a through i, plus overt acts 1–25.
+# A child mentioned in the indictment is the defendants' child. That fact is not a state
+# and is not described here. Worker initials are not recorded.
 # Charging allegations. Confidence 55.
 
 @prefix rj: <http://example.org/kb/method-v0/rojas/> .
@@ -27,7 +28,7 @@ rj:doc a uco-core:UcoObject ;
 
 rj:evidence a uco-core:UcoObject ;
 	uco-core:name "Manner of the Rojas labor conspiracy" ;
-	uco-core:description "As alleged: recruit foreign nationals in Latin America, finance and arrange entry, transport them to a residence in Simi Valley, house them, and require unpaid domestic labor described as rent. Instruct them to lie to immigration authorities. Charge a smuggling fee repaid through outside employment. Obtain fraudulent immigration documents. Place workers at a restaurant where one defendant had an arrangement with the manager. Two overt acts name adult workers from Peru, one in November 2021 and one in April 2022." .
+	uco-core:description "As alleged: recruit foreign nationals in Latin America, finance and arrange entry, transport them to a residence in Simi Valley, house them, and require unpaid domestic labor described as rent. Instruct them to lie to immigration authorities. Charge a smuggling fee repaid through outside employment. Obtain fraudulent immigration documents. Place workers at a restaurant in Simi Valley. Overt acts date four adult workers: two from Peru (November 2021 and April 2022) and two from Venezuela (July 2023 and October 2023). Their initials are not recorded." .
 
 rj:alphabet a skos:ConceptScheme ; uco-core:name "Rojas alphabet" .
 rj:RecruitAndEntry a traj:State , skos:Concept ; skos:inScheme rj:alphabet ; skos:prefLabel "RecruitAndEntry"@en ;
@@ -54,8 +55,11 @@ rj:c3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInte
 rj:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — recruit and entry" ;
 	traj:assertsState rj:RecruitAndEntry ; traj:atInterval rj:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
 	prov:wasDerivedFrom rj:evidence ; uco-core:hasFacet rj:c0 .
+rj:interval-labor a time:ProperInterval ; time:hasBeginning rj:t-labor ; time:hasEnd rj:t1 .
+rj:t-labor a time:Instant ; time:inXSDDateTimeStamp "2021-12-22T00:00:00Z"^^xsd:dateTimeStamp .
 rj:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — housed labor" ;
-	traj:assertsState rj:HouseAndLabor ; traj:atInterval rj:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	uco-core:description "Overt acts 3 and 4 place the first statement of required domestic labor on 2021-12-22, after the November recruitment. Later workers are told the same kind of requirement in July 2023 and on 2023-10-28." ;
+	traj:assertsState rj:HouseAndLabor ; traj:atInterval rj:interval-labor ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
 	prov:wasDerivedFrom rj:evidence ; uco-core:hasFacet rj:c1 .
 rj:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — debt and documents" ;
 	traj:assertsState rj:DebtAndDocuments ; traj:atInterval rj:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
@@ -110,7 +114,7 @@ rj:sep a traj:ExploitationAssessment ;
 	traj:extractionTestStatus "realized_at_expense" ;
 	traj:passesExtractionTest false ;
 	traj:passesExploitationTest true ;
-	traj:exploitationOnset rj:interval ;
+	traj:exploitationOnset rj:interval-labor ;
 	prov:wasGeneratedBy rj:sep-run .
 
 #################################################################
@@ -145,7 +149,7 @@ rj:loc-simi a uco-location:Location ;
 	uco-core:tag "charging-allegation" .
 rj:workers a uco-identity:Identity , uco-victim:Victim ;
 	uco-core:name "Adult workers recruited in Latin America" ;
-	uco-core:description "The manner alleges recruitment of foreign nationals and names two adult workers from Peru only by the timing of overt acts, November 2021 and April 2022. Their names are not recorded." ;
+	uco-core:description "Overt acts describe four adult workers, two from Peru and two from Venezuela. Initials are not recorded. A child mentioned in the indictment is not described." ;
 	uco-core:tag "charging-allegation" .
 rj:rel-house a uco-core:Relationship ;
 	uco-core:isDirectional true ;
@@ -161,3 +165,59 @@ rj:investigation a case-investigation:Investigation ;
 	case-investigation:investigationForm "case" ;
 	case-investigation:focus "Recruit, house, unpaid domestic labor" ;
 	uco-core:object rj:charge-doc , rj:person-rojas , rj:person-gastelo , rj:workers , rj:loc-simi , rj:trajectory .
+
+#################################################################
+# v0.0.1 dated overt acts. No initials. The defendants' child
+# is not described. Crossing details are not copied.
+#################################################################
+
+rj:loc-la a uco-location:Location ;
+	uco-core:name "Los Angeles" ;
+	uco-core:description "Overt acts 9, 10, and 19 place meetings to obtain fraudulent immigration documents in Los Angeles." .
+rj:act-fee a uco-action:Action ;
+	uco-core:name "Demand a smuggling fee" ;
+	uco-core:description "Overt act 8: on 2022-04-12 each of the first two workers was told she owed $10,000. Overt act 25: on 2023-10-28 the later two were told they owed at least $5,000." ;
+	uco-action:startTime "2022-04-12T00:00:00Z"^^xsd:dateTime ;
+	uco-action:performer rj:person-rojas ;
+	prov:wasDerivedFrom rj:evidence .
+rj:act-docs a uco-action:Action ;
+	uco-core:name "Obtain fraudulent immigration documents" ;
+	uco-core:description "April 2022, Los Angeles: fraudulent Social Security and permanent-resident cards, $200 paid for each of the first two workers. September 2023: a fraudulent permanent-resident card, $150. No document number is recorded." ;
+	uco-action:startTime "2022-04-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:performer rj:person-rojas ;
+	uco-action:location rj:loc-la ;
+	prov:wasDerivedFrom rj:evidence .
+rj:act-outside a uco-action:Action ;
+	uco-core:name "Place a worker at a Simi Valley restaurant and cash the pay" ;
+	uco-core:description "May 2022 for the first two workers, and September–October 2023 for a later worker. The indictment names the restaurant and a check-cashing business. The brand is not copied. The pay is alleged as the means of paying the smuggling fee." ;
+	uco-action:startTime "2022-05-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:performer rj:person-rojas ;
+	uco-action:location rj:loc-simi ;
+	prov:wasDerivedFrom rj:evidence .
+rj:act-move uco-action:subaction rj:exec-arrive-2021-12 , rj:exec-arrive-2022-04 , rj:exec-arrive-2023-07 , rj:exec-arrive-2023-10 .
+rj:exec-arrive-2021-12 a uco-action:Action ;
+	uco-core:name "First worker arrives, 2021-12-22" ;
+	uco-core:description "Overt acts 1–4. Recruited in November 2021 from Peru. On 2021-12-22 a ticket paid by Rojas, then transport to the residence, then a requirement of domestic labor described as the household's work. The child is not described." ;
+	uco-action:startTime "2021-12-22T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location rj:loc-simi ;
+	prov:wasDerivedFrom rj:evidence .
+rj:exec-arrive-2022-04 a uco-action:Action ;
+	uco-core:name "Second worker arrives, 2022-04-12" ;
+	uco-core:description "Overt acts 5–8. Recruited in April 2022 from Peru. On 2022-04-12 a ticket paid by Rojas, transport to the residence, and a statement that labor would be required in exchange for rent. The same day each of the two was told she owed $10,000." ;
+	uco-action:startTime "2022-04-12T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location rj:loc-simi ;
+	prov:wasDerivedFrom rj:evidence .
+rj:exec-arrive-2023-07 a uco-action:Action ;
+	uco-core:name "Third worker arrives, July 2023" ;
+	uco-core:description "Overt acts 15–17. A ticket paid by Rojas, then a requirement of domestic labor at the residence. The worker is described as a Venezuelan national. Initials are not recorded." ;
+	uco-action:startTime "2023-07-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location rj:loc-simi ;
+	prov:wasDerivedFrom rj:evidence .
+rj:exec-arrive-2023-10 a uco-action:Action ;
+	uco-core:name "Fourth worker arrives, 2023-10-28" ;
+	uco-core:description "Overt acts 22–25. A ticket paid by Rojas in October 2023. On 2023-10-28 domestic labor was required, and the later pair were told they owed at least $5,000. Initials are not recorded." ;
+	uco-action:startTime "2023-10-28T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location rj:loc-simi ;
+	prov:wasDerivedFrom rj:evidence .
+rj:e1 traj:enactsAction rj:act-fee , rj:act-docs .
+rj:e2 traj:enactsAction rj:act-outside .

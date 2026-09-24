@@ -24,6 +24,8 @@ It does **not** re-model CAC grooming taxonomy, RICO enterprises, kill-chains, o
 | `trajectories-exemplar.ttl` | CAC grooming trajectory + model |
 | `trajectories-elder-fraud-exemplar.ttl` | Non-CAC elder-fraud trajectory (EDLA 2022-cr-00115) |
 | `trajectories-invalid-exemplar.ttl` | Expected-invalid firewall fixture |
+| `trajectories-expense-exemplar.ttl` | Benefit-at-expense pass and fail cases |
+| `trajectories-expense-invalid-exemplar.ttl` | Expected-invalid expense fixture |
 
 ## Design choices
 
@@ -74,7 +76,7 @@ no `traj:enactsAction` remains fully conformant.
 **Multiple** `enactsAction` values are allowed when one directed edge is gated
 by co-occurring techniques (affordance-labeled multi-action edges in an ESM).
 SHACL `sh:maxCount` on `traj:enactsAction` was removed in **v0.3.1** so those
-edges validate; this extension's version is **0.3.1** (`manifest.json`).
+edges validate. The current extension version is **0.5.0** (`manifest.json`).
 
 ### Benefit-at-expense test (v0.5.0)
 
