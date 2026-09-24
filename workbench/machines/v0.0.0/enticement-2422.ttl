@@ -1,0 +1,147 @@
+# v0.5.0 test of the benefit-at-expense predicate.
+# Source: CaseLinker primitive phase graph, NHSR 7768.
+# D.D.C. 1:23-cr-00064, 18 U.S.C. § 2422(b).
+# Personal names are not copied. Phase comments are not copied.
+# The machine's last affordance line says no explicit threat.
+# The CAC class name ExploitationPhase is not an input.
+
+@prefix en: <http://example.org/kb/method-v0/enticement-2422/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+en:evidence a uco-core:UcoObject ;
+	uco-core:name "CaseLinker enticement phase graph" ;
+	uco-core:description "Phase labels and affordance lines from the primitive machine. NHSR 7768. Comments and personal names were not copied." .
+
+en:interval a time:Interval ;
+	uco-core:name "Undated phase order" ;
+	uco-core:description "The primitive machine gives order, not dates. One affordance line says the contact lasted about five weeks. That duration is not used as a timestamp." .
+en:interval-retained a time:Interval ;
+	uco-core:name "Material-retained phase, undated" ;
+	uco-core:description "Distinct phase interval so the onset is the retained-material step. No clock time is in the primitive machine." .
+
+en:Contact a traj:State , skos:Concept ; skos:prefLabel "Platform contact" .
+en:Trust a traj:State , skos:Concept ; skos:prefLabel "Normalization and trust" .
+en:Compliance a traj:State , skos:Concept ; skos:prefLabel "First compliance" .
+en:Solicitation a traj:State , skos:Concept ; skos:prefLabel "Escalating solicitation" .
+en:Retained a traj:State , skos:Concept ; skos:prefLabel "Material retained" .
+en:Meeting a traj:State , skos:Concept ; skos:prefLabel "Meeting" .
+
+en:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+en:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+en:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+en:c3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+en:c4 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+en:c5 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+en:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — contact" ;
+	traj:assertsState en:Contact ; traj:atInterval en:interval ;
+	traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom en:evidence ; uco-core:hasFacet en:c0 .
+en:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — trust" ;
+	traj:assertsState en:Trust ; traj:atInterval en:interval ;
+	traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom en:evidence ; uco-core:hasFacet en:c1 .
+en:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — compliance" ;
+	traj:assertsState en:Compliance ; traj:atInterval en:interval ;
+	traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom en:evidence ; uco-core:hasFacet en:c2 .
+en:p3 a traj:PhaseAssertion ; uco-core:name "Occupancy 3 — solicitation" ;
+	traj:assertsState en:Solicitation ; traj:atInterval en:interval ;
+	traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom en:evidence ; uco-core:hasFacet en:c3 .
+en:p4 a traj:PhaseAssertion ; uco-core:name "Occupancy 4 — material retained" ;
+	traj:assertsState en:Retained ; traj:atInterval en:interval-retained ;
+	traj:sequenceIndex "4"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom en:evidence ; uco-core:hasFacet en:c4 .
+en:p5 a traj:PhaseAssertion ; uco-core:name "Occupancy 5 — meeting" ;
+	traj:assertsState en:Meeting ; traj:atInterval en:interval ;
+	traj:sequenceIndex "5"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom en:evidence ; uco-core:hasFacet en:c5 .
+
+en:trajectory a traj:Trajectory ;
+	uco-core:name "Enticement pathway" ;
+	uco-core:description "Phase order from the primitive machine. The exploitation test ignores the phase class names." ;
+	traj:hasPhaseAssertion en:p0 , en:p1 , en:p2 , en:p3 , en:p4 , en:p5 .
+
+en:act-contact a uco-action:Action ; uco-core:name "Contact on a platform" ;
+	uco-core:description "The affordance line says a pseudonymous account." ;
+	prov:wasDerivedFrom en:evidence .
+en:act-retain a uco-action:Action ; uco-core:name "Retain material outside the minor's control" ;
+	uco-core:description "The affordance line says storage outside the victim's control." ;
+	prov:wasDerivedFrom en:evidence .
+
+en:e0 a traj:Transition ; traj:fromState en:Contact ; traj:toState en:Trust ;
+	traj:trigger en:evidence ; traj:enactsAction en:act-contact .
+en:e1 a traj:Transition ; traj:fromState en:Trust ; traj:toState en:Compliance ;
+	traj:trigger en:evidence .
+en:e2 a traj:Transition ; traj:fromState en:Compliance ; traj:toState en:Solicitation ;
+	traj:trigger en:evidence .
+en:e3 a traj:Transition ; traj:fromState en:Solicitation ; traj:toState en:Retained ;
+	traj:trigger en:evidence ; traj:enactsAction en:act-retain ;
+	uco-core:name "Solicitation to retained material" .
+en:e4 a traj:Transition ; traj:fromState en:Retained ; traj:toState en:Meeting ;
+	traj:trigger en:evidence ;
+	uco-core:description "The affordance line on this edge says no explicit threat." .
+
+en:sep-run a prov:Activity ;
+	uco-core:name "Benefit-at-expense derivation" ;
+	uco-core:description "Derived from phase labels and affordance lines. The class name ExploitationPhase was not read." .
+
+en:anat-contact a traj:BenefitAnatomy ;
+	uco-core:name "Platform contact, nothing retained" ;
+	uco-core:description "First phase. No material is alleged yet." ;
+	traj:onTransition en:e0 ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:preexisting false ;
+	traj:valueSurvivesVictim true ;
+	traj:advantageDefect "not_in_instrument" ;
+	traj:anatomyRule "No object, presence not required, value would survive. Derives none." ;
+	traj:benefitSource "none" ;
+	prov:wasGeneratedBy en:sep-run .
+
+en:anat-retained a traj:BenefitAnatomy ;
+	uco-core:name "Material retained from the minor" ;
+	uco-core:description "Section 2422(b) is the charge citation that the person is a minor. The affordance line says the material is stored outside that person's control, and that this edge does not rest on an explicit threat. The defect is vulnerability. Coercion is not alleged on this edge." ;
+	traj:onTransition en:e3 ;
+	traj:transferredObject "retained material" ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:preexisting false ;
+	traj:valueSurvivesVictim true ;
+	traj:advantageDefect "vulnerability" ;
+	traj:anatomyRule "Object, not preexisting, the minor supplies it and does not keep it. Derives person_used. Vulnerability is read from the charge citation, not from a phase class name." ;
+	traj:benefitSource "person_used" ;
+	uco-core:tag "inference" ;
+	prov:wasGeneratedBy en:sep-run .
+
+en:sep a traj:ExploitationAssessment ;
+	uco-core:name "Enticement becomes exploitation when material is retained" ;
+	uco-core:description "Platform contact derives none. The goal edge is retained material. Deception and coercion are not what the machine alleges on that edge. Vulnerability is. Exploitation is true. The preexisting-object test is false. The later meeting is not the onset." ;
+	traj:assessesTrajectory en:trajectory ;
+	traj:goalRealizingTransition en:e3 ;
+	traj:hasBenefitAnatomy en:anat-contact , en:anat-retained ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset en:interval-retained ;
+	prov:wasGeneratedBy en:sep-run .
+
+en:investigation a case-investigation:Investigation ;
+	uco-core:name "D.D.C. 1:23-cr-00064" ;
+	legalproc:caseIdentifier "1:23-cr-00064" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "18 U.S.C. § 2422(b)" ;
+	uco-core:description "Scored from the CaseLinker phase graph under NHSR 7768. The statement of offense was not re-read for this test." ;
+	uco-core:object en:trajectory , en:evidence .

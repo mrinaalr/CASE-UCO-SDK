@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `extensions/trajectories/` (v0.5.0): the benefit-at-expense test now derives `person_used` (use of a person, or a product made from that use) and accepts `vulnerability` (age, dependency, or incapacity alleged by the instrument) alongside deception and coercion. `exploitationOnset` is the arriving phase interval, and only when the test passes. A minor who is not the source, use with no alleged defect, and benefit from absence still fail. Applied to the sixteen close reads. The use-of-a-minor proof is a synthetic exemplar. No withheld court PDF was read.
 - `extensions/trajectories/`: candidate state-machine/trajectory extension (State, Transition, Trajectory, PhaseAssertion, StateMachineModel/TransitionEstimate) with an observed≠inferred SHACL firewall; validated via the SDK path with `extensions=['trajectories']`, `profiles=['time','prov-o']`.
 - `extensions/trajectories/`: terminal-polarity pair `traj:isTerminal` / `traj:terminalPolarity` (v0.2.0) marking a Trajectory's realized outcome (`completed` / `disrupted`) without requiring a second, opposite-polarity branch.
 - `extensions/trajectories/`: Exploitation State Machine metamodel additions (v0.3.0) — `traj:enactsAction` (Transition → Action, additive alongside `traj:trigger`, carries the abused affordance via `action:instrument`) and `traj:initialState` (StateMachineModel → State, marks s₀).

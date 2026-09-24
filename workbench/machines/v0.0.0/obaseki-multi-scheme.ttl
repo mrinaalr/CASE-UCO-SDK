@@ -1,0 +1,477 @@
+# v0.0.0 machine — concurrent fraud pathways sharing infrastructure
+# United States v. Bukola Obaseki, E.D. Tex. 4:21-cr-253
+# REDACTED first superseding indictment, Document 594, filed 2022-11-10
+# CourtListener document_id 217799634 (docket slug united-states-v-ita)
+# https://www.courtlistener.com/docket/60414623/594/united-states-v-ita/
+#
+# Three pathways the indictment actually distinguishes: romance, business-email
+# compromise, and unemployment-insurance fraud. Investor fraud is named in the
+# overview and is NOT given its own layer — the read portion does not specify
+# its phases. Redacted names are not filled in.
+#
+# "Forced unwilling individuals, including employees at financial institutions,
+# to open accounts" is modeled as coercion of facilitators inside the shared
+# collection factor. It is not a forced-labor (18 U.S.C. 1589) trajectory.
+#
+# Occupancies are CHARGING ALLEGATIONS. Confidence 55 is not a verdict.
+# Completeness of the composition is partial.
+
+@prefix ob: <http://example.org/kb/fraud-v0/obaseki/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix lay: <http://example.org/ontology/layered/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+
+#################################################################
+# Provenance
+#################################################################
+
+ob:doc-217799634
+	a uco-core:UcoObject ;
+	uco-core:name "Redacted first superseding indictment, E.D. Tex. 4:21-cr-253, Document 594" ;
+	uco-core:description "Filed 2022-11-10. CourtListener document_id 217799634, absolute_url https://www.courtlistener.com/docket/60414623/594/united-states-v-ita/ . Local copy: workbench/casenoesis-data/collected/recap/fraud/217799634.pdf . Conspiracy to commit wire fraud, 18 U.S.C. 1343, from about January 2017. Named defendant in the docket description: Bukola Obaseki. Other names are redacted in this public copy and are not reconstructed. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). v0.0.0 uses the overview, manner paragraphs describing the schemes, and the representative communications that support romance targeting of older women, a BEC transfer blocked by a financial institution, and unemployment-insurance deposits." .
+
+ob:evidence-overview
+	a uco-core:UcoObject ;
+	uco-core:name "Overview: romance, BEC, investor fraud, unemployment-insurance fraud" ;
+	uco-core:description "Indictment overview: online romance scams, business email compromise, investor fraud, and unemployment insurance fraud; at least $17 million; internet, mail, and banking wires. Investor fraud is recorded here and is not a layer." .
+
+ob:evidence-romance
+	a uco-core:UcoObject ;
+	uco-core:name "Romance pathway, older women, fabricated relationship" ;
+	uco-core:description "Representative communication, as alleged: conspirators discussed targeting older women through a fabricated romantic relationship in order to get them to send money. Channels alleged in the manner include phone, WhatsApp, in-person, and email. Internal romance phases beyond contact and extraction are not specified and are not invented." .
+
+ob:evidence-bec
+	a uco-core:UcoObject ;
+	uco-core:name "BEC logistics and one blocked transfer" ;
+	uco-core:description "As alleged: an April 2019 in-person meeting in the Eastern District of Texas about BEC logistics; a transfer of about $301,000 from a victim company was blocked by the financial institution. Victim initials in the indictment are not repeated here." .
+
+ob:evidence-ui
+	a uco-core:UcoObject ;
+	uco-core:name "Unemployment-insurance deposit split" ;
+	uco-core:description "As alleged: unemployment-fraud deposits on the order of $20,000 to $30,000 a day, split 50/50. Account holders are not named in this graph." .
+
+ob:evidence-shared
+	a uco-core:UcoObject ;
+	uco-core:name "Shared collection infrastructure" ;
+	uco-core:description "Manner, as alleged: hundreds of accounts, often in a business name or another person's name; VPNs used to mask location; registered domestic and international businesses; transfers toward Africa and Asia; parallel naira transactions. Also alleged: conspirators forced unwilling individuals, including employees at financial institutions, to open accounts. That coercion is a facilitator fact on this node. It is not modeled as a forced-labor trajectory." .
+
+#################################################################
+# Shared interval (conspiracy window through the filing date)
+#################################################################
+
+ob:interval-conspiracy a time:ProperInterval ;
+	time:hasBeginning ob:instant-start ;
+	time:hasEnd ob:instant-end .
+ob:instant-start a time:Instant ; time:inXSDDateTimeStamp "2017-01-01T00:00:00Z"^^xsd:dateTimeStamp .
+ob:instant-end a time:Instant ; time:inXSDDateTimeStamp "2022-11-10T23:59:00Z"^^xsd:dateTimeStamp .
+
+ob:interval-bec-2019 a time:ProperInterval ;
+	time:hasBeginning ob:instant-2019-04 ;
+	time:hasEnd ob:instant-2019-04-end .
+ob:instant-2019-04 a time:Instant ; time:inXSDDateTimeStamp "2019-04-01T00:00:00Z"^^xsd:dateTimeStamp .
+ob:instant-2019-04-end a time:Instant ; time:inXSDDateTimeStamp "2019-04-30T23:59:00Z"^^xsd:dateTimeStamp .
+
+ob:confidence-romance-0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ob:confidence-romance-1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ob:confidence-bec-0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ob:confidence-bec-1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ob:confidence-bec-2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ob:confidence-ui-0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ob:confidence-ui-1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+#################################################################
+# Alphabets — not flattened into one
+#################################################################
+
+ob:alphabet-romance a skos:ConceptScheme ;
+	uco-core:name "Obaseki romance alphabet (partial)" .
+ob:RomanceContact a traj:State , skos:Concept ;
+	skos:inScheme ob:alphabet-romance ; skos:prefLabel "RomanceContact"@en ;
+	uco-core:description "Fabricated romantic contact directed at older women, as alleged. Channel includes WhatsApp among the means the indictment lists." .
+ob:RomanceExtraction a traj:State , skos:Concept ;
+	skos:inScheme ob:alphabet-romance ; skos:prefLabel "RomanceExtraction"@en ;
+	uco-core:description "The communication alleges the purpose of the fabricated relationship is to get the women to send money. No specific transfer is dated in the portion used." .
+
+ob:alphabet-bec a skos:ConceptScheme ;
+	uco-core:name "Obaseki BEC alphabet (one thread)" .
+ob:BecPlanning a traj:State , skos:Concept ;
+	skos:inScheme ob:alphabet-bec ; skos:prefLabel "BecPlanning"@en ;
+	uco-core:description "In-person logistics meeting, April 2019, Eastern District of Texas." .
+ob:BecTransferAttempt a traj:State , skos:Concept ;
+	skos:inScheme ob:alphabet-bec ; skos:prefLabel "BecTransferAttempt"@en ;
+	uco-core:description "Attempted diversion of about $301,000 from a victim company." .
+ob:BecBlocked a traj:State , skos:Concept ;
+	skos:inScheme ob:alphabet-bec ; skos:prefLabel "BecBlocked"@en ;
+	uco-core:description "Financial institution blocked the transfer. Disruption of this thread, not of the whole conspiracy." .
+
+ob:alphabet-ui a skos:ConceptScheme ;
+	uco-core:name "Obaseki unemployment-insurance alphabet (partial)" .
+ob:UiAccountDrop a traj:State , skos:Concept ;
+	skos:inScheme ob:alphabet-ui ; skos:prefLabel "UiAccountDrop"@en ;
+	uco-core:description "Use of accounts to receive unemployment-insurance fraud deposits." .
+ob:UiSplit a traj:State , skos:Concept ;
+	skos:inScheme ob:alphabet-ui ; skos:prefLabel "UiSplit"@en ;
+	uco-core:description "Alleged 50/50 split of deposits described as $20,000 to $30,000 a day." .
+
+#################################################################
+# Instruments and actions
+#################################################################
+
+ob:inst-whatsapp a uco-observable:Application ;
+	uco-core:name "WhatsApp" ;
+	uco-core:description "Named coordination and contact channel in the manner and in representative communications." .
+ob:inst-email a uco-observable:EmailMessage ;
+	uco-core:name "Email" ;
+	uco-core:description "Business email is the instrument of the BEC pathway. The indictment also lists email among general means." .
+ob:inst-bank-wire a uco-core:UcoObject ;
+	uco-core:name "Banking wires" ;
+	uco-core:description "Proceeds move by wire, and also by cash and cashier's checks as alleged in the manner." .
+ob:inst-vpn a uco-observable:Application ;
+	uco-core:name "VPN" ;
+	uco-core:description "Alleged use of VPNs to mask location. A concealment affordance, not a victim-facing phase." .
+ob:inst-mule-account a uco-observable:Account ;
+	uco-core:name "Business or third-party account" ;
+	uco-core:description "Hundreds of accounts, often in a business name or another person's name. Includes the allegation that unwilling people, including financial-institution employees, were forced to open accounts." .
+
+ob:act-romance-contact a uco-action:Action ;
+	uco-core:name "Open fabricated romantic contact" ;
+	uco-action:instrument ob:inst-whatsapp ;
+	prov:wasDerivedFrom ob:evidence-romance .
+ob:act-romance-extract a uco-action:Action ;
+	uco-core:name "Seek money through the fabricated relationship" ;
+	uco-action:instrument ob:inst-bank-wire ;
+	prov:wasDerivedFrom ob:evidence-romance .
+ob:act-bec-plan a uco-action:Action ;
+	uco-core:name "Plan BEC logistics in person" ;
+	uco-action:instrument ob:inst-email ;
+	prov:wasDerivedFrom ob:evidence-bec .
+ob:act-bec-transfer a uco-action:Action ;
+	uco-core:name "Attempt the company payment" ;
+	uco-core:description "The indictment describes an attempted company transfer. The financial institution blocked it, so no funds are modeled as having arrived." ;
+	uco-action:instrument ob:inst-email , ob:inst-bank-wire ;
+	prov:wasDerivedFrom ob:evidence-bec .
+ob:act-ui-drop a uco-action:Action ;
+	uco-core:name "Receive unemployment-insurance deposits" ;
+	uco-action:instrument ob:inst-mule-account ;
+	prov:wasDerivedFrom ob:evidence-ui .
+ob:act-ui-split a uco-action:Action ;
+	uco-core:name "Split unemployment-insurance deposits" ;
+	uco-action:instrument ob:inst-bank-wire ;
+	prov:wasDerivedFrom ob:evidence-ui .
+
+#################################################################
+# Romance trajectory (partial; no terminal — no specific completed or blocked transfer)
+#################################################################
+
+ob:phase-romance-0 a traj:PhaseAssertion ;
+	uco-core:name "Romance occupancy 0 — fabricated contact" ;
+	uco-core:description "Charging allegation. Older women targeted through a fabricated relationship. Interval is the conspiracy window because the communication is not separately dated in the portion used." ;
+	traj:assertsState ob:RomanceContact ;
+	traj:atInterval ob:interval-conspiracy ;
+	traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ob:evidence-romance ;
+	uco-core:hasFacet ob:confidence-romance-0 .
+
+ob:phase-romance-1 a traj:PhaseAssertion ;
+	uco-core:name "Romance occupancy 1 — extraction purpose" ;
+	uco-core:description "Charging allegation of purpose (get the women to send money). Not marked terminal: the portion used does not identify a completed or disrupted romance transfer." ;
+	traj:assertsState ob:RomanceExtraction ;
+	traj:atInterval ob:interval-conspiracy ;
+	traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ob:evidence-romance ;
+	uco-core:hasFacet ob:confidence-romance-1 .
+
+ob:traj-romance a traj:Trajectory ;
+	uco-core:name "Romance pathway (partial)" ;
+	uco-core:description "Two occupancies only. Coverage is partial on purpose." ;
+	traj:hasPhaseAssertion ob:phase-romance-0 , ob:phase-romance-1 .
+
+ob:t-romance a traj:Transition ;
+	traj:fromState ob:RomanceContact ;
+	traj:toState ob:RomanceExtraction ;
+	traj:trigger ob:evidence-romance ;
+	traj:enactsAction ob:act-romance-extract ;
+	uco-core:name "Fabricated contact to extraction purpose" .
+
+#################################################################
+# BEC trajectory (one thread, disrupted)
+#################################################################
+
+ob:phase-bec-0 a traj:PhaseAssertion ;
+	uco-core:name "BEC occupancy 0 — planning" ;
+	uco-core:description "Charging allegation. April 2019 in-person logistics meeting in the Eastern District of Texas." ;
+	traj:assertsState ob:BecPlanning ;
+	traj:atInterval ob:interval-bec-2019 ;
+	traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ob:evidence-bec ;
+	uco-core:hasFacet ob:confidence-bec-0 .
+
+ob:phase-bec-1 a traj:PhaseAssertion ;
+	uco-core:name "BEC occupancy 1 — transfer attempt" ;
+	uco-core:description "Charging allegation. About $301,000 from a victim company." ;
+	traj:assertsState ob:BecTransferAttempt ;
+	traj:atInterval ob:interval-bec-2019 ;
+	traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ob:evidence-bec ;
+	uco-core:hasFacet ob:confidence-bec-1 .
+
+ob:phase-bec-2 a traj:PhaseAssertion ;
+	uco-core:name "BEC occupancy 2 — blocked" ;
+	uco-core:description "Charging allegation. The financial institution blocked the transfer. terminalPolarity disrupted applies to this thread only." ;
+	traj:assertsState ob:BecBlocked ;
+	traj:atInterval ob:interval-bec-2019 ;
+	traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ;
+	traj:terminalPolarity "disrupted" ;
+	prov:wasDerivedFrom ob:evidence-bec ;
+	uco-core:hasFacet ob:confidence-bec-2 .
+
+ob:traj-bec a traj:Trajectory ;
+	uco-core:name "BEC pathway, one blocked thread" ;
+	uco-core:description "A single described BEC thread that the institution stopped. Other BEC activity may exist in unread or redacted portions and is not asserted." ;
+	traj:hasPhaseAssertion ob:phase-bec-0 , ob:phase-bec-1 , ob:phase-bec-2 .
+
+ob:t-bec-plan a traj:Transition ;
+	traj:fromState ob:BecPlanning ;
+	traj:toState ob:BecTransferAttempt ;
+	traj:trigger ob:evidence-bec ;
+	traj:enactsAction ob:act-bec-transfer ;
+	uco-core:name "Planning to transfer attempt" .
+ob:t-bec-block a traj:Transition ;
+	traj:fromState ob:BecTransferAttempt ;
+	traj:toState ob:BecBlocked ;
+	traj:trigger ob:evidence-bec ;
+	traj:guard "Financial institution blocks the transfer" ;
+	uco-core:name "Transfer attempt to institutional block" .
+
+#################################################################
+# Unemployment-insurance trajectory (partial; no terminal)
+#################################################################
+
+ob:phase-ui-0 a traj:PhaseAssertion ;
+	uco-core:name "UI occupancy 0 — account drop" ;
+	uco-core:description "Charging allegation. Accounts used to receive unemployment-insurance fraud deposits." ;
+	traj:assertsState ob:UiAccountDrop ;
+	traj:atInterval ob:interval-conspiracy ;
+	traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ob:evidence-ui ;
+	uco-core:hasFacet ob:confidence-ui-0 .
+
+ob:phase-ui-1 a traj:PhaseAssertion ;
+	uco-core:name "UI occupancy 1 — split" ;
+	uco-core:description "Charging allegation. 50/50 split of deposits described as $20,000 to $30,000 a day. Not marked terminal." ;
+	traj:assertsState ob:UiSplit ;
+	traj:atInterval ob:interval-conspiracy ;
+	traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ob:evidence-ui ;
+	uco-core:hasFacet ob:confidence-ui-1 .
+
+ob:traj-ui a traj:Trajectory ;
+	uco-core:name "Unemployment-insurance pathway (partial)" ;
+	traj:hasPhaseAssertion ob:phase-ui-0 , ob:phase-ui-1 .
+
+ob:t-ui a traj:Transition ;
+	traj:fromState ob:UiAccountDrop ;
+	traj:toState ob:UiSplit ;
+	traj:trigger ob:evidence-ui ;
+	traj:enactsAction ob:act-ui-split ;
+	uco-core:name "Deposit receipt to split" .
+
+#################################################################
+# Composition: three concurrent layers, partial
+#################################################################
+
+ob:layer-romance a lay:Layer ;
+	uco-core:name "Layer 0 — romance" ;
+	lay:occupiesTrajectory ob:traj-romance ;
+	lay:domainAlphabet ob:alphabet-romance ;
+	lay:layerIndex "0"^^xsd:nonNegativeInteger ;
+	lay:coverage "partial" ;
+	lay:concurrencyGroup "obaseki-2017-2022" .
+
+ob:layer-bec a lay:Layer ;
+	uco-core:name "Layer 1 — business email compromise" ;
+	lay:occupiesTrajectory ob:traj-bec ;
+	lay:domainAlphabet ob:alphabet-bec ;
+	lay:layerIndex "1"^^xsd:nonNegativeInteger ;
+	lay:coverage "partial" ;
+	lay:concurrencyGroup "obaseki-2017-2022" .
+
+ob:layer-ui a lay:Layer ;
+	uco-core:name "Layer 2 — unemployment insurance" ;
+	lay:occupiesTrajectory ob:traj-ui ;
+	lay:domainAlphabet ob:alphabet-ui ;
+	lay:layerIndex "2"^^xsd:nonNegativeInteger ;
+	lay:coverage "partial" ;
+	lay:concurrencyGroup "obaseki-2017-2022" .
+
+ob:factor-whatsapp a uco-core:UcoObject ;
+	uco-core:name "Shared factor: WhatsApp coordination" ;
+	uco-core:description "Cross-pathway coordination channel alleged in the manner. Not a phase of any one alphabet." .
+ob:factor-vpn a uco-core:UcoObject ;
+	uco-core:name "Shared factor: VPN location masking" ;
+	uco-core:description "Concealment affordance alleged for the conspiracy, not tied to one pathway's phases." .
+ob:factor-accounts a uco-core:UcoObject ;
+	uco-core:name "Shared factor: mule and business accounts, including coerced openers" ;
+	uco-core:description "Collection infrastructure shared across schemes. Coercion of account openers, including financial-institution employees, stays on this factor. It does not open a forced-labor layer." .
+
+ob:couple-romance-bec a lay:Coupling ;
+	uco-core:name "Romance overlaps BEC in the conspiracy window" ;
+	lay:couplingKind "temporallyOverlaps" ;
+	lay:fromLayer ob:layer-romance ;
+	lay:toLayer ob:layer-bec ;
+	lay:couplingInterval ob:interval-conspiracy ;
+	prov:wasDerivedFrom ob:evidence-overview .
+
+ob:couple-bec-ui a lay:Coupling ;
+	uco-core:name "BEC overlaps unemployment-insurance fraud in the conspiracy window" ;
+	lay:couplingKind "temporallyOverlaps" ;
+	lay:fromLayer ob:layer-bec ;
+	lay:toLayer ob:layer-ui ;
+	lay:couplingInterval ob:interval-conspiracy ;
+	prov:wasDerivedFrom ob:evidence-overview .
+
+ob:couple-romance-ui-accounts a lay:Coupling ;
+	uco-core:name "Romance and unemployment-insurance fraud share account infrastructure" ;
+	lay:couplingKind "sharesFactor" ;
+	lay:fromLayer ob:layer-romance ;
+	lay:toLayer ob:layer-ui ;
+	prov:wasDerivedFrom ob:evidence-shared .
+
+ob:machine a lay:ExploitationStateMachine ;
+	uco-core:name "Obaseki multi-scheme exploitation state machine (v0.0.0)" ;
+	uco-core:description "Concurrent romance, BEC, and unemployment-insurance pathways inside one wire-fraud conspiracy, January 2017 through 2022-11-10. compositionPattern concurrent because the indictment runs the schemes together rather than as a single sequence. completeness partial: investor fraud is named and not phased; redactions are not filled; romance and UI internal scripts are thinner than the BEC thread; coerced account-opening is a shared factor, not a forced-labor machine. The BEC thread is the intervention example: a financial institution blocked a $301,000 transfer." ;
+	lay:hasLayer ob:layer-romance , ob:layer-bec , ob:layer-ui ;
+	lay:hasCoupling ob:couple-romance-bec , ob:couple-bec-ui , ob:couple-romance-ui-accounts ;
+	lay:hasFactor ob:factor-whatsapp , ob:factor-vpn , ob:factor-accounts ;
+	lay:compositionPattern "concurrent" ;
+	lay:completeness "partial" .
+
+#################################################################
+# Inferred SEP extraction test. One assessment per layer.
+# Romance and unemployment-insurance reads have no terminal.
+# The one BEC thread was blocked. Nothing in those three
+# realized a taking inside this graph.
+#################################################################
+
+ob:sep-run a prov:Activity ;
+	uco-core:name "SEP extraction test" ;
+	uco-core:description "Source-versus-target derivation from the portions of the redacted indictment this graph already uses. Unfairness is not scored." .
+
+ob:anat-romance a traj:BenefitAnatomy ;
+	uco-core:name "Romance extraction purpose, no completed transfer" ;
+	uco-core:description "The portion used alleges a purpose that older women send money. It does not identify a completed or blocked romance transfer, and the trajectory has no terminal occupancy." ;
+	traj:onTransition ob:t-romance ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "No object is asserted to have changed hands. The benefit is not the women's absence. The edge has no victim-linked benefit, and the trajectory-level test is withheld." ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "none" ;
+	prov:wasGeneratedBy ob:sep-run .
+
+ob:sep-romance a traj:ExploitationAssessment ;
+	uco-core:name "Obaseki romance extraction test" ;
+	uco-core:description "Partial read, no terminal occupancy. Extraction test withheld." ;
+	traj:assessesTrajectory ob:traj-romance ;
+	traj:hasBenefitAnatomy ob:anat-romance ;
+	traj:extractionTestStatus "withheld_partial" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest false ;
+	prov:wasGeneratedBy ob:sep-run .
+
+ob:anat-bec a traj:BenefitAnatomy ;
+	uco-core:name "Blocked company transfer" ;
+	uco-core:description "One thread: about $301,000 from a victim company, then the financial institution blocked it. Nothing in this graph changed hands." ;
+	traj:onTransition ob:t-bec-block ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "The block means no object passed. The benefit is not the company's absence. A failed taking is not victim-targeted destruction, and it is not a realized extraction." ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "none" ;
+	prov:wasGeneratedBy ob:sep-run .
+
+ob:sep-bec a traj:ExploitationAssessment ;
+	uco-core:name "Obaseki BEC extraction test" ;
+	uco-core:description "Terminal polarity is disrupted and no object changed hands. The extraction test does not pass. This thread is not a victim-targeted benefit either." ;
+	traj:assessesTrajectory ob:traj-bec ;
+	traj:hasBenefitAnatomy ob:anat-bec ;
+	traj:extractionTestStatus "not_realized" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest false ;
+	prov:wasGeneratedBy ob:sep-run .
+
+ob:anat-ui a traj:BenefitAnatomy ;
+	uco-core:name "Unemployment-insurance deposits described, not closed" ;
+	uco-core:description "The portion used describes accounts receiving deposits and a 50/50 split. The close read did not mark a terminal occupancy." ;
+	traj:onTransition ob:t-ui ;
+	traj:transferredObject "unemployment-insurance deposits" ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "If the deposits landed, they are preexisting program funds and keep their value when split. The edge derives victim_sourced. The trajectory-level test stays withheld because no terminal occupancy was asserted." ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy ob:sep-run .
+
+ob:sep-ui a traj:ExploitationAssessment ;
+	uco-core:name "Obaseki unemployment-insurance extraction test" ;
+	uco-core:description "No terminal occupancy. Extraction test withheld. The split edge still derives victim_sourced. The counterparty is the insurance program." ;
+	traj:assessesTrajectory ob:traj-ui ;
+	traj:hasBenefitAnatomy ob:anat-ui ;
+	traj:extractionTestStatus "withheld_partial" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest false ;
+	prov:wasGeneratedBy ob:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# Overview and the three scheme descriptions. Other names in the
+# public copy are redacted and are not reconstructed.
+#################################################################
+
+ob:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Indictment, United States v. Obaseki" ;
+	legalproc:instrumentType "indictment" ;
+	uco-core:description "Filed 2022-11-10. CourtListener 217799634. Redacted public copy." ;
+	prov:wasDerivedFrom ob:doc-217799634 .
+ob:charge-1343 a legalproc:FederalCharge ;
+	uco-core:name "Conspiracy to commit wire fraud" ;
+	legalproc:statuteCitation "18 U.S.C. § 1343" ;
+	legalproc:offenseForm "conspiracy" ;
+	legalproc:assertedIn ob:charge-doc .
+ob:person-obaseki a uco-identity:Person ;
+	uco-core:name "Bukola Obaseki" ;
+	uco-core:description "Named defendant in the docket description. Other personal names in this copy are redacted." ;
+	uco-core:tag "charging-allegation" .
+ob:facet-mule a uco-observable:AccountFacet ;
+	uco-core:description "Accounts the overview says were opened to receive deposits. No account number is recorded." .
+ob:inst-mule-account uco-core:hasFacet ob:facet-mule ; uco-core:tag "charging-allegation" .
+ob:act-romance-contact uco-action:performer ob:person-obaseki ; uco-action:instrument ob:inst-whatsapp .
+ob:act-bec-transfer uco-action:performer ob:person-obaseki ; uco-action:instrument ob:inst-email , ob:inst-bank-wire .
+ob:act-ui-drop uco-action:performer ob:person-obaseki ; uco-action:instrument ob:inst-vpn ; uco-action:object ob:inst-mule-account .
+ob:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Obaseki, E.D. Tex. 4:21-cr-253" ;
+	legalproc:caseIdentifier "4:21-cr-00253" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Romance, business-email compromise, and unemployment-insurance deposits" ;
+	uco-core:description "The romance and unemployment threads have no terminal occupancy, so the benefit-at-expense test is withheld. The business-email-compromise transfer was blocked, so that test is not realized." ;
+	uco-core:object ob:charge-doc , ob:person-obaseki , ob:inst-whatsapp , ob:inst-email , ob:inst-vpn , ob:inst-mule-account , ob:traj-romance , ob:traj-bec , ob:traj-ui .

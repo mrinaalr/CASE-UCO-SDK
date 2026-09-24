@@ -1,0 +1,155 @@
+# Close read — bitcoin multilevel-marketing wire fraud
+# United States v. Ramil Ventura Palafox, E.D. Va. 1:25-cr-52
+# Indictment filed in open court 2025-03-13, CourtListener document 437269300
+# Local: workbench/casenoesis-data/collected/recap/fraud/from_press/437269300.pdf
+# Scheme window in the indictment: about December 2019 through October 2021.
+# Charging allegations. Confidence 55.
+
+@prefix px: <http://example.org/kb/method-v0/palafox/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+@prefix cryptoinv: <http://example.org/ontology/cryptoinv/> .
+
+px:doc a uco-core:UcoObject ;
+	uco-core:name "Indictment, United States v. Palafox, E.D. Va. 1:25-cr-52" ;
+	uco-core:description "Praetorian Group International, a Nevada company held out as a bitcoin investment platform and structured as multilevel marketing. Counts include 18 U.S.C. 1343. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). v0.0.0 uses the general allegations and manner paragraphs 17–25." .
+
+px:evidence a uco-core:UcoObject ;
+	uco-core:name "PGI bitcoin pitch, portal, and use of investor funds" ;
+	uco-core:description "As alleged: promoters called master distributors were recruited and trained to bring in investors, who were incentivized to recruit others. Investors were told funds would trade bitcoin and earn about 0.5 to 3 percent daily, and that traders would profit whether the price rose or fell. An online portal displayed activity. The indictment alleges PGI was not buying or trading bitcoin, and that funds paid other investors and promotion. By February 2021, if not earlier, investors could not make the withdrawals the portal described." .
+
+px:alphabet a skos:ConceptScheme ; uco-core:name "Palafox alphabet" .
+px:RecruitPromoters a traj:State , skos:Concept ; skos:inScheme px:alphabet ; skos:prefLabel "RecruitPromoters"@en ;
+	uco-core:description "Master distributors recruited and trained to recruit investors, who are paid to recruit further investors." .
+px:FalseTradingPitch a traj:State , skos:Concept ; skos:inScheme px:alphabet ; skos:prefLabel "FalseTradingPitch"@en ;
+	uco-core:description "Promise that funds will trade bitcoin and earn a daily return regardless of price direction." .
+px:FalsePortal a traj:State , skos:Concept ; skos:inScheme px:alphabet ; skos:prefLabel "FalsePortal"@en ;
+	uco-core:description "Online portal presented as a way to monitor investments and withdrawals." .
+px:FundsDiverted a traj:State , skos:Concept ; skos:inScheme px:alphabet ; skos:prefLabel "FundsDiverted"@en ;
+	uco-core:description "Charging theory: funds were not used to trade bitcoin. They paid other investors and promotion. Withdrawals failed." .
+
+px:inst-mlm a uco-core:UcoObject ; uco-core:name "Multilevel promoter network" .
+px:inst-portal a uco-observable:Application ; uco-core:name "PGI online portal" .
+px:act-pitch a uco-action:Action ; uco-core:name "Pitch bitcoin trading returns" ;
+	uco-action:instrument px:inst-mlm ; prov:wasDerivedFrom px:evidence .
+px:act-portal a uco-action:Action ; uco-core:name "Display activity on the portal" ;
+	uco-action:instrument px:inst-portal ; prov:wasDerivedFrom px:evidence .
+
+px:interval a time:ProperInterval ; time:hasBeginning px:t0 ; time:hasEnd px:t1 .
+px:t0 a time:Instant ; time:inXSDDateTimeStamp "2019-12-01T00:00:00Z"^^xsd:dateTimeStamp .
+px:t1 a time:Instant ; time:inXSDDateTimeStamp "2021-10-31T23:59:00Z"^^xsd:dateTimeStamp .
+px:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+px:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+px:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+px:c3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+px:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — promoters" ;
+	traj:assertsState px:RecruitPromoters ; traj:atInterval px:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom px:evidence ; uco-core:hasFacet px:c0 .
+px:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — trading pitch" ;
+	traj:assertsState px:FalseTradingPitch ; traj:atInterval px:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom px:evidence ; uco-core:hasFacet px:c1 .
+px:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — portal" ;
+	traj:assertsState px:FalsePortal ; traj:atInterval px:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom px:evidence ; uco-core:hasFacet px:c2 .
+px:p3 a traj:PhaseAssertion ; uco-core:name "Occupancy 3 — funds diverted" ;
+	uco-core:description "Charging-theory endpoint. Not a verdict." ;
+	traj:assertsState px:FundsDiverted ; traj:atInterval px:interval ; traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom px:evidence ; uco-core:hasFacet px:c3 .
+px:trajectory a traj:Trajectory ; uco-core:name "Palafox PGI trajectory" ;
+	traj:hasPhaseAssertion px:p0 , px:p1 , px:p2 , px:p3 .
+px:e0 a traj:Transition ; traj:fromState px:RecruitPromoters ; traj:toState px:FalseTradingPitch ; traj:trigger px:evidence ; traj:enactsAction px:act-pitch .
+px:e1 a traj:Transition ; traj:fromState px:FalseTradingPitch ; traj:toState px:FalsePortal ; traj:trigger px:evidence ; traj:enactsAction px:act-portal .
+px:e2 a traj:Transition ; traj:fromState px:FalsePortal ; traj:toState px:FundsDiverted ; traj:trigger px:evidence .
+
+px:sep-run a prov:Activity ;
+	uco-core:name "Benefit-at-expense test" ;
+	uco-core:description "Investor funds diverted after a false trading pitch. The supplier is the investor." .
+px:anat-funds a traj:BenefitAnatomy ;
+	uco-core:name "Investor funds diverted" ;
+	uco-core:description "The indictment's endpoint is use of investor funds other than the trading that was pitched." ;
+	traj:onTransition px:e2 ;
+	traj:transferredObject "investor funds" ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:advantageDefect "deception" ;
+	traj:anatomyRule "The funds are the investors' beforehand, they do not keep them, and the value remains. Presence is not required. Derives victim_sourced." ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy px:sep-run .
+px:sep a traj:ExploitationAssessment ;
+	uco-core:name "Palafox benefit-at-expense test" ;
+	uco-core:description "Goal edge is the diversion. Source is victim_sourced and the defect is deception." ;
+	traj:assessesTrajectory px:trajectory ;
+	traj:goalRealizingTransition px:e2 ;
+	traj:hasBenefitAnatomy px:anat-funds ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest true ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset px:interval ;
+	prov:wasGeneratedBy px:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# Indictment paragraphs 1-5 and 20-26. No wallet address.
+#################################################################
+
+px:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Indictment, United States v. Palafox" ;
+	legalproc:instrumentType "indictment" ;
+	uco-core:description "Filed in open court 2025-03-13. CourtListener 437269300." ;
+	prov:wasDerivedFrom px:doc .
+px:charge-1343 a legalproc:FederalCharge ;
+	uco-core:name "Wire fraud" ;
+	legalproc:statuteCitation "18 U.S.C. § 1343" ;
+	legalproc:countLabel "Counts 1-8" ;
+	legalproc:assertedIn px:charge-doc .
+px:person-palafox a uco-identity:Person ;
+	uco-core:name "Ramil Ventura Palafox" ;
+	uco-core:description "Paragraph 1. Also known as RV Palafox. Paragraph 5: owned and operated PGI and served as chairman and chief executive." ;
+	uco-core:tag "charging-allegation" .
+px:org-pgi a uco-identity:Organization ;
+	uco-core:name "PGI" ;
+	uco-core:description "Paragraphs 3-4: PGI Global and named affiliates, including Praetorian Group International OU. The indictment alleges investors believed funds would be used for bitcoin trading and that at least $200,000,000 was invested." ;
+	uco-core:tag "charging-allegation" .
+px:loc-edva a uco-location:Location ;
+	uco-core:name "Eastern District of Virginia" ;
+	uco-core:description "Paragraph 21: PGI held promotional events in the Eastern District of Virginia and in other cities." ;
+	uco-core:tag "charging-allegation" .
+px:rel-owns a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "operates" ;
+	uco-core:source px:person-palafox ;
+	uco-core:target px:org-pgi ;
+	uco-core:name "Palafox operated PGI" ;
+	prov:wasDerivedFrom px:evidence .
+px:rel-portal a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "displayed-on" ;
+	uco-core:source px:inst-portal ;
+	uco-core:target px:org-pgi ;
+	uco-core:name "Investor portal" ;
+	uco-core:description "Paragraph 26: the online portal was used to misrepresent the status of investments. No investor login is recorded." ;
+	prov:wasDerivedFrom px:evidence .
+px:act-pitch uco-action:performer px:person-palafox ; uco-action:instrument px:inst-mlm ; uco-action:location px:loc-edva .
+px:act-portal uco-action:performer px:person-palafox ; uco-action:instrument px:inst-portal .
+px:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Palafox, E.D. Va. 1:25-cr-52" ;
+	legalproc:caseIdentifier "1:25-cr-00052" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Promoter network, false bitcoin-trading pitch, portal" ;
+	uco-core:object px:charge-doc , px:person-palafox , px:org-pgi , px:inst-portal , px:trajectory .

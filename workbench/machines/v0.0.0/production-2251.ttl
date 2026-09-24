@@ -1,0 +1,167 @@
+# v0.5.0 test of the benefit-at-expense predicate.
+# Source: CaseLinker primitive phase graph, NHSR 7768.
+# D.D.C. 1:22-cr-00150, 18 U.S.C. § 2251(a), (e).
+# Personal names are not copied. Phase comments are not copied.
+# The CAC class name ExploitationPhase is not an input.
+
+@prefix pr: <http://example.org/kb/method-v0/production-2251/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+pr:evidence a uco-core:UcoObject ;
+	uco-core:name "CaseLinker production phase graph" ;
+	uco-core:description "Phase labels and affordance lines from the primitive machine. NHSR 7768. Comments and personal names were not copied." .
+
+pr:interval a time:Interval ;
+	uco-core:name "Undated phase order" ;
+	uco-core:description "The primitive machine gives order, not dates." .
+pr:interval-capture a time:Interval ;
+	uco-core:name "Media capture phase, undated" ;
+	uco-core:description "Distinct phase interval so the onset is the capture step. No clock time is in the primitive machine." .
+
+pr:app-instagram a uco-observable:Application ;
+	uco-core:name "Instagram" ;
+	uco-core:description "The migration event names Instagram as the from-platform." .
+
+pr:app-messenger a uco-observable:Application ;
+	uco-core:name "Facebook Messenger" ;
+	uco-core:description "The migration event names Facebook Messenger as the to-platform." .
+
+pr:Targeting a traj:State , skos:Concept ; skos:prefLabel "Visual profile targeting" .
+pr:Coercion a traj:State , skos:Concept ; skos:prefLabel "DM coercion" .
+pr:Migration a traj:State , skos:Concept ; skos:prefLabel "Migration to a production channel" .
+pr:Directed a traj:State , skos:Concept ; skos:prefLabel "Live directed production" .
+pr:Capture a traj:State , skos:Concept ; skos:prefLabel "Media capture" .
+pr:Archive a traj:State , skos:Concept ; skos:prefLabel "Archive as leverage" .
+pr:Stored a traj:State , skos:Concept ; skos:prefLabel "Persistent archive" .
+
+pr:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+pr:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+pr:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+pr:c3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+pr:c4 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+pr:c5 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+pr:c6 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+pr:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — targeting" ;
+	traj:assertsState pr:Targeting ; traj:atInterval pr:interval ;
+	traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom pr:evidence ; uco-core:hasFacet pr:c0 .
+pr:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — coercion" ;
+	traj:assertsState pr:Coercion ; traj:atInterval pr:interval ;
+	traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom pr:evidence ; uco-core:hasFacet pr:c1 .
+pr:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — migration" ;
+	traj:assertsState pr:Migration ; traj:atInterval pr:interval ;
+	traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom pr:evidence ; uco-core:hasFacet pr:c2 .
+pr:p3 a traj:PhaseAssertion ; uco-core:name "Occupancy 3 — directed production" ;
+	traj:assertsState pr:Directed ; traj:atInterval pr:interval ;
+	traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom pr:evidence ; uco-core:hasFacet pr:c3 .
+pr:p4 a traj:PhaseAssertion ; uco-core:name "Occupancy 4 — capture" ;
+	traj:assertsState pr:Capture ; traj:atInterval pr:interval-capture ;
+	traj:sequenceIndex "4"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom pr:evidence ; uco-core:hasFacet pr:c4 .
+pr:p5 a traj:PhaseAssertion ; uco-core:name "Occupancy 5 — archive" ;
+	traj:assertsState pr:Archive ; traj:atInterval pr:interval ;
+	traj:sequenceIndex "5"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom pr:evidence ; uco-core:hasFacet pr:c5 .
+pr:p6 a traj:PhaseAssertion ; uco-core:name "Occupancy 6 — persistent archive" ;
+	traj:assertsState pr:Stored ; traj:atInterval pr:interval ;
+	traj:sequenceIndex "6"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom pr:evidence ; uco-core:hasFacet pr:c6 .
+
+pr:trajectory a traj:Trajectory ;
+	uco-core:name "Production pathway" ;
+	uco-core:description "Phase order from the primitive machine. The exploitation test ignores the phase class names." ;
+	traj:hasPhaseAssertion pr:p0 , pr:p1 , pr:p2 , pr:p3 , pr:p4 , pr:p5 , pr:p6 .
+
+pr:act-target a uco-action:Action ; uco-core:name "Open on a visual profile" ;
+	uco-action:instrument pr:app-instagram ; prov:wasDerivedFrom pr:evidence .
+pr:act-coerce a uco-action:Action ; uco-core:name "Direct messages the machine labels coercion" ;
+	prov:wasDerivedFrom pr:evidence .
+pr:act-migrate a uco-action:Action ; uco-core:name "Move to Facebook Messenger" ;
+	uco-action:instrument pr:app-messenger ; prov:wasDerivedFrom pr:evidence .
+pr:act-direct a uco-action:Action ; uco-core:name "Direct a live session" ;
+	prov:wasDerivedFrom pr:evidence .
+pr:act-capture a uco-action:Action ; uco-core:name "Record the session" ;
+	uco-core:description "The affordance line says the session was recorded without notification." ;
+	prov:wasDerivedFrom pr:evidence .
+
+pr:e0 a traj:Transition ; traj:fromState pr:Targeting ; traj:toState pr:Coercion ;
+	traj:trigger pr:evidence ; traj:enactsAction pr:act-coerce .
+pr:e1 a traj:Transition ; traj:fromState pr:Coercion ; traj:toState pr:Migration ;
+	traj:trigger pr:evidence ; traj:enactsAction pr:act-migrate .
+pr:e2 a traj:Transition ; traj:fromState pr:Migration ; traj:toState pr:Directed ;
+	traj:trigger pr:evidence ; traj:enactsAction pr:act-direct .
+pr:e3 a traj:Transition ; traj:fromState pr:Directed ; traj:toState pr:Capture ;
+	traj:trigger pr:evidence ; traj:enactsAction pr:act-capture ;
+	uco-core:name "Directed session to recording" .
+pr:e4 a traj:Transition ; traj:fromState pr:Capture ; traj:toState pr:Archive ;
+	traj:trigger pr:evidence .
+pr:e5 a traj:Transition ; traj:fromState pr:Archive ; traj:toState pr:Stored ;
+	traj:trigger pr:evidence .
+
+pr:sep-run a prov:Activity ;
+	uco-core:name "Benefit-at-expense derivation" ;
+	uco-core:description "Derived from phase labels and affordance lines. The class name ExploitationPhase was not read." .
+
+pr:anat-contact a traj:BenefitAnatomy ;
+	uco-core:name "Coercion, no product yet" ;
+	uco-core:description "The machine names this phase DM coercion. No recording is alleged on this edge, so the expense has not happened." ;
+	traj:onTransition pr:e0 ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:preexisting false ;
+	traj:valueSurvivesVictim true ;
+	traj:advantageDefect "coercion" ;
+	traj:anatomyRule "No object, presence not required, value would survive. Derives none. Coercion alone is not the goal edge." ;
+	traj:benefitSource "none" ;
+	prov:wasGeneratedBy pr:sep-run .
+
+pr:anat-capture a traj:BenefitAnatomy ;
+	uco-core:name "Recording made from the minor" ;
+	uco-core:description "The affordance line says the session was recorded and later stored. Section 2251 is the charge citation that the person is a minor. The defect field holds coercion because the machine names a coercion phase. Vulnerability would also pass this same edge." ;
+	traj:onTransition pr:e3 ;
+	traj:transferredObject "recording of the session" ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:preexisting false ;
+	traj:valueSurvivesVictim true ;
+	traj:advantageDefect "coercion" ;
+	traj:anatomyRule "Object, not preexisting, person supplies it and does not keep it, presence is not required for the stored recording. Derives person_used." ;
+	traj:benefitSource "person_used" ;
+	uco-core:tag "inference" ;
+	prov:wasGeneratedBy pr:sep-run .
+
+pr:sep a traj:ExploitationAssessment ;
+	uco-core:name "Production becomes exploitation at capture" ;
+	uco-core:description "The goal edge is the recording, not visual targeting and not the coercion messages. Exploitation is true. The preexisting-object test is false. Onset is the undated capture phase." ;
+	traj:assessesTrajectory pr:trajectory ;
+	traj:goalRealizingTransition pr:e3 ;
+	traj:hasBenefitAnatomy pr:anat-contact , pr:anat-capture ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset pr:interval-capture ;
+	prov:wasGeneratedBy pr:sep-run .
+
+pr:investigation a case-investigation:Investigation ;
+	uco-core:name "D.D.C. 1:22-cr-00150" ;
+	legalproc:caseIdentifier "1:22-cr-00150" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "18 U.S.C. § 2251(a), (e)" ;
+	uco-core:description "Scored from the CaseLinker phase graph under NHSR 7768. The statement of offense was not re-read for this test." ;
+	uco-core:object pr:trajectory , pr:evidence .

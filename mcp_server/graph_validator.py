@@ -31,7 +31,7 @@ resolve_extension_dependencies = _impl.resolve_extension_dependencies
 
 def validator_available() -> bool:
     """Shim that honors monkeypatches of ``graph_validator.shutil``."""
-    return shutil.which(VALIDATOR_NAME) is not None
+    return _impl.validator_available()
 
 
 def validate_graph_file(*args: Any, **kwargs: Any):

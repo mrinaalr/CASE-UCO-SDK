@@ -1,0 +1,153 @@
+# v0.0.0 — fraud against a lending portal, not a person on a phone
+# United States v. Shanna Niquia Hunt, E.D. Mo. 1:25-cr-46
+# Indictment filed 2025-03-04, CourtListener document 432127749
+# https://www.courtlistener.com/docket/69706872/2/united-states-v-hunt/
+# The lookup case_name on this row says Patel. The PDF caption says Hunt.
+# This graph follows the PDF. Charging allegations. Confidence 55.
+
+@prefix hu: <http://example.org/kb/fraud-v0/hunt/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+
+hu:doc-432127749 a uco-core:UcoObject ;
+	uco-core:name "Indictment, United States v. Hunt, E.D. Mo. 1:25-cr-46" ;
+	uco-core:description "CourtListener document_id 432127749. Local copy: workbench/casenoesis-data/collected/recap/fraud/432127749.pdf. Counts 18 U.S.C. 1014 and 1343. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). The scheme date in the indictment is on or about 30 April 2021." .
+
+hu:evidence a uco-core:UcoObject ;
+	uco-core:name "PPP application through a lender web portal" ;
+	uco-core:description "Paragraphs 8–19. Paycheck Protection Program funds had to be used for specified expenses, and the application required certifications. Benworth Capital Partners, a participating lender, processed applications through an internet portal. The indictment alleges Hunt submitted an application and a 2019 Schedule C stating a Missouri business in operation on 15 February 2020 and permissible use of funds, and that there was no such business and the income and expenses were false. The lender electronically transferred $19,965 to a bank account of hers." .
+
+hu:alphabet a skos:ConceptScheme ; uco-core:name "Hunt portal alphabet" .
+hu:FalseApplication a traj:State , skos:Concept ; skos:inScheme hu:alphabet ; skos:prefLabel "FalseApplication"@en ;
+	uco-core:description "Application and Schedule C claiming a business and figures the indictment says were false." .
+hu:PortalSubmission a traj:State , skos:Concept ; skos:inScheme hu:alphabet ; skos:prefLabel "PortalSubmission"@en ;
+	uco-core:description "Electronic submission through the lender's internet portal. The wire is this submission." .
+hu:Deposit a traj:State , skos:Concept ; skos:inScheme hu:alphabet ; skos:prefLabel "Deposit"@en ;
+	uco-core:description "Lender electronically transferred $19,965. Charging-theory endpoint." .
+
+hu:inst-portal a uco-observable:Application ; uco-core:name "Lender internet portal for PPP applications" ;
+	uco-core:description "The program interface is the instrument. There is no call script and no impersonation of a relative or executive." .
+hu:inst-schedule a uco-observable:File ; uco-core:name "IRS Schedule C attached to the application" .
+hu:act-submit a uco-action:Action ; uco-core:name "Submit the application through the portal" ;
+	uco-action:instrument hu:inst-portal , hu:inst-schedule ; prov:wasDerivedFrom hu:evidence .
+
+hu:interval a time:ProperInterval ; time:hasBeginning hu:t0 ; time:hasEnd hu:t1 .
+hu:t0 a time:Instant ; time:inXSDDateTimeStamp "2021-04-30T00:00:00Z"^^xsd:dateTimeStamp .
+hu:t1 a time:Instant ; time:inXSDDateTimeStamp "2021-04-30T23:59:00Z"^^xsd:dateTimeStamp .
+
+hu:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+hu:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+hu:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+hu:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — false application" ;
+	traj:assertsState hu:FalseApplication ; traj:atInterval hu:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom hu:evidence ; uco-core:hasFacet hu:c0 .
+hu:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — portal submission" ;
+	traj:assertsState hu:PortalSubmission ; traj:atInterval hu:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom hu:evidence ; uco-core:hasFacet hu:c1 .
+hu:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — deposit" ;
+	uco-core:description "Charging-theory endpoint. Not a verdict." ;
+	traj:assertsState hu:Deposit ; traj:atInterval hu:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom hu:evidence ; uco-core:hasFacet hu:c2 .
+
+hu:trajectory a traj:Trajectory ; uco-core:name "Hunt PPP portal trajectory (v0.0.0)" ;
+	traj:hasPhaseAssertion hu:p0 , hu:p1 , hu:p2 .
+hu:e0 a traj:Transition ; traj:fromState hu:FalseApplication ; traj:toState hu:PortalSubmission ; traj:trigger hu:evidence ; traj:enactsAction hu:act-submit .
+hu:e1 a traj:Transition ; traj:fromState hu:PortalSubmission ; traj:toState hu:Deposit ; traj:trigger hu:evidence .
+
+#################################################################
+# Inferred benefit-at-expense test.
+# The deposit is real. The supplier is the lending program, not an
+# identified person, so the exploitation predicate fails.
+#################################################################
+
+hu:sep-run a prov:Activity ;
+	uco-core:name "Benefit-at-expense test" ;
+	uco-core:description "Same derivation as a taking from a person. Here the gain is program funds." .
+
+hu:anat-deposit a traj:BenefitAnatomy ;
+	uco-core:name "PPP proceeds deposited after portal submission" ;
+	uco-core:description "Indictment: a false application through a lender portal, then a deposit of program funds. The supplier on this edge is the lending program." ;
+	traj:onTransition hu:e1 ;
+	traj:transferredObject "PPP loan proceeds" ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "The funds moved, and the application was false. The supplier is the program, not an identified person, so the edge derives not_from_person. Deception does not change the supplier." ;
+	traj:suppliedByPerson false ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "not_from_person" ;
+	prov:wasGeneratedBy hu:sep-run .
+
+hu:sep-scheme a traj:ExploitationAssessment ;
+	uco-core:name "Hunt portal benefit-at-expense test" ;
+	uco-core:description "Goal edge is the deposit. The crime is completed. The gain is not at an identified person's expense, so the exploitation test fails." ;
+	traj:assessesTrajectory hu:trajectory ;
+	traj:goalRealizingTransition hu:e1 ;
+	traj:hasBenefitAnatomy hu:anat-deposit ;
+	traj:extractionTestStatus "not_exploitation" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest false ;
+	prov:wasGeneratedBy hu:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# Paragraphs 1-2 and 8-19. The supplier of the funds remains the program.
+#################################################################
+
+hu:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Indictment, United States v. Hunt" ;
+	legalproc:instrumentType "indictment" ;
+	uco-core:description "Filed 2025-03-04. CourtListener 432127749." ;
+	prov:wasDerivedFrom hu:doc-432127749 .
+hu:charge-1014 a legalproc:FederalCharge ;
+	uco-core:name "False statement to a financial institution" ;
+	legalproc:statuteCitation "18 U.S.C. § 1014" ;
+	legalproc:assertedIn hu:charge-doc .
+hu:charge-1343 a legalproc:FederalCharge ;
+	uco-core:name "Wire fraud" ;
+	legalproc:statuteCitation "18 U.S.C. § 1343" ;
+	legalproc:assertedIn hu:charge-doc .
+hu:person-hunt a uco-identity:Person ;
+	uco-core:name "Shanna Niquia Hunt" ;
+	uco-core:description "Paragraph 1: a resident of Caruthersville, Pemiscot County, Missouri. Paragraph 2: she did not own or operate a registered business." ;
+	uco-core:tag "charging-allegation" .
+hu:org-benworth a uco-identity:Organization ;
+	uco-core:name "Benworth Capital Partners, LLC" ;
+	uco-core:description "Paragraph 10: a financial institution that processed Paycheck Protection Program applications through an internet portal. The indictment alleges a false statement to Benworth and an electronic transfer of $19,965." ;
+	uco-core:tag "charging-allegation" .
+hu:loc-caruthersville a uco-location:Location ;
+	uco-core:name "Caruthersville, Pemiscot County, Missouri" ;
+	uco-core:description "Paragraph 1." ;
+	uco-core:tag "charging-allegation" .
+hu:facet-schedule a uco-observable:FileFacet ;
+	uco-core:description "2019 IRS Schedule C (Form 1040), Profit or Loss From Business, alleged to have been attached to the application. The figures on the form are not copied." .
+hu:inst-schedule uco-core:hasFacet hu:facet-schedule ; uco-core:tag "charging-allegation" .
+hu:rel-portal a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "operated-by" ;
+	uco-core:source hu:inst-portal ;
+	uco-core:target hu:org-benworth ;
+	uco-core:name "Portal of the participating lender" ;
+	prov:wasDerivedFrom hu:evidence .
+hu:act-submit uco-action:performer hu:person-hunt ; uco-action:instrument hu:inst-portal , hu:inst-schedule ; uco-action:object hu:org-benworth .
+hu:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Hunt, E.D. Mo. 1:25-cr-46" ;
+	legalproc:caseIdentifier "1:25-cr-00046" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "False PPP application through a lender portal" ;
+	uco-core:description "The benefit-at-expense test fails because the supplier is the lending program, not an identified person. Benworth is the institution that received the false statement." ;
+	uco-core:object hu:charge-doc , hu:person-hunt , hu:org-benworth , hu:inst-portal , hu:inst-schedule , hu:trajectory .

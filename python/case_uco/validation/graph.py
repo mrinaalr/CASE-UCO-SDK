@@ -13,8 +13,10 @@ installed, callers receive ``validator_unavailable`` instead of a fake pass.
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -97,10 +99,34 @@ class GraphValidationReport:
     validator_diagnostics: str = ""
 
 
-def validator_available() -> bool:
-    """Return True when the case_validate CLI is on PATH."""
+def _validator_beside_interpreter() -> str | None:
+    """case_validate installed next to the current interpreter.
 
-    return shutil.which(VALIDATOR_NAME) is not None
+    An MCP process launched by absolute path to a venv python often does not
+    put that venv's bin directory on PATH, so shutil.which misses the CLI.
+    """
+
+    # Do not resolve the interpreter. A venv python is often a symlink into
+    # Homebrew or the system framework, and resolving it leaves the venv bin.
+    sibling = Path(sys.executable).parent / VALIDATOR_NAME
+    if sibling.is_file() and os.access(sibling, os.X_OK):
+        return str(sibling)
+    return None
+
+
+def validator_command() -> str | None:
+    """Absolute path to case_validate, or None when it is not installed."""
+
+    found = shutil.which(VALIDATOR_NAME)
+    if found:
+        return found
+    return _validator_beside_interpreter()
+
+
+def validator_available() -> bool:
+    """Return True when the case_validate CLI can be executed."""
+
+    return validator_command() is not None
 
 
 def _validator_package_version() -> str | None:
@@ -276,7 +302,8 @@ def validate_graph_file(
     ``graph_oversized``, ``validation_timeout``.
     """
 
-    if not validator_available():
+    command = validator_command()
+    if not command:
         raise ValueError("validator_unavailable")
     # Deployment filesystem policy: graph reads must stay inside configured
     # read roots (typed error "source_outside_read_roots" when violated).
@@ -296,7 +323,7 @@ def validate_graph_file(
         raise ValueError("graph_oversized")
 
     validator_version = _validator_package_version()
-    args = [VALIDATOR_NAME]
+    args = [command]
     if allow_warning:
         args.append("--allow-warning")
 

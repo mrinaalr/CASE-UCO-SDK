@@ -1,0 +1,163 @@
+# Close read — forced labor and labor trafficking indictment
+# United States v. Rojas and Gastelo, C.D. Cal. 2:25-cr-00110
+# Indictment filed 2025-02-19, CourtListener document 458211891
+# Local: workbench/casenoesis-data/collected/recap/bulk/458211891.pdf
+# Manner paragraph 5, items a through i. Overt acts name two adult workers.
+# A child mentioned in the indictment is the defendants' child. That fact is not a state.
+# Charging allegations. Confidence 55.
+
+@prefix rj: <http://example.org/kb/method-v0/rojas/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+
+rj:doc a uco-core:UcoObject ;
+	uco-core:name "Indictment, United States v. Rojas, C.D. Cal. 2:25-cr-00110" ;
+	uco-core:description "Conspiracy window alleged as no later than November 2021 through at least March 2024. Counts include conspiracy to commit forced labor, forced labor, trafficking with respect to forced labor, immigration-document fraud, and harboring. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). Duplicate filing 431447386 is the same text and is not a second machine." .
+
+rj:evidence a uco-core:UcoObject ;
+	uco-core:name "Manner of the Rojas labor conspiracy" ;
+	uco-core:description "As alleged: recruit foreign nationals in Latin America, finance and arrange entry, transport them to a residence in Simi Valley, house them, and require unpaid domestic labor described as rent. Instruct them to lie to immigration authorities. Charge a smuggling fee repaid through outside employment. Obtain fraudulent immigration documents. Place workers at a restaurant where one defendant had an arrangement with the manager. Two overt acts name adult workers from Peru, one in November 2021 and one in April 2022." .
+
+rj:alphabet a skos:ConceptScheme ; uco-core:name "Rojas alphabet" .
+rj:RecruitAndEntry a traj:State , skos:Concept ; skos:inScheme rj:alphabet ; skos:prefLabel "RecruitAndEntry"@en ;
+	uco-core:description "Recruit in Latin America and arrange the trip into the United States." .
+rj:HouseAndLabor a traj:State , skos:Concept ; skos:inScheme rj:alphabet ; skos:prefLabel "HouseAndLabor"@en ;
+	uco-core:description "House the workers at the residence and require unpaid domestic labor, described to them as rent." .
+rj:DebtAndDocuments a traj:State , skos:Concept ; skos:inScheme rj:alphabet ; skos:prefLabel "DebtAndDocuments"@en ;
+	uco-core:description "Smuggling fee, instruction to lie to immigration authorities, and fraudulent immigration documents." .
+rj:OutsidePlacement a traj:State , skos:Concept ; skos:inScheme rj:alphabet ; skos:prefLabel "OutsidePlacement"@en ;
+	uco-core:description "Placement at an outside job used to repay the fee. Charging-theory endpoint of the manner list." .
+
+rj:inst-travel a uco-core:UcoObject ; uco-core:name "Arranged travel and ground transport" .
+rj:act-move a uco-action:Action ; uco-core:name "Finance entry and transport to the residence" ;
+	uco-action:instrument rj:inst-travel ; prov:wasDerivedFrom rj:evidence .
+
+rj:interval a time:ProperInterval ; time:hasBeginning rj:t0 ; time:hasEnd rj:t1 .
+rj:t0 a time:Instant ; time:inXSDDateTimeStamp "2021-11-01T00:00:00Z"^^xsd:dateTimeStamp .
+rj:t1 a time:Instant ; time:inXSDDateTimeStamp "2024-03-31T23:59:00Z"^^xsd:dateTimeStamp .
+rj:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+rj:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+rj:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+rj:c3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+rj:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — recruit and entry" ;
+	traj:assertsState rj:RecruitAndEntry ; traj:atInterval rj:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom rj:evidence ; uco-core:hasFacet rj:c0 .
+rj:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — housed labor" ;
+	traj:assertsState rj:HouseAndLabor ; traj:atInterval rj:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom rj:evidence ; uco-core:hasFacet rj:c1 .
+rj:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — debt and documents" ;
+	traj:assertsState rj:DebtAndDocuments ; traj:atInterval rj:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom rj:evidence ; uco-core:hasFacet rj:c2 .
+rj:p3 a traj:PhaseAssertion ; uco-core:name "Occupancy 3 — outside placement" ;
+	uco-core:description "Charging-theory endpoint of the manner list. Not a verdict." ;
+	traj:assertsState rj:OutsidePlacement ; traj:atInterval rj:interval ; traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom rj:evidence ; uco-core:hasFacet rj:c3 .
+rj:trajectory a traj:Trajectory ; uco-core:name "Rojas domestic-labor trajectory" ;
+	traj:hasPhaseAssertion rj:p0 , rj:p1 , rj:p2 , rj:p3 .
+rj:e0 a traj:Transition ; traj:fromState rj:RecruitAndEntry ; traj:toState rj:HouseAndLabor ; traj:trigger rj:evidence ; traj:enactsAction rj:act-move .
+rj:e1 a traj:Transition ; traj:fromState rj:HouseAndLabor ; traj:toState rj:DebtAndDocuments ; traj:trigger rj:evidence .
+rj:e2 a traj:Transition ; traj:fromState rj:DebtAndDocuments ; traj:toState rj:OutsidePlacement ; traj:trigger rj:evidence .
+
+rj:sep-run a prov:Activity ;
+	uco-core:name "Benefit-at-expense test" ;
+	uco-core:description "The goal edge is the unpaid domestic labor. The smuggling fee is a second anatomy and is not the goal." .
+rj:anat-labor a traj:BenefitAnatomy ;
+	uco-core:name "Unpaid domestic labor" ;
+	uco-core:description "The manner alleges workers are housed and required to do unpaid domestic labor, described to them as rent." ;
+	traj:onTransition rj:e0 ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence true ;
+	traj:preexisting false ;
+	traj:valueSurvivesVictim false ;
+	traj:advantageDefect "coercion" ;
+	traj:anatomyRule "No chattel changes hands. The labor requires the worker to be present, they do not keep it, and it is required. Derives person_activity." ;
+	traj:benefitSource "person_activity" ;
+	prov:wasGeneratedBy rj:sep-run .
+rj:anat-fee a traj:BenefitAnatomy ;
+	uco-core:name "Smuggling fee" ;
+	uco-core:description "A fee is charged and repaid through outside employment. This edge is not the goal of the test." ;
+	traj:onTransition rj:e2 ;
+	traj:transferredObject "smuggling fee" ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:advantageDefect "deception" ;
+	traj:anatomyRule "The fee is the worker's beforehand and keeps its value. They do not keep it. Derives victim_sourced. The goal edge remains the labor." ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy rj:sep-run .
+rj:sep a traj:ExploitationAssessment ;
+	uco-core:name "Rojas benefit-at-expense test" ;
+	uco-core:description "Goal edge is the housed unpaid labor. Exploitation passes. Extraction fails because that goal edge is activity, not an object." ;
+	traj:assessesTrajectory rj:trajectory ;
+	traj:goalRealizingTransition rj:e0 ;
+	traj:hasBenefitAnatomy rj:anat-labor , rj:anat-fee ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset rj:interval ;
+	prov:wasGeneratedBy rj:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# Manner of the labor conspiracy. No worker name and no street address.
+#################################################################
+
+rj:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Indictment, United States v. Rojas" ;
+	legalproc:instrumentType "indictment" ;
+	uco-core:description "Filed 2025-02-19. CourtListener 458211891." ;
+	prov:wasDerivedFrom rj:doc .
+rj:charge-1589 a legalproc:FederalCharge ;
+	uco-core:name "Forced labor" ;
+	legalproc:statuteCitation "18 U.S.C. § 1589" ;
+	legalproc:assertedIn rj:charge-doc .
+rj:charge-1590 a legalproc:FederalCharge ;
+	uco-core:name "Trafficking with respect to forced labor" ;
+	legalproc:statuteCitation "18 U.S.C. § 1590" ;
+	legalproc:assertedIn rj:charge-doc .
+rj:person-rojas a uco-identity:Person ;
+	uco-core:name "Carolina Rojas" ;
+	uco-core:description "Named defendant." ;
+	uco-core:tag "charging-allegation" .
+rj:person-gastelo a uco-identity:Person ;
+	uco-core:name "Jairo John Gastelo" ;
+	uco-core:description "Named defendant. Also known as Jhon Gastelo." ;
+	uco-core:tag "charging-allegation" .
+rj:loc-simi a uco-location:Location ;
+	uco-core:name "Residence in Simi Valley" ;
+	uco-core:description "The manner alleges workers were housed at a residence in Simi Valley. No street address is recorded." ;
+	uco-core:tag "charging-allegation" .
+rj:workers a uco-identity:Identity , uco-victim:Victim ;
+	uco-core:name "Adult workers recruited in Latin America" ;
+	uco-core:description "The manner alleges recruitment of foreign nationals and names two adult workers from Peru only by the timing of overt acts, November 2021 and April 2022. Their names are not recorded." ;
+	uco-core:tag "charging-allegation" .
+rj:rel-house a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "housed-at" ;
+	uco-core:source rj:workers ;
+	uco-core:target rj:loc-simi ;
+	uco-core:name "Housed at the residence" ;
+	prov:wasDerivedFrom rj:evidence .
+rj:act-move uco-action:performer rj:person-rojas ; uco-action:participant rj:person-gastelo ; uco-action:object rj:workers ; uco-action:location rj:loc-simi .
+rj:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Rojas, C.D. Cal. 2:25-cr-110" ;
+	legalproc:caseIdentifier "2:25-cr-00110" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Recruit, house, unpaid domestic labor" ;
+	uco-core:object rj:charge-doc , rj:person-rojas , rj:person-gastelo , rj:workers , rj:loc-simi , rj:trajectory .

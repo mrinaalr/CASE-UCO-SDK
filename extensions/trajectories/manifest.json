@@ -1,7 +1,7 @@
 {
   "name": "trajectories",
   "display_name": "State-Machine and Trajectory Extension",
-  "version": "0.3.1",
+  "version": "0.5.0",
   "status": "candidate",
   "upstream_repo": "https://github.com/vulnmaster/CASE-UCO-SDK",
   "upstream_ref": "main",
@@ -20,10 +20,12 @@
   ],
   "exemplar_files": [
     "trajectories-exemplar.ttl",
-    "trajectories-elder-fraud-exemplar.ttl"
+    "trajectories-elder-fraud-exemplar.ttl",
+    "trajectories-expense-exemplar.ttl"
   ],
   "invalid_exemplar_files": [
-    "trajectories-invalid-exemplar.ttl"
+    "trajectories-invalid-exemplar.ttl",
+    "trajectories-expense-invalid-exemplar.ttl"
   ],
   "uco_compat": ["1.4.0"],
   "upper_ontology": "gUFO (traj:State rdf:type gufo:Phase; traj:PhaseAssertion subClassOf gufo:Situation) via trajectories-profile-gufo.ttl",

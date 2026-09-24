@@ -60,7 +60,7 @@ traj:Trajectory
 traj:PhaseAssertion
 	a owl:Class ;
 	rdfs:subClassOf uco-core:UcoObject ;
-	owl:disjointWith traj:StateMachineModel , traj:TransitionEstimate ;
+	owl:disjointWith traj:StateMachineModel , traj:TransitionEstimate , traj:BenefitAnatomy , traj:ExploitationAssessment ;
 	rdfs:label "PhaseAssertion"@en ;
 	rdfs:comment "An OBSERVED assertion that a subject occupied a traj:State during an owl-time interval, derived from evidence (prov:wasDerivedFrom) and carrying a uco-core:ConfidenceFacet via uco-core:hasFacet. Must never be used for inferred model outputs — those are traj:StateMachineModel / traj:TransitionEstimate."@en .
 
@@ -211,3 +211,147 @@ traj:initialState
 	rdfs:range traj:State ;
 	rdfs:label "initial state"@en ;
 	rdfs:comment "Marks the s₀ (start) traj:State of a traj:StateMachineModel. At most one per model (SHACL sh:maxCount 1); models with no natural single start state simply omit it."@en .
+
+#################################################################
+# Benefit-at-expense test (inferred). v0.5.0
+# Zwolinski, Ferguson & Wertheimer, "Exploitation", SEP:
+# to exploit is to take unfair advantage, and the benefit is at the
+# other person's expense. Both halves are inputs. Neither half is a
+# crime name. A child, a trafficking count, or a fraud count is not a
+# pass value. A completed crime whose gain is not at an identified
+# person's expense fails, including when that person is a minor.
+# https://github.com/mrinaalr/ThanosStateMachine/issues/2
+#################################################################
+
+traj:BenefitAnatomy
+	a owl:Class ;
+	rdfs:subClassOf uco-core:UcoObject ;
+	owl:disjointWith traj:PhaseAssertion ;
+	rdfs:label "Benefit anatomy"@en ;
+	rdfs:comment "INFERRED anatomy of one transition. benefitSource is derived from facts about that transition, not from the name of the offense. not_from_person: the gain is not supplied by an identified person. retained: that person keeps the value. victim_sourced: a preexisting object of theirs changes hands and keeps its value. person_activity: the gain is their activity, it does not survive their removal, and they do not keep it. person_used: the gain is use of that person, or a product made from that use which did not exist beforehand. victim_targeted: the benefit is their absence. none: none of those. Must carry prov:wasGeneratedBy. Must never be typed traj:PhaseAssertion."@en .
+
+traj:ExploitationAssessment
+	a owl:Class ;
+	rdfs:subClassOf uco-core:UcoObject ;
+	owl:disjointWith traj:PhaseAssertion ;
+	rdfs:label "Exploitation assessment"@en ;
+	rdfs:comment "INFERRED predicate over one traj:Trajectory. passesExploitationTest is true only for extractionTestStatus realized_at_expense: the goal transition's derived source is victim_sourced, person_activity, or person_used, and advantageDefect on that edge is deception, coercion, or vulnerability. passesExtractionTest is the preexisting-object half and is true only when that same edge is victim_sourced. exploitationOnset is the interval of the arriving phase of that goal edge, and only when the test passes. not_exploitation: a goal edge exists and the conjunction fails, including a completed crime that is not at a person's expense and including a minor who is not the source of the gain. not_realized and withheld_partial carry no goal edge and no onset. Not a verdict. Must carry prov:wasGeneratedBy."@en .
+
+traj:onTransition
+	a owl:ObjectProperty ;
+	rdfs:domain traj:BenefitAnatomy ;
+	rdfs:range traj:Transition ;
+	rdfs:label "on transition"@en ;
+	rdfs:comment "The transition whose benefit this anatomy describes."@en .
+
+traj:hasBenefitAnatomy
+	a owl:ObjectProperty ;
+	rdfs:domain traj:ExploitationAssessment ;
+	rdfs:range traj:BenefitAnatomy ;
+	rdfs:label "has benefit anatomy"@en ;
+	rdfs:comment "Benefit anatomies considered for this trajectory, including the goal-realizing edge when one is asserted."@en .
+
+traj:assessesTrajectory
+	a owl:ObjectProperty ;
+	rdfs:domain traj:ExploitationAssessment ;
+	rdfs:range traj:Trajectory ;
+	rdfs:label "assesses trajectory"@en ;
+	rdfs:comment "The observed trajectory this extraction test is about. The assessment does not alter the trajectory's phase assertions."@en .
+
+traj:goalRealizingTransition
+	a owl:ObjectProperty ;
+	rdfs:domain traj:ExploitationAssessment ;
+	rdfs:range traj:Transition ;
+	rdfs:label "goal-realizing transition"@en ;
+	rdfs:comment "The transition on which the terminal benefit is realized. Required for realized_at_expense and not_exploitation. Absent for not_realized and withheld_partial."@en .
+
+traj:transferredObject
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:BenefitAnatomy ;
+	rdfs:range xsd:string ;
+	rdfs:label "transferred object"@en ;
+	rdfs:comment "The thing that passes from the victim side to the offender on this transition, in the words of the charging instrument. Omit when nothing passes. Absence is meaningful: it is the first branch of the derivation."@en .
+
+traj:preexisting
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:BenefitAnatomy ;
+	rdfs:range xsd:boolean ;
+	rdfs:label "preexisting"@en ;
+	rdfs:comment "True when the transferred object existed before this act. Extraction takes what was already there."@en .
+
+traj:valueSurvivesVictim
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:BenefitAnatomy ;
+	rdfs:range xsd:boolean ;
+	rdfs:label "value survives victim"@en ;
+	rdfs:comment "True when the object would keep its value to the offender if the victim were not removed. False when the benefit consists in the victim's absence. 'The victim is harmed' does not decide this."@en .
+
+traj:anatomyRule
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:BenefitAnatomy ;
+	rdfs:range xsd:string ;
+	rdfs:label "anatomy rule"@en ;
+	rdfs:comment "Why these facts were read off the instrument. The derivation reads the booleans, advantageDefect, and the presence of transferredObject, not this sentence."@en .
+
+traj:suppliedByPerson
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:BenefitAnatomy ;
+	rdfs:range xsd:boolean ;
+	rdfs:label "supplied by person"@en ;
+	rdfs:comment "True when an identified person, or a company the instrument names as the holder of the thing or the doer of the work, supplies the gain. False when the gain is a program, a sanctions regime, a market, or a system. This is not a crime-type flag."@en .
+
+traj:personRetainsValue
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:BenefitAnatomy ;
+	rdfs:range xsd:boolean ;
+	rdfs:label "person retains value"@en ;
+	rdfs:comment "True when the person who supplied the gain keeps its value. A wage the instrument says they kept is true. A taking or unpaid activity is false."@en .
+
+traj:requiresPresence
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:BenefitAnatomy ;
+	rdfs:range xsd:boolean ;
+	rdfs:label "requires presence"@en ;
+	rdfs:comment "True when the benefit requires the person to be present and producing. False when a taken object would remain without them, and false when the benefit is their absence. This separates activity from absence. It does not name an offense."@en .
+
+traj:advantageDefect
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:BenefitAnatomy ;
+	rdfs:range xsd:string ;
+	rdfs:label "advantage defect"@en ;
+	rdfs:comment "What the instrument alleges about the advantage. deception: the person supplied the gain on a false basis. coercion: they supplied it under force, threat, or constraint. vulnerability: the instrument alleges they could not validly agree because of age, dependency, or incapacity. none_alleged: the instrument alleges none of these. not_in_instrument: this edge does not reach that question. A defect does not pass when the gain is not at a person's expense. Vulnerability is not a pass by itself."@en .
+
+traj:benefitSource
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:BenefitAnatomy ;
+	rdfs:range xsd:string ;
+	rdfs:label "benefit source"@en ;
+	rdfs:comment "Derived, never freely chosen. not_from_person, retained, victim_sourced, person_activity, person_used, victim_targeted, or none. See the BenefitAnatomy comment. SHACL rejects a string these facts would not derive."@en .
+
+traj:extractionTestStatus
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:ExploitationAssessment ;
+	rdfs:range xsd:string ;
+	rdfs:label "extraction test status"@en ;
+	rdfs:comment "realized_at_expense, not_exploitation, not_realized, or withheld_partial. See traj:ExploitationAssessment."@en .
+
+traj:passesExtractionTest
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:ExploitationAssessment ;
+	rdfs:range xsd:boolean ;
+	rdfs:label "passes extraction test"@en ;
+	rdfs:comment "True only when the exploitation test passes and the goal edge's derived source is victim_sourced. A person_activity pass fails this narrower test. False is not a finding of lawfulness."@en .
+
+traj:passesExploitationTest
+	a owl:DatatypeProperty ;
+	rdfs:domain traj:ExploitationAssessment ;
+	rdfs:range xsd:boolean ;
+	rdfs:label "passes exploitation test"@en ;
+	rdfs:comment "True only when extractionTestStatus is realized_at_expense. That status is available only when the goal edge derives victim_sourced, person_activity, or person_used and its advantageDefect is deception, coercion, or vulnerability. A completed crime that fails those facts fails this test. The charge name is not an input."@en .
+
+traj:exploitationOnset
+	a owl:ObjectProperty ;
+	rdfs:domain traj:ExploitationAssessment ;
+	rdfs:range time:Interval ;
+	rdfs:label "exploitation onset"@en ;
+	rdfs:comment "DERIVED. The time interval of the phase assertion for the goal-realizing transition's arriving state, on the assessed trajectory. Present only when passesExploitationTest is true. That interval is when this graph says the trajectory became exploitation. If the instrument gives one conspiracy window, the onset is that window. Absent when the test is false: the trajectory did not become exploitation."@en .

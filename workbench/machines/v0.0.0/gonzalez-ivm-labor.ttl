@@ -1,0 +1,146 @@
+# Close read — forced labor of Independent Volunteer Ministries participants
+# United States v. Gonzalez et al., S.D. Cal. 3:19-cr-03255
+# Indictment unsealed, filed 2019-08-23, CourtListener document 111384977
+# Local: workbench/casenoesis-data/collected/recap/bulk/111384977.pdf
+# Manner paragraphs 38–40. Outer window of the three conspiracy counts: 1 July 2014 through 22 May 2018.
+# Duplicate filings 106111635 and 195699535 are not separate machines.
+# Charging allegations. Confidence 55.
+
+@prefix gz: <http://example.org/kb/method-v0/gonzalez/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+
+gz:doc a uco-core:UcoObject ;
+	uco-core:name "Indictment, United States v. Gonzalez, S.D. Cal. 3:19-cr-03255" ;
+	uco-core:description "Independent Volunteer Ministries. Counts include forced labor, trafficking, document servitude, and benefits fraud. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). Later recruitment examples were not turned into separate victim trajectories." .
+
+gz:evidence a uco-core:UcoObject ;
+	uco-core:name "Manner of the IVM labor scheme" ;
+	uco-core:description "As alleged in paragraphs 38–40: participants were made to panhandle under threat of psychological, financial, or reputational harm. Defendants recruited, transported, and harbored them. Government identification was confiscated to keep them from leaving. Overt acts allege recruitment by false promises. Those examples are not separate machines." .
+
+gz:alphabet a skos:ConceptScheme ; uco-core:name "Gonzalez alphabet" .
+gz:Recruit a traj:State , skos:Concept ; skos:inScheme gz:alphabet ; skos:prefLabel "Recruit"@en ;
+	uco-core:description "Recruit participants, including by false promises alleged in overt acts." .
+gz:PanhandleUnderThreat a traj:State , skos:Concept ; skos:inScheme gz:alphabet ; skos:prefLabel "PanhandleUnderThreat"@en ;
+	uco-core:description "Labor is panhandling, compelled by threat of psychological, financial, or reputational harm." .
+gz:DocumentServitude a traj:State , skos:Concept ; skos:inScheme gz:alphabet ; skos:prefLabel "DocumentServitude"@en ;
+	uco-core:description "Identification documents taken so the person cannot leave. Charging-theory endpoint of the manner read here." .
+
+gz:inst-id a uco-observable:File ; uco-core:name "Confiscated government identification" .
+gz:act-hold a uco-action:Action ; uco-core:name "Take identification to prevent leaving" ;
+	uco-action:instrument gz:inst-id ; prov:wasDerivedFrom gz:evidence .
+
+gz:interval a time:ProperInterval ; time:hasBeginning gz:t0 ; time:hasEnd gz:t1 .
+gz:t0 a time:Instant ; time:inXSDDateTimeStamp "2014-07-01T00:00:00Z"^^xsd:dateTimeStamp .
+gz:t1 a time:Instant ; time:inXSDDateTimeStamp "2018-05-22T23:59:00Z"^^xsd:dateTimeStamp .
+gz:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+gz:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+gz:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+gz:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — recruit" ;
+	traj:assertsState gz:Recruit ; traj:atInterval gz:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom gz:evidence ; uco-core:hasFacet gz:c0 .
+gz:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — panhandling" ;
+	traj:assertsState gz:PanhandleUnderThreat ; traj:atInterval gz:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom gz:evidence ; uco-core:hasFacet gz:c1 .
+gz:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — documents held" ;
+	uco-core:description "Charging-theory endpoint of paragraphs 38–40. Not a verdict. Benefits-fraud counts are not phased." ;
+	traj:assertsState gz:DocumentServitude ; traj:atInterval gz:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom gz:evidence ; uco-core:hasFacet gz:c2 .
+gz:trajectory a traj:Trajectory ; uco-core:name "Gonzalez IVM trajectory" ;
+	traj:hasPhaseAssertion gz:p0 , gz:p1 , gz:p2 .
+gz:e0 a traj:Transition ; traj:fromState gz:Recruit ; traj:toState gz:PanhandleUnderThreat ; traj:trigger gz:evidence .
+gz:e1 a traj:Transition ; traj:fromState gz:PanhandleUnderThreat ; traj:toState gz:DocumentServitude ; traj:trigger gz:evidence ; traj:enactsAction gz:act-hold .
+
+gz:sep-run a prov:Activity ;
+	uco-core:name "Benefit-at-expense test" ;
+	uco-core:description "The benefit tested is the panhandling. Confiscation of identification is the means of keeping the person, not the goal edge." .
+gz:anat-labor a traj:BenefitAnatomy ;
+	uco-core:name "Panhandling under threat" ;
+	uco-core:description "Paragraphs 38–40: participants were made to panhandle under threat of psychological, financial, or reputational harm." ;
+	traj:onTransition gz:e0 ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence true ;
+	traj:preexisting false ;
+	traj:valueSurvivesVictim false ;
+	traj:advantageDefect "coercion" ;
+	traj:anatomyRule "No chattel changes hands. The gain requires the person to be present and producing, and they do not keep it. The defect is threat. Derives person_activity." ;
+	traj:benefitSource "person_activity" ;
+	prov:wasGeneratedBy gz:sep-run .
+gz:sep a traj:ExploitationAssessment ;
+	uco-core:name "Gonzalez benefit-at-expense test" ;
+	uco-core:description "Goal edge is the panhandling, not the later document confiscation. Exploitation passes. The object test fails because the benefit is the activity." ;
+	traj:assessesTrajectory gz:trajectory ;
+	traj:goalRealizingTransition gz:e0 ;
+	traj:hasBenefitAnatomy gz:anat-labor ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset gz:interval ;
+	prov:wasGeneratedBy gz:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# Manner paragraphs 38-40. No participant name beyond the defendants.
+#################################################################
+
+gz:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Indictment, United States v. Gonzalez" ;
+	legalproc:instrumentType "indictment" ;
+	uco-core:description "Filed 2019-08-23 and unsealed. CourtListener 111384977." ;
+	prov:wasDerivedFrom gz:doc .
+gz:charge-1589 a legalproc:FederalCharge ;
+	uco-core:name "Forced labor" ;
+	legalproc:statuteCitation "18 U.S.C. § 1589" ;
+	legalproc:assertedIn gz:charge-doc .
+gz:charge-1592 a legalproc:FederalCharge ;
+	uco-core:name "Document servitude" ;
+	legalproc:statuteCitation "18 U.S.C. § 1592" ;
+	legalproc:assertedIn gz:charge-doc .
+gz:person-gonzalez a uco-identity:Person ;
+	uco-core:name "Victor Gonzalez" ;
+	uco-core:description "Caption, defendant 1." ;
+	uco-core:tag "charging-allegation" .
+gz:person-leyva a uco-identity:Person ;
+	uco-core:name "Susan Christine Leyva" ;
+	uco-core:description "Caption, defendant 2. Also known as Susan Christine Gonzalez and Christy Gonzalez." ;
+	uco-core:tag "charging-allegation" .
+gz:org-ivm a uco-identity:Organization ;
+	uco-core:name "Independent Volunteer Ministries" ;
+	uco-core:description "The organization named in the indictment caption materials used for this close read." ;
+	uco-core:tag "charging-allegation" .
+gz:workers a uco-identity:Identity , uco-victim:Victim ;
+	uco-core:name "Participants made to panhandle" ;
+	uco-core:description "Paragraphs 38-40. No participant is named." ;
+	uco-core:tag "charging-allegation" .
+gz:facet-id a uco-observable:FileFacet ;
+	uco-core:description "Government identification confiscated to keep people from leaving. No document number is recorded." .
+gz:inst-id uco-core:hasFacet gz:facet-id ; uco-core:tag "charging-allegation" .
+gz:rel-hold a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "taken-from" ;
+	uco-core:source gz:inst-id ;
+	uco-core:target gz:workers ;
+	uco-core:name "Identification taken from participants" ;
+	uco-core:description "The benefit-at-expense goal is the panhandling, not this document. The document is the means of keeping the person." ;
+	prov:wasDerivedFrom gz:evidence .
+gz:act-hold uco-action:performer gz:person-gonzalez ; uco-action:object gz:inst-id ; uco-action:participant gz:person-leyva .
+gz:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Gonzalez, S.D. Cal. 3:19-cr-03255" ;
+	legalproc:caseIdentifier "3:19-cr-03255" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Panhandling under threat, then document servitude" ;
+	uco-core:object gz:charge-doc , gz:person-gonzalez , gz:person-leyva , gz:org-ivm , gz:workers , gz:inst-id , gz:trajectory .

@@ -76,6 +76,33 @@ by co-occurring techniques (affordance-labeled multi-action edges in an ESM).
 SHACL `sh:maxCount` on `traj:enactsAction` was removed in **v0.3.1** so those
 edges validate; this extension's version is **0.3.1** (`manifest.json`).
 
+### Benefit-at-expense test (v0.5.0)
+
+`traj:BenefitAnatomy` and `traj:ExploitationAssessment` are inferred.
+They are `owl:disjointWith` `traj:PhaseAssertion` and must carry
+`prov:wasGeneratedBy`. They do not change the observed occupancies.
+
+The definition is Zwolinski, Ferguson & Wertheimer, "Exploitation,"
+*Stanford Encyclopedia of Philosophy*: to exploit is to take unfair
+advantage, and the benefit is at the other person's expense. Offense
+names are not inputs. Fraud, forced labor, trafficking, and sexual
+exploitation of a minor pass or fail from the same facts.
+[ThanosStateMachine issue 2](https://github.com/mrinaalr/ThanosStateMachine/issues/2).
+
+Facts on the transition:
+
+- `suppliedByPerson` — an identified person, or a company the instrument names as the holder or the worker, supplies the gain. False for a program, a sanctions regime, a market, or a system.
+- `personRetainsValue` — that person keeps the value.
+- `requiresPresence` — the benefit requires them to be present and producing. False for a taken object, and false when the benefit is their absence.
+- `transferredObject`, `preexisting`, `valueSurvivesVictim` — the object half. A product made from the person is an object that did not exist beforehand.
+- `advantageDefect` — `deception`, `coercion`, `vulnerability`, `none_alleged`, or `not_in_instrument`. Vulnerability means the instrument alleges the person could not validly agree because of age, dependency, or incapacity.
+
+`benefitSource` is derived: `not_from_person`, `retained`, `victim_sourced`, `person_activity`, `person_used`, `victim_targeted`, or `none`. `person_used` is use of that person, or a product made from that use. SHACL rejects a hand-set string.
+
+`passesExploitationTest` is true only when the goal edge derives `victim_sourced`, `person_activity`, or `person_used` and the defect is `deception`, `coercion`, or `vulnerability`. `passesExtractionTest` is the preexisting-object half and is true only for `victim_sourced`. `exploitationOnset` is the interval of that goal edge's arriving phase, and it is present only on a pass. That interval is when the graph says the trajectory became exploitation. A shared conspiracy window means the instrument did not date the step more finely. A completed crime that is not at a person's expense fails, including a minor who is named but did not supply the gain. Use of a person with no alleged defect fails. Benefit from a person's absence fails. `not_realized` and `withheld_partial` have no goal edge and no onset. A false test is not a finding of lawfulness.
+
+`trajectories-expense-exemplar.ttl` holds the pass and fail cases, including use of a minor and the three rejects that keep the test from passing on the word "child." `trajectories-expense-invalid-exemplar.ttl` must fail: a non-person gain marked as a pass, a taking marked as not exploitation, use of a minor marked as not exploitation, and a minor who is not the source marked as a pass.
+
 ### enactsAction convention: arriving state, not leaving state
 
 A Transition has two endpoints, and a domain extension's action catalog
@@ -192,7 +219,7 @@ Invalid exemplar must fail (observed≠inferred firewall).
 
 ## Status
 
-Local candidate extension (`"status": "candidate"`, version **0.3.1**).
+Local candidate extension (`"status": "candidate"`, version **0.5.0**).
 `example.org` namespace matches rico/drugs/weapons placeholders pending a
 community IRI. Language bindings (`packages/case-uco-trajectories`) are
 deferred.
