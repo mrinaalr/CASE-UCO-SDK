@@ -846,6 +846,16 @@ RECIPE_INDEX: list[dict[str, str]] = [
         "file": "docs/recipes/forensic-tool.md",
     },
     {
+        "title": "Public-Record Capture Bundles",
+        "description": "Map a manifest of fetched public web records, redirects, failed rows, renditions, verified citations, and curator labels.",
+        "keywords": (
+            "public record capture manifest http retrieval hash url redirect "
+            "federal register executive order web page citation curator see_also "
+            "provenance sidecar mime"
+        ),
+        "file": "docs/recipes/public-record-capture.md",
+    },
+    {
         "title": "File System Forensics",
         "description": "Model files, directories, and file system metadata from a disk analysis.",
         "keywords": "file directory filesystem disk analysis extraction",

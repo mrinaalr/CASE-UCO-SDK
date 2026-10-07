@@ -46,6 +46,7 @@ End-to-end mapping recipes that walk through source input, modeling choices, ant
 | Modeling a Forensic Tool and Its Output | [forensic-tool.md](forensic-tool.md) | Create an investigation with a tool and investigative action | — |
 | Configured Tools | [configured-tool.md](configured-tool.md) | Tool configurations, rulesets, ConfiguredTool | [configured_tool](https://github.com/casework/CASE-Examples/tree/master/examples/illustrations/configured_tool) |
 | Chain of Custody | [chain-of-custody.md](chain-of-custody.md) | Track evidence handling, transfers, and provenance records | — |
+| Public-Record Capture Bundles | [public-record-capture.md](public-record-capture.md) | Manifested HTTP captures: hashes, redirects, failed fetches, renditions, verified citations, curator labels | [public-record-capture](../../examples/public-record-capture/) |
 | Forensic Analysis and Classification | [analysis.md](analysis.md) | Malware RE, automated artifact classification with confidence scores | [analysis](https://github.com/casework/CASE-Examples/tree/master/examples/illustrations/analysis) |
 | AI/ML Analysis Pipelines | [ai-analysis-pipeline.md](ai-analysis-pipeline.md) | Multi-step AI inference, image search, per-result scoring, ranked outputs | — |
 | Forensic Investigation Lifecycle | [forensic-lifecycle.md](forensic-lifecycle.md) | Ordered phases (survey, preservation, examination, analysis, reporting) | [forensic_lifecycle](https://github.com/casework/CASE-Examples/tree/master/examples/illustrations/forensic_lifecycle) |

@@ -167,6 +167,7 @@ name alone is not enough to assert a DFT-* IRI.
 ## Related
 
 - [forensic-tool.md](forensic-tool.md) — the base tool + action pattern
+- [public-record-capture.md](public-record-capture.md) — fetched public records when no tool name was recorded
 - [configured-tool.md](configured-tool.md) — tool configurations
 - [chain-of-custody.md](chain-of-custody.md) — custody and provenance records
 - [forensic-lifecycle.md](forensic-lifecycle.md) — placing runs into phases

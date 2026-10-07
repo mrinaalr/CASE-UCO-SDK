@@ -1,0 +1,241 @@
+{
+    "@context": {
+        "case-investigation": "https://ontology.caseontology.org/case/investigation/",
+        "kb": "https://example.org/kb/",
+        "uco-action": "https://ontology.unifiedcyberontology.org/uco/action/",
+        "uco-core": "https://ontology.unifiedcyberontology.org/uco/core/",
+        "uco-observable": "https://ontology.unifiedcyberontology.org/uco/observable/",
+        "uco-types": "https://ontology.unifiedcyberontology.org/uco/types/",
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+    },
+    "@graph": [
+        {
+            "@id": "kb:hash-example",
+            "@type": "uco-types:Hash",
+            "uco-types:hashMethod": "SHA256",
+            "uco-types:hashValue": {
+                "@type": "xsd:hexBinary",
+                "@value": "ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB"
+            }
+        },
+        {
+            "@id": "kb:file-facet-order",
+            "@type": "uco-observable:FileFacet",
+            "uco-observable:extension": "html",
+            "uco-observable:fileName": [
+                "order.html"
+            ],
+            "uco-observable:filePath": [
+                "data/order.html"
+            ],
+            "uco-observable:sizeInBytes": {
+                "@type": "xsd:integer",
+                "@value": "128"
+            }
+        },
+        {
+            "@id": "kb:content-facet-order",
+            "@type": "uco-observable:ContentDataFacet",
+            "uco-observable:hash": [
+                {
+                    "@id": "kb:hash-example"
+                }
+            ],
+            "uco-observable:mimeType": [
+                "text/html"
+            ],
+            "uco-observable:sizeInBytes": {
+                "@type": "xsd:integer",
+                "@value": "128"
+            }
+        },
+        {
+            "@id": "kb:file-order-html",
+            "@type": "uco-observable:ObservableObject",
+            "uco-core:hasFacet": [
+                {
+                    "@id": "kb:file-facet-order"
+                },
+                {
+                    "@id": "kb:content-facet-order"
+                }
+            ],
+            "uco-core:name": "Example order HTML"
+        },
+        {
+            "@id": "kb:url-facet-order",
+            "@type": "uco-observable:URLFacet",
+            "uco-observable:fullValue": "https://example.test/order",
+            "uco-observable:path": "/order",
+            "uco-observable:scheme": "https"
+        },
+        {
+            "@id": "kb:url-order",
+            "@type": "uco-observable:URL",
+            "uco-core:hasFacet": [
+                {
+                    "@id": "kb:url-facet-order"
+                }
+            ],
+            "uco-core:name": "https://example.test/order"
+        },
+        {
+            "@id": "kb:arg-http-order",
+            "@type": "uco-action:ActionArgumentFacet",
+            "uco-action:argumentName": "http_status",
+            "uco-action:value": "200"
+        },
+        {
+            "@id": "kb:fetch-order",
+            "@type": "case-investigation:InvestigativeAction",
+            "uco-core:hasFacet": [
+                {
+                    "@id": "kb:arg-http-order"
+                }
+            ],
+            "uco-core:name": "HTTP GET data/order.html",
+            "uco-action:actionStatus": "Success",
+            "uco-action:endTime": {
+                "@type": "xsd:dateTime",
+                "@value": "2026-10-07T22:32:51+00:00"
+            },
+            "uco-action:object": {
+                "@id": "kb:url-order"
+            },
+            "uco-action:result": {
+                "@id": "kb:file-order-html"
+            }
+        },
+        {
+            "@id": "kb:work-order-1",
+            "@type": "uco-core:UcoObject",
+            "uco-core:description": [
+                "Typed as uco-core:UcoObject because CASE/UCO has no executive-order class. A published signing date of 2026-09-29 is date-only and is not written to startTime."
+            ],
+            "uco-core:name": "Example Order 1"
+        },
+        {
+            "@id": "kb:rel-Characterizes-92f81076e210",
+            "@type": "uco-core:Relationship",
+            "uco-core:source": [
+                {
+                    "@id": "kb:file-order-html"
+                }
+            ],
+            "uco-core:target": [
+                {
+                    "@id": "kb:work-order-1"
+                }
+            ],
+            "uco-core:kindOfRelationship": "Characterizes",
+            "uco-core:isDirectional": {
+                "@type": "xsd:boolean",
+                "@value": "true"
+            },
+            "uco-core:description": "The captured HTML is a rendition of the order. The vocabulary has no rendition kind."
+        },
+        {
+            "@id": "kb:work-memo",
+            "@type": "uco-core:UcoObject",
+            "uco-core:name": "Example memorandum"
+        },
+        {
+            "@id": "kb:rel-Related_To-af8b173f4f53",
+            "@type": "uco-core:Relationship",
+            "uco-core:source": [
+                {
+                    "@id": "kb:work-order-1"
+                }
+            ],
+            "uco-core:target": [
+                {
+                    "@id": "kb:work-memo"
+                }
+            ],
+            "uco-core:kindOfRelationship": "Related_To",
+            "uco-core:isDirectional": {
+                "@type": "xsd:boolean",
+                "@value": "true"
+            },
+            "uco-core:description": "Verified substring in the order text: Memorandum M-1. The vocabulary has no Cites kind."
+        },
+        {
+            "@id": "kb:note-curator",
+            "@type": "uco-core:Annotation",
+            "uco-core:name": "Curator label",
+            "uco-core:statement": [
+                "Collector see_also is a curator label. It is an Annotation, not a Relationship."
+            ],
+            "uco-core:object": [
+                {
+                    "@id": "kb:work-order-1"
+                }
+            ]
+        },
+        {
+            "@id": "kb:arg-http-missing",
+            "@type": "uco-action:ActionArgumentFacet",
+            "uco-action:argumentName": "http_status",
+            "uco-action:value": "HTTP 403"
+        },
+        {
+            "@id": "kb:fetch-missing",
+            "@type": "case-investigation:InvestigativeAction",
+            "uco-core:description": [
+                "No content file was stored."
+            ],
+            "uco-core:hasFacet": [
+                {
+                    "@id": "kb:arg-http-missing"
+                }
+            ],
+            "uco-core:name": "HTTP GET missing-release",
+            "uco-action:actionStatus": "Fail"
+        },
+        {
+            "@id": "kb:provenance-example",
+            "@type": "case-investigation:ProvenanceRecord",
+            "uco-core:name": "Example capture provenance",
+            "uco-core:object": [
+                {
+                    "@id": "kb:fetch-order"
+                },
+                {
+                    "@id": "kb:file-order-html"
+                }
+            ],
+            "case-investigation:exhibitNumber": "EXAMPLE"
+        },
+        {
+            "@id": "kb:investigation-example",
+            "@type": "case-investigation:Investigation",
+            "uco-core:name": "Example public-record capture",
+            "uco-core:object": [
+                {
+                    "@id": "kb:file-order-html"
+                },
+                {
+                    "@id": "kb:url-order"
+                },
+                {
+                    "@id": "kb:work-order-1"
+                },
+                {
+                    "@id": "kb:work-memo"
+                },
+                {
+                    "@id": "kb:fetch-order"
+                },
+                {
+                    "@id": "kb:fetch-missing"
+                },
+                {
+                    "@id": "kb:note-curator"
+                },
+                {
+                    "@id": "kb:provenance-example"
+                }
+            ]
+        }
+    ]
+}
