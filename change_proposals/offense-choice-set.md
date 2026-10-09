@@ -211,7 +211,7 @@ I am fine with my examples being transcribed and credited.
 
 `validate_graph` on `extensions/choice/choice-exemplar.ttl` and on `change_proposals/offense-choice-set.jsonld`: `conforms: true`, `violation_count: 0`, `verification_status: complete`. Loaded extensions: `choice`, `trajectories`, `layered`, `attack-technique`, `forced-labor`. Profiles: `prov-o`, `time`. Validator: case_validate 0.17.0.
 
-`extensions/choice/choice-invalid-exemplar.ttl` does not conform (13 violations), including a missing source on the option, `identityFriction "easy"`, `selectionRule "bellman"`, a one-member menu, and missing `prov:wasGeneratedBy` on the assessment and the selection.
+`extensions/choice/choice-invalid-exemplar.ttl` does not conform (9 violations): the option is missing its goal, state, instrument, and source; `identityFriction` is `"easy"`; `selectionRule` is `"bellman"`; the menu has one member; and both the assessment and the selection lack `prov:wasGeneratedBy`.
 
 ## Unresolved issues
 
