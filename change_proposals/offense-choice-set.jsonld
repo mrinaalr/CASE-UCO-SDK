@@ -1,0 +1,1062 @@
+[
+  {
+    "@id": "http://example.org/kb/choice/castanos/esm",
+    "@type": [
+      "http://example.org/ontology/layered/ExploitationStateMachine"
+    ],
+    "http://example.org/ontology/layered/completeness": [
+      {
+        "@value": "partial"
+      }
+    ],
+    "http://example.org/ontology/layered/compositionPattern": [
+      {
+        "@value": "parallel"
+      }
+    ],
+    "http://example.org/ontology/layered/concernsSubject": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/person-castanos-garcia"
+      }
+    ],
+    "http://example.org/ontology/layered/hasFactor": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/goal-collect-cash"
+      },
+      {
+        "@id": "http://example.org/kb/choice/castanos/instrument-rideshare"
+      },
+      {
+        "@id": "http://example.org/kb/choice/castanos/instrument-ups"
+      }
+    ],
+    "http://example.org/ontology/layered/hasLayer": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/layer-agawam"
+      },
+      {
+        "@id": "http://example.org/kb/choice/castanos/layer-attleboro"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Two partial trajectories for one cash-collection goal. Parallel here means independent realizations, not a claim that the incidents overlapped in time. completeness is partial: the elder-fraud alphabet beyond collection is not in this graph."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Castanos collection methods"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/goal-collect-cash",
+    "@type": [
+      "http://example.org/ontology/choice/Goal"
+    ],
+    "http://example.org/ontology/choice/pursuedBy": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/person-castanos-garcia"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Stable across the Agawam rideshare handoff and the Attleboro UPS shipment. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Move the directed cash from the victim to the runners"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/person-baez-santana",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/identity/Person"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Runner who directed a Lyft driver to an elderly victim's address in Agawam, Massachusetts, in February 2023. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Andry Joel Baez Santana"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/transition-attleboro",
+    "@type": [
+      "http://example.org/ontology/trajectories/Transition"
+    ],
+    "http://example.org/ontology/trajectories/enactsAction": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/action-ups"
+      }
+    ],
+    "http://example.org/ontology/trajectories/fromState": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/state-proceeds-collection"
+      }
+    ],
+    "http://example.org/ontology/trajectories/toState": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/state-disrupted"
+      }
+    ],
+    "http://example.org/ontology/trajectories/trigger": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/action-ups"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/state-collected",
+    "@type": [
+      "http://example.org/ontology/trajectories/State"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "The cash package reached the runners."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Collected"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/person-tavarez-jimenez",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/identity/Person"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Collected a UPS cash package at the first of two Attleboro addresses and was arrested attempting to collect the second. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Ransel Starlin Tavarez Jimenez"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/capability-direct-rideshare",
+    "@type": [
+      "http://example.org/ontology/choice/OffenderCapability"
+    ],
+    "http://example.org/ontology/choice/enablesOption": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/option-rideshare"
+      }
+    ],
+    "http://example.org/ontology/choice/possessedBy": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/person-baez-santana"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/evidence-agawam"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Baez Santana directed the Lyft driver. This is the actor's capability, not the platform feature. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Can direct a rideshare driver"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/selection-agawam",
+    "@type": [
+      "http://example.org/ontology/choice/Selection"
+    ],
+    "http://example.org/ontology/choice/amongOptions": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/option-rideshare"
+      },
+      {
+        "@id": "http://example.org/kb/choice/castanos/option-ups"
+      }
+    ],
+    "http://example.org/ontology/choice/selectionRule": [
+      {
+        "@value": "not_modeled"
+      }
+    ],
+    "http://example.org/ontology/choice/selectsOption": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/option-rideshare"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasGeneratedBy": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/activity-friction-reading"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "The Agawam trajectory walked the rideshare option. The UPS option is the other sourced method for the same goal. This selection does not claim the runners compared the two that day, and it does not claim optimality."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Agawam method, rule not modeled"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/instant-attleboro-begin",
+    "@type": [
+      "http://www.w3.org/2006/time#Instant"
+    ],
+    "http://www.w3.org/2006/time#inXSDDateTimeStamp": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp",
+        "@value": "2022-09-01T00:00:00Z"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/phase-attleboro-disrupted",
+    "@type": [
+      "http://example.org/ontology/trajectories/PhaseAssertion"
+    ],
+    "http://example.org/ontology/trajectories/assertsState": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/state-disrupted"
+      }
+    ],
+    "http://example.org/ontology/trajectories/atInterval": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/interval-attleboro-disrupted"
+      }
+    ],
+    "http://example.org/ontology/trajectories/isTerminal": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "http://example.org/ontology/trajectories/sequenceIndex": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ],
+    "http://example.org/ontology/trajectories/terminalPolarity": [
+      {
+        "@value": "disrupted"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/evidence-attleboro"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/hasFacet": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/confidence-attleboro-disrupted"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Attleboro occupancy — disrupted"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/evidence-agawam",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/core/UcoObject"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Baez Santana directed a Lyft driver to the victim's Agawam address. The driver delivered the cash package. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Agawam rideshare cash handoff, February 2023"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/evidence-attleboro",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/core/UcoObject"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "A Texas victim was instructed in September 2022 to ship cash via UPS to two Attleboro addresses. Tavarez Jimenez collected the first package and was arrested in October 2022 attempting to collect the second. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Attleboro UPS cash shipment, September–October 2022"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/capability-receive-shipment",
+    "@type": [
+      "http://example.org/ontology/choice/OffenderCapability"
+    ],
+    "http://example.org/ontology/choice/enablesOption": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/option-ups"
+      }
+    ],
+    "http://example.org/ontology/choice/possessedBy": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/person-tavarez-jimenez"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/evidence-attleboro"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Tavarez Jimenez collected a UPS package at an Attleboro address. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Can receive a commercial shipment"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/assessment-rideshare",
+    "@type": [
+      "http://example.org/ontology/choice/OptionAssessment"
+    ],
+    "http://example.org/ontology/choice/assessesOption": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/option-rideshare"
+      }
+    ],
+    "http://example.org/ontology/choice/delayBurden": [
+      {
+        "@value": "low"
+      }
+    ],
+    "http://example.org/ontology/choice/detectionExposure": [
+      {
+        "@value": "moderate"
+      }
+    ],
+    "http://example.org/ontology/choice/feasibility": [
+      {
+        "@value": "feasible"
+      }
+    ],
+    "http://example.org/ontology/choice/identityFriction": [
+      {
+        "@value": "low"
+      }
+    ],
+    "http://example.org/ontology/choice/resourceCost": [
+      {
+        "@value": "low"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasGeneratedBy": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/activity-friction-reading"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Analyst reading: a doorstep handoff creates less carrier identity than a commercial shipment. Not a measurement and not a utility."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Rideshare friction reading"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/assessment-ups",
+    "@type": [
+      "http://example.org/ontology/choice/OptionAssessment"
+    ],
+    "http://example.org/ontology/choice/assessesOption": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/option-ups"
+      }
+    ],
+    "http://example.org/ontology/choice/delayBurden": [
+      {
+        "@value": "moderate"
+      }
+    ],
+    "http://example.org/ontology/choice/detectionExposure": [
+      {
+        "@value": "moderate"
+      }
+    ],
+    "http://example.org/ontology/choice/feasibility": [
+      {
+        "@value": "feasible"
+      }
+    ],
+    "http://example.org/ontology/choice/identityFriction": [
+      {
+        "@value": "high"
+      }
+    ],
+    "http://example.org/ontology/choice/resourceCost": [
+      {
+        "@value": "low"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasGeneratedBy": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/activity-friction-reading"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Analyst reading: a commercial shipment creates a carrier record and a delivery address. Not a measurement and not a utility."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "UPS friction reading"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/action-rideshare",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/action/Action"
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/evidence-agawam"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/action/instrument": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/instrument-rideshare"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/action/performer": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/person-baez-santana"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Direct a rideshare driver to collect the cash package"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/phase-attleboro-collection",
+    "@type": [
+      "http://example.org/ontology/trajectories/PhaseAssertion"
+    ],
+    "http://example.org/ontology/trajectories/assertsState": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/state-proceeds-collection"
+      }
+    ],
+    "http://example.org/ontology/trajectories/atInterval": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/interval-attleboro-collection"
+      }
+    ],
+    "http://example.org/ontology/trajectories/sequenceIndex": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "0"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/evidence-attleboro"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/hasFacet": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/confidence-attleboro-collection"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Attleboro occupancy — proceeds collection"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/interval-attleboro-disrupted",
+    "@type": [
+      "http://www.w3.org/2006/time#ProperInterval"
+    ],
+    "http://www.w3.org/2006/time#hasBeginning": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/instant-attleboro-mid"
+      }
+    ],
+    "http://www.w3.org/2006/time#hasEnd": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/instant-attleboro-end"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/instant-agawam-begin",
+    "@type": [
+      "http://www.w3.org/2006/time#Instant"
+    ],
+    "http://www.w3.org/2006/time#inXSDDateTimeStamp": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp",
+        "@value": "2023-02-01T00:00:00Z"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/activity-friction-reading",
+    "@type": [
+      "http://www.w3.org/ns/prov#Activity"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Produces the friction levels and the not_modeled selection. The affidavit names the methods. It does not grade friction or state a choice rule."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Analyst reading of collection-method friction"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/instant-attleboro-mid",
+    "@type": [
+      "http://www.w3.org/2006/time#Instant"
+    ],
+    "http://www.w3.org/2006/time#inXSDDateTimeStamp": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp",
+        "@value": "2022-09-30T23:59:59Z"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/trajectory-agawam",
+    "@type": [
+      "http://example.org/ontology/trajectories/Trajectory"
+    ],
+    "http://example.org/ontology/trajectories/hasPhaseAssertion": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/phase-agawam-collection"
+      },
+      {
+        "@id": "http://example.org/kb/choice/castanos/phase-agawam-collected"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Agawam rideshare collection"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/transition-agawam",
+    "@type": [
+      "http://example.org/ontology/trajectories/Transition"
+    ],
+    "http://example.org/ontology/trajectories/enactsAction": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/action-rideshare"
+      }
+    ],
+    "http://example.org/ontology/trajectories/fromState": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/state-proceeds-collection"
+      }
+    ],
+    "http://example.org/ontology/trajectories/toState": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/state-collected"
+      }
+    ],
+    "http://example.org/ontology/trajectories/trigger": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/action-rideshare"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/instant-agawam-end",
+    "@type": [
+      "http://www.w3.org/2006/time#Instant"
+    ],
+    "http://www.w3.org/2006/time#inXSDDateTimeStamp": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp",
+        "@value": "2023-02-28T23:59:59Z"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/evidence-payment-direction",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/core/UcoObject"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Closers directed victims to send or deliver cash. The affidavit then describes rideshare handoff and commercial-carrier shipment as the methods used. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Closer direction to send cash"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/state-disrupted",
+    "@type": [
+      "http://example.org/ontology/trajectories/State"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "An intervention ended the collection before the modeled endpoint."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Disrupted"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/instrument-rideshare",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/core/UcoObject"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "A rideshare driver is sent to the victim's address and carries the cash package. Neutral means of moving a package. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Rideshare handoff"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/action-ups",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/action/Action"
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/evidence-attleboro"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/action/instrument": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/instrument-ups"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/action/performer": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/person-tavarez-jimenez"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Direct a UPS shipment of the cash package"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/option-ups",
+    "@type": [
+      "http://example.org/ontology/choice/Option"
+    ],
+    "http://example.org/ontology/choice/availableAt": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/state-proceeds-collection"
+      }
+    ],
+    "http://example.org/ontology/choice/enactedTransition": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/transition-attleboro"
+      }
+    ],
+    "http://example.org/ontology/choice/servesGoal": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/goal-collect-cash"
+      }
+    ],
+    "http://example.org/ontology/choice/usesInstrument": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/instrument-ups"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/evidence-attleboro"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Walked toward Attleboro and interrupted by arrest. Same goal as the rideshare option. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "UPS shipment"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/instrument-ups",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/core/UcoObject"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "A commercial carrier ships the cash package to an address. Neutral means of moving a package. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "UPS shipment"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/interval-agawam-collection",
+    "@type": [
+      "http://www.w3.org/2006/time#ProperInterval"
+    ],
+    "http://www.w3.org/2006/time#hasBeginning": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/instant-agawam-begin"
+      }
+    ],
+    "http://www.w3.org/2006/time#hasEnd": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/instant-agawam-end"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/confidence-agawam-collection",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/core/ConfidenceFacet"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "80"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/confidence-attleboro-collection",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/core/ConfidenceFacet"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "80"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/interval-attleboro-collection",
+    "@type": [
+      "http://www.w3.org/2006/time#ProperInterval"
+    ],
+    "http://www.w3.org/2006/time#hasBeginning": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/instant-attleboro-begin"
+      }
+    ],
+    "http://www.w3.org/2006/time#hasEnd": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/instant-attleboro-mid"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/option-rideshare",
+    "@type": [
+      "http://example.org/ontology/choice/Option"
+    ],
+    "http://example.org/ontology/choice/availableAt": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/state-proceeds-collection"
+      }
+    ],
+    "http://example.org/ontology/choice/enactedTransition": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/transition-agawam"
+      }
+    ],
+    "http://example.org/ontology/choice/servesGoal": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/goal-collect-cash"
+      }
+    ],
+    "http://example.org/ontology/choice/usesInstrument": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/instrument-rideshare"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/evidence-agawam"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Walked in Agawam, February 2023. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Rideshare handoff"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/layer-attleboro",
+    "@type": [
+      "http://example.org/ontology/layered/Layer"
+    ],
+    "http://example.org/ontology/layered/coverage": [
+      {
+        "@value": "partial"
+      }
+    ],
+    "http://example.org/ontology/layered/layerIndex": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "2"
+      }
+    ],
+    "http://example.org/ontology/layered/occupiesTrajectory": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/trajectory-attleboro"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/layer-agawam",
+    "@type": [
+      "http://example.org/ontology/layered/Layer"
+    ],
+    "http://example.org/ontology/layered/coverage": [
+      {
+        "@value": "partial"
+      }
+    ],
+    "http://example.org/ontology/layered/layerIndex": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ],
+    "http://example.org/ontology/layered/occupiesTrajectory": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/trajectory-agawam"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/state-proceeds-collection",
+    "@type": [
+      "http://example.org/ontology/trajectories/State"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "The phase in which a directed cash package is physically obtained."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Proceeds collection"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/confidence-agawam-collected",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/core/ConfidenceFacet"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "80"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/confidence-attleboro-disrupted",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/core/ConfidenceFacet"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "80"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/instant-attleboro-end",
+    "@type": [
+      "http://www.w3.org/2006/time#Instant"
+    ],
+    "http://www.w3.org/2006/time#inXSDDateTimeStamp": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp",
+        "@value": "2022-10-31T23:59:59Z"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/phase-agawam-collected",
+    "@type": [
+      "http://example.org/ontology/trajectories/PhaseAssertion"
+    ],
+    "http://example.org/ontology/trajectories/assertsState": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/state-collected"
+      }
+    ],
+    "http://example.org/ontology/trajectories/atInterval": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/interval-agawam-collection"
+      }
+    ],
+    "http://example.org/ontology/trajectories/isTerminal": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "http://example.org/ontology/trajectories/sequenceIndex": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ],
+    "http://example.org/ontology/trajectories/terminalPolarity": [
+      {
+        "@value": "completed"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/evidence-agawam"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/hasFacet": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/confidence-agawam-collected"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Agawam occupancy — collected"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/phase-agawam-collection",
+    "@type": [
+      "http://example.org/ontology/trajectories/PhaseAssertion"
+    ],
+    "http://example.org/ontology/trajectories/assertsState": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/state-proceeds-collection"
+      }
+    ],
+    "http://example.org/ontology/trajectories/atInterval": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/interval-agawam-collection"
+      }
+    ],
+    "http://example.org/ontology/trajectories/sequenceIndex": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "0"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/evidence-agawam"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/hasFacet": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/confidence-agawam-collection"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Agawam occupancy — proceeds collection"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/trajectory-attleboro",
+    "@type": [
+      "http://example.org/ontology/trajectories/Trajectory"
+    ],
+    "http://example.org/ontology/trajectories/hasPhaseAssertion": [
+      {
+        "@id": "http://example.org/kb/choice/castanos/phase-attleboro-collection"
+      },
+      {
+        "@id": "http://example.org/kb/choice/castanos/phase-attleboro-disrupted"
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Attleboro UPS collection"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/kb/choice/castanos/person-castanos-garcia",
+    "@type": [
+      "https://ontology.unifiedcyberontology.org/uco/identity/Person"
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/description": [
+      {
+        "@value": "Lead operator of the call centers. The collection goal is attributed to the operation he directed. Source: Aff."
+      }
+    ],
+    "https://ontology.unifiedcyberontology.org/uco/core/name": [
+      {
+        "@value": "Oscar Manuel Castanos Garcia"
+      }
+    ]
+  }
+]

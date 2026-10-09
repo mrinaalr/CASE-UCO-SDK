@@ -1,0 +1,36 @@
+{
+  "name": "choice",
+  "display_name": "Offense Choice Set",
+  "version": "0.1.0",
+  "status": "candidate",
+  "upstream_repo": "https://github.com/vulnmaster/CASE-UCO-SDK",
+  "upstream_ref": "main",
+  "license": "Apache-2.0",
+  "namespaces": {
+    "choice": "http://example.org/ontology/choice/"
+  },
+  "owl_files": [
+    "choice.ttl"
+  ],
+  "shacl_files": [
+    "choice-shapes.ttl"
+  ],
+  "bridge_files": [],
+  "depends_on": ["trajectories", "layered"],
+  "exemplar_files": [
+    "choice-exemplar.ttl"
+  ],
+  "invalid_exemplar_files": [
+    "choice-invalid-exemplar.ttl"
+  ],
+  "uco_compat": ["1.4.0"],
+  "upper_ontology": "none",
+  "cdo_shapes_compatibility": {
+    "CDO-Shapes-gufo": "compatible",
+    "CDO-Shapes-BFO": "compatible",
+    "CDO-Shapes-PROV-O": "compatible",
+    "CDO-Shapes-Time": "compatible",
+    "CDO-Shapes-GeoSPARQL": "compatible",
+    "CDO-Shapes-FOAF": "compatible"
+  }
+}

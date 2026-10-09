@@ -24,6 +24,12 @@ When ready, copy the contents of the proposal file into a new GitHub issue:
 - **CASE concepts** (investigation-specific roles, actions, metadata): https://github.com/casework/CASE/issues/new
 - **CAC concepts** (crimes-against-children domain): https://github.com/Project-VIC-International/CAC-Ontology/issues/new
 
+## Local ESM vocabulary, not filed upstream
+
+| Proposal | Landing | Notes |
+|---|---|---|
+| [`offense-choice-set.md`](offense-choice-set.md) | `extensions/choice` 0.1.0 | Drafted with `draft_change_proposal`, then reviewed. Cites [UCO #682](https://github.com/ucoProject/UCO/issues/682). Does not open a new UCO issue. |
+
 ## Filed CAC proposals
 
 | Proposal | Issue | Local pending declarations |
