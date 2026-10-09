@@ -25,6 +25,18 @@ Friction levels are `low`, `moderate`, `high`, or `not_in_source`. Feasibility i
 
 Friction levels in that file are an analyst reading. The file has no `choice:Selection`. The two options are separate realizations, not a menu the record says was chosen from.
 
+## Synthetic stress test
+
+`choice-synthetic-travel.ttl` is not a case. One fictional traveler, one goal (San Francisco to New York), one departure state, one window, four options. It conforms. Nothing in the vocabulary was changed to make it conform. What it exposed:
+
+- `choice:OffenderCapability` is the class for a traveler who is not an offender. `possessedBy` accepts any `uco-core:UcoObject`, so the graph conforms. The class name is narrower than the ontology's domain-general claim.
+- A stagecoach that no longer operates is `constraintKind "wall"`, the nearest of `wall`, `guardian`, and `access_denial`. The `wall` comment is a barrier in the current environment. None of the three values is a mode that has left the environment.
+- `ex:selection-plane` conforms with `selectionRule "not_modeled"` and with no chooser and no decision window. The window is only on the phase assertion. That hole is [issue 5](https://github.com/mrinaalr/CASE-UCO-SDK/issues/5).
+- The selection's menu includes the removed stagecoach and the private jet the traveler cannot use. The shapes do not require an `amongOptions` member to be feasible or enabled.
+- The jet gap is the absence of `enablesOption`. The graph does not state that the traveler lacks a jet capability. The same absence also matches the stagecoach, which is removed by a constraint, so a missing `enablesOption` does not by itself mean a capability gap.
+- The Castanos competency queries run on this graph without being rewritten. Questions 1 and 3 return no rows because they name the Castanos goal. Question 2 returns the one walked option. Question 4 returns all four assessments.
+- The only state is the departure decision, so the walked transition leaves and returns to that state. New York is not a state in the graph.
+
 ## Validate
 
 ```python

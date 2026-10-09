@@ -1,0 +1,236 @@
+# Synthetic stress test. Not a case. No offense content. No real person.
+# One fictional traveler, one goal, one departure decision, one window.
+# Four options sit on that menu in four different ways: walked, available
+# and not walked, removed, and present but not enabled for this traveler.
+# Every prov:wasDerivedFrom below cites ex:source-synthetic.
+
+@prefix choice: <http://example.org/ontology/choice/> .
+@prefix ex: <http://example.org/kb/choice/synthetic-travel/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# Synthetic source and the traveler
+#################################################################
+
+ex:source-synthetic
+	a uco-core:UcoObject ;
+	uco-core:name "Synthetic travel scenario" ;
+	uco-core:description "Synthetic source. This node is not a court record, a filing, or a press release. Every fact in this graph was written to exercise the choice vocabulary." ;
+	rdfs:comment "Synthetic source. Not a court record."@en .
+
+ex:traveler
+	a uco-identity:Person ;
+	uco-core:name "Synthetic Traveler" ;
+	uco-core:description "Fictional traveler. Not a real person. The only actor in this graph." ;
+	rdfs:comment "Synthetic traveler. Not a real person and not an offender."@en .
+
+#################################################################
+# One state, one window
+#################################################################
+
+ex:state-departure-decision
+	a traj:State ;
+	uco-core:name "Departure decision" ;
+	uco-core:description "The single state at which the four options are on the menu." .
+
+ex:interval-decision
+	a time:ProperInterval ;
+	time:hasBeginning ex:instant-decision-begin ;
+	time:hasEnd ex:instant-decision-end .
+
+ex:instant-decision-begin
+	a time:Instant ;
+	time:inXSDDateTimeStamp "2026-06-15T00:00:00Z"^^xsd:dateTimeStamp .
+
+ex:instant-decision-end
+	a time:Instant ;
+	time:inXSDDateTimeStamp "2026-06-15T23:59:59Z"^^xsd:dateTimeStamp .
+
+ex:confidence-departure
+	a uco-core:ConfidenceFacet ;
+	uco-core:confidence "100"^^xsd:nonNegativeInteger .
+
+ex:phase-departure
+	a traj:PhaseAssertion ;
+	uco-core:name "Occupancy of the departure decision" ;
+	traj:assertsState ex:state-departure-decision ;
+	traj:atInterval ex:interval-decision ;
+	traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	traj:isTerminal "true"^^xsd:boolean ;
+	traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom ex:source-synthetic ;
+	uco-core:hasFacet ex:confidence-departure .
+
+ex:trajectory-sf-ny
+	a traj:Trajectory ;
+	uco-core:name "Synthetic San Francisco to New York" ;
+	uco-core:description "One occupancy. The transition below leaves and returns to the same state because this fixture has only the departure decision." ;
+	rdfs:comment "Synthetic trajectory. Not a case."@en ;
+	traj:hasPhaseAssertion ex:phase-departure .
+
+#################################################################
+# Instruments and the one walked action
+#################################################################
+
+ex:instrument-plane
+	a uco-core:UcoObject ;
+	uco-core:name "Scheduled airplane" .
+
+ex:instrument-bus
+	a uco-core:UcoObject ;
+	uco-core:name "Greyhound bus" .
+
+ex:instrument-stagecoach
+	a uco-core:UcoObject ;
+	uco-core:name "Stagecoach" .
+
+ex:instrument-jet
+	a uco-core:UcoObject ;
+	uco-core:name "Private jet" .
+
+ex:action-plane
+	a uco-action:Action ;
+	uco-core:name "Board the scheduled airplane" ;
+	uco-action:performer ex:traveler ;
+	uco-action:instrument ex:instrument-plane ;
+	prov:wasDerivedFrom ex:source-synthetic .
+
+ex:transition-plane
+	a traj:Transition ;
+	traj:fromState ex:state-departure-decision ;
+	traj:toState ex:state-departure-decision ;
+	traj:trigger ex:action-plane ;
+	traj:enactsAction ex:action-plane .
+
+#################################################################
+# Goal and the four options
+#################################################################
+
+ex:goal-sf-ny
+	a choice:Goal ;
+	uco-core:name "Travel from San Francisco to New York" ;
+	uco-core:description "The only goal. All four options serve it." ;
+	rdfs:comment "Synthetic goal. Not taken from a case."@en ;
+	choice:pursuedBy ex:traveler .
+
+ex:option-plane
+	a choice:Option ;
+	uco-core:name "Plane" ;
+	uco-core:description "Walked. The enacted action carries this same instrument." ;
+	choice:servesGoal ex:goal-sf-ny ;
+	choice:availableAt ex:state-departure-decision ;
+	choice:usesInstrument ex:instrument-plane ;
+	choice:enactedTransition ex:transition-plane ;
+	prov:wasDerivedFrom ex:source-synthetic .
+
+ex:option-bus
+	a choice:Option ;
+	uco-core:name "Greyhound bus" ;
+	uco-core:description "Available at the departure decision and not walked." ;
+	choice:servesGoal ex:goal-sf-ny ;
+	choice:availableAt ex:state-departure-decision ;
+	choice:usesInstrument ex:instrument-bus ;
+	prov:wasDerivedFrom ex:source-synthetic .
+
+ex:option-stagecoach
+	a choice:Option ;
+	uco-core:name "Stagecoach" ;
+	uco-core:description "On the menu and removed. No stagecoach line operates on this route." ;
+	choice:servesGoal ex:goal-sf-ny ;
+	choice:availableAt ex:state-departure-decision ;
+	choice:usesInstrument ex:instrument-stagecoach ;
+	prov:wasDerivedFrom ex:source-synthetic .
+
+ex:option-jet
+	a choice:Option ;
+	uco-core:name "Private jet" ;
+	uco-core:description "On the menu. No capability possessed by the traveler enables it. The gap is the missing enablesOption link, not a constraint." ;
+	choice:servesGoal ex:goal-sf-ny ;
+	choice:availableAt ex:state-departure-decision ;
+	choice:usesInstrument ex:instrument-jet ;
+	prov:wasDerivedFrom ex:source-synthetic .
+
+#################################################################
+# Capability, constraint, assessments, selection
+#################################################################
+
+ex:capability-common-carrier
+	a choice:OffenderCapability ;
+	uco-core:name "Can buy a common-carrier ticket" ;
+	uco-core:description "Enables the plane and the bus. Does not enable the private jet. The possessor is a traveler, not an offender." ;
+	choice:possessedBy ex:traveler ;
+	choice:enablesOption ex:option-plane , ex:option-bus ;
+	prov:wasDerivedFrom ex:source-synthetic .
+
+ex:constraint-no-stagecoach
+	a choice:Constraint ;
+	uco-core:name "No operating stagecoach" ;
+	uco-core:description "constraintKind is wall, the nearest of wall, guardian, and access_denial. The comment on wall is a barrier in the current environment. A mode that no longer operates is not a watcher and not a missing credential." ;
+	choice:removesOption ex:option-stagecoach ;
+	choice:constraintKind "wall" .
+
+ex:activity-friction-reading
+	a prov:Activity ;
+	uco-core:name "Analyst reading of travel-option friction" ;
+	uco-core:description "Produces the friction levels and the not_modeled selection. The scenario names the modes. It does not grade friction." .
+
+ex:assessment-plane
+	a choice:OptionAssessment ;
+	uco-core:name "Plane friction reading" ;
+	choice:assessesOption ex:option-plane ;
+	choice:identityFriction "low" ;
+	choice:delayBurden "low" ;
+	choice:detectionExposure "low" ;
+	choice:resourceCost "moderate" ;
+	choice:feasibility "feasible" ;
+	prov:wasGeneratedBy ex:activity-friction-reading .
+
+ex:assessment-bus
+	a choice:OptionAssessment ;
+	uco-core:name "Bus friction reading" ;
+	choice:assessesOption ex:option-bus ;
+	choice:identityFriction "low" ;
+	choice:delayBurden "high" ;
+	choice:detectionExposure "low" ;
+	choice:resourceCost "low" ;
+	choice:feasibility "feasible" ;
+	prov:wasGeneratedBy ex:activity-friction-reading .
+
+ex:assessment-stagecoach
+	a choice:OptionAssessment ;
+	uco-core:name "Stagecoach friction reading" ;
+	choice:assessesOption ex:option-stagecoach ;
+	choice:identityFriction "not_in_source" ;
+	choice:delayBurden "high" ;
+	choice:detectionExposure "not_in_source" ;
+	choice:resourceCost "not_in_source" ;
+	choice:feasibility "removed" ;
+	prov:wasGeneratedBy ex:activity-friction-reading .
+
+ex:assessment-jet
+	a choice:OptionAssessment ;
+	uco-core:name "Private jet friction reading" ;
+	choice:assessesOption ex:option-jet ;
+	choice:identityFriction "low" ;
+	choice:delayBurden "low" ;
+	choice:detectionExposure "low" ;
+	choice:resourceCost "high" ;
+	choice:feasibility "feasible" ;
+	prov:wasGeneratedBy ex:activity-friction-reading .
+
+ex:selection-plane
+	a choice:Selection ;
+	uco-core:name "Plane, rule not modeled" ;
+	uco-core:description "Selects the plane from all four options. Names no chooser and no decision window. selectionRule is not_modeled." ;
+	rdfs:comment "Synthetic selection. Conforms without a chooser or a decision window."@en ;
+	choice:selectsOption ex:option-plane ;
+	choice:amongOptions ex:option-plane , ex:option-bus , ex:option-stagecoach , ex:option-jet ;
+	choice:selectionRule "not_modeled" ;
+	prov:wasGeneratedBy ex:activity-friction-reading .
