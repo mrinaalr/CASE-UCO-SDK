@@ -222,6 +222,19 @@ choice:Selection-shape
 			sh:nodeKind sh:IRI ;
 			sh:message "Every Selection MUST carry prov:wasGeneratedBy."@en ;
 		] ;
+	sh:sparql
+		[
+			a sh:SPARQLConstraint ;
+			sh:message "choice:selectsOption must also appear as choice:amongOptions."@en ;
+			sh:select """
+				PREFIX choice: <http://example.org/ontology/choice/>
+				SELECT $this ?option
+				WHERE {
+					$this choice:selectsOption ?option .
+					FILTER NOT EXISTS { $this choice:amongOptions ?option }
+				}
+				""" ;
+		] ;
 	sh:not
 		[
 			sh:or (

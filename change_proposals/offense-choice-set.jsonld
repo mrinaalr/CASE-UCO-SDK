@@ -176,45 +176,6 @@
     ]
   },
   {
-    "@id": "http://example.org/kb/choice/castanos/selection-agawam",
-    "@type": [
-      "http://example.org/ontology/choice/Selection"
-    ],
-    "http://example.org/ontology/choice/amongOptions": [
-      {
-        "@id": "http://example.org/kb/choice/castanos/option-rideshare"
-      },
-      {
-        "@id": "http://example.org/kb/choice/castanos/option-ups"
-      }
-    ],
-    "http://example.org/ontology/choice/selectionRule": [
-      {
-        "@value": "not_modeled"
-      }
-    ],
-    "http://example.org/ontology/choice/selectsOption": [
-      {
-        "@id": "http://example.org/kb/choice/castanos/option-rideshare"
-      }
-    ],
-    "http://www.w3.org/ns/prov#wasGeneratedBy": [
-      {
-        "@id": "http://example.org/kb/choice/castanos/activity-friction-reading"
-      }
-    ],
-    "https://ontology.unifiedcyberontology.org/uco/core/description": [
-      {
-        "@value": "The Agawam trajectory walked the rideshare option. The UPS option is the other sourced method for the same goal. This selection does not claim the runners compared the two that day, and it does not claim optimality."
-      }
-    ],
-    "https://ontology.unifiedcyberontology.org/uco/core/name": [
-      {
-        "@value": "Agawam method, rule not modeled"
-      }
-    ]
-  },
-  {
     "@id": "http://example.org/kb/choice/castanos/instant-attleboro-begin",
     "@type": [
       "http://www.w3.org/2006/time#Instant"
@@ -537,7 +498,7 @@
     ],
     "https://ontology.unifiedcyberontology.org/uco/core/description": [
       {
-        "@value": "Produces the friction levels and the not_modeled selection. The affidavit names the methods. It does not grade friction or state a choice rule."
+        "@value": "Produces the friction levels. The affidavit names the methods. It does not grade friction or state that one method was chosen over the other."
       }
     ],
     "https://ontology.unifiedcyberontology.org/uco/core/name": [

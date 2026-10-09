@@ -33,4 +33,4 @@ validate_graph_file(
 )
 ```
 
-Worked case: [`choice-exemplar.ttl`](../../extensions/choice/choice-exemplar.ttl).
+Worked case: [`choice-exemplar.ttl`](../../extensions/choice/choice-exemplar.ttl). That graph records both options and does not contain a `choice:Selection`.

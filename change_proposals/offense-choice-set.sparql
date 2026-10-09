@@ -22,15 +22,24 @@ WHERE {
     ?transition a traj:Transition .
 }
 # ---
-# CQ 3: What selection rule was recorded, and which option was selected?
+# CQ 3: For each option serving the cash-collection goal, what friction
+# levels were assessed, and which activity produced the assessment?
 PREFIX choice: <http://example.org/ontology/choice/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX uco-core: <https://ontology.unifiedcyberontology.org/uco/core/>
 
-SELECT ?selection ?rule ?chosen
+SELECT ?option ?identityFriction ?delayBurden ?detectionExposure ?resourceCost ?activity
 WHERE {
-    ?selection a choice:Selection ;
-               choice:selectionRule ?rule ;
-               choice:selectsOption ?chosen ;
-               choice:amongOptions ?menu .
+    ?option a choice:Option ;
+            choice:servesGoal ?goal .
+    ?goal uco-core:name "Move the directed cash from the victim to the runners" .
+    ?assessment a choice:OptionAssessment ;
+                choice:assessesOption ?option ;
+                choice:identityFriction ?identityFriction ;
+                choice:delayBurden ?delayBurden ;
+                choice:detectionExposure ?detectionExposure ;
+                choice:resourceCost ?resourceCost ;
+                prov:wasGeneratedBy ?activity .
 }
 # ---
 # CQ 4: What identity-friction level was assessed for each option?

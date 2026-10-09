@@ -5,11 +5,13 @@
 #   Aff https://www.justice.gov/usao-ma/media/1410886/dl?inline
 #
 # The affidavit describes two ways the same cash-collection goal was carried
-# out: a rideshare handoff in Agawam (February 2023) and a UPS shipment toward
-# Attleboro (instruction September 2022; pickup arrested October 2022).
-# Friction levels are an analyst reading of those methods. selectionRule is
-# not_modeled. No reward is asserted. Month bounds are used because the
-# public write-up of this exemplar does not pin the events to a day.
+# out: a rideshare handoff in Agawam (February 2023, completed, Baez Santana)
+# and a UPS shipment toward Attleboro (instruction September 2022, pickup
+# arrested October 2022, disrupted, Tavarez Jimenez). Different windows and
+# different runners: two realizations of one goal, not a choice between them.
+# This graph has no choice:Selection. Friction levels are an analyst reading.
+# No reward is asserted. Month bounds are used because the public write-up
+# of this exemplar does not pin the events to a day.
 
 @prefix choice: <http://example.org/ontology/choice/> .
 @prefix ex: <http://example.org/kb/choice/castanos/> .
@@ -279,7 +281,7 @@ ex:capability-receive-shipment
 ex:activity-friction-reading
 	a prov:Activity ;
 	uco-core:name "Analyst reading of collection-method friction" ;
-	uco-core:description "Produces the friction levels and the not_modeled selection. The affidavit names the methods. It does not grade friction or state a choice rule." .
+	uco-core:description "Produces the friction levels. The affidavit names the methods. It does not grade friction or state that one method was chosen over the other." .
 
 ex:assessment-rideshare
 	a choice:OptionAssessment ;
@@ -303,15 +305,6 @@ ex:assessment-ups
 	choice:detectionExposure "moderate" ;
 	choice:resourceCost "low" ;
 	choice:feasibility "feasible" ;
-	prov:wasGeneratedBy ex:activity-friction-reading .
-
-ex:selection-agawam
-	a choice:Selection ;
-	uco-core:name "Agawam method, rule not modeled" ;
-	uco-core:description "The Agawam trajectory walked the rideshare option. The UPS option is the other sourced method for the same goal. This selection does not claim the runners compared the two that day, and it does not claim optimality." ;
-	choice:selectsOption ex:option-rideshare ;
-	choice:amongOptions ex:option-rideshare , ex:option-ups ;
-	choice:selectionRule "not_modeled" ;
 	prov:wasGeneratedBy ex:activity-friction-reading .
 
 #################################################################

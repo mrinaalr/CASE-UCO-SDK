@@ -1,12 +1,15 @@
 # Expected-INVALID choice fixture.
 # Must FAIL: option missing goal, state, instrument, and evidence;
 # assessment uses a friction token outside the vocabulary and has no
-# prov:wasGeneratedBy; selection uses a reward-style rule and names
-# only one option.
+# prov:wasGeneratedBy; one selection uses a reward-style rule and names
+# only one option; another selection names a chosen option that is not
+# on its menu.
 
 @prefix choice: <http://example.org/ontology/choice/> .
 @prefix ex: <http://example.org/kb/choice/invalid/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
 @prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 ex:bad-option
@@ -29,3 +32,64 @@ ex:bad-selection
 	choice:selectsOption ex:bad-option ;
 	choice:amongOptions ex:bad-option ;
 	choice:selectionRule "bellman" .
+
+# Otherwise conformant Selection whose chosen option is not on the menu.
+# The menu members and the off-menu option are complete Options so this
+# node fails only the selectsOption membership constraint.
+
+ex:goal-menu
+	a choice:Goal ;
+	uco-core:name "Goal used only to hold a menu" ;
+	choice:pursuedBy ex:actor-menu .
+
+ex:actor-menu
+	a uco-core:UcoObject ;
+	uco-core:name "Actor for the off-menu fixture" .
+
+ex:state-menu
+	a traj:State ;
+	uco-core:name "State for the off-menu fixture" .
+
+ex:instrument-menu
+	a uco-core:UcoObject ;
+	uco-core:name "Instrument for the off-menu fixture" .
+
+ex:source-menu
+	a uco-core:UcoObject ;
+	uco-core:name "Source for the off-menu fixture" .
+
+ex:option-on-menu-a
+	a choice:Option ;
+	uco-core:name "On-menu option A" ;
+	choice:servesGoal ex:goal-menu ;
+	choice:availableAt ex:state-menu ;
+	choice:usesInstrument ex:instrument-menu ;
+	prov:wasDerivedFrom ex:source-menu .
+
+ex:option-on-menu-b
+	a choice:Option ;
+	uco-core:name "On-menu option B" ;
+	choice:servesGoal ex:goal-menu ;
+	choice:availableAt ex:state-menu ;
+	choice:usesInstrument ex:instrument-menu ;
+	prov:wasDerivedFrom ex:source-menu .
+
+ex:option-off-menu
+	a choice:Option ;
+	uco-core:name "Option that is not on the menu" ;
+	choice:servesGoal ex:goal-menu ;
+	choice:availableAt ex:state-menu ;
+	choice:usesInstrument ex:instrument-menu ;
+	prov:wasDerivedFrom ex:source-menu .
+
+ex:activity-off-menu
+	a prov:Activity ;
+	uco-core:name "Activity for an off-menu selection" .
+
+ex:selection-off-menu
+	a choice:Selection ;
+	uco-core:name "Selection whose chosen option is not on the menu" ;
+	choice:selectsOption ex:option-off-menu ;
+	choice:amongOptions ex:option-on-menu-a , ex:option-on-menu-b ;
+	choice:selectionRule "not_modeled" ;
+	prov:wasGeneratedBy ex:activity-off-menu .

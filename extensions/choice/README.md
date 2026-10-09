@@ -23,7 +23,7 @@ Friction levels are `low`, `moderate`, `high`, or `not_in_source`. Feasibility i
 
 `choice-exemplar.ttl` — United States v. Castanos Garcia (D. Mass.). One goal, move directed cash to the runners. Two options the affidavit names: rideshare (Agawam, February 2023, completed) and UPS (Attleboro, September–October 2022, disrupted). The ESM is `parallel` and `partial`: two independent realizations, not a claim they overlapped, and not the rest of the elder-fraud alphabet.
 
-Friction levels in that file are an analyst reading. `selectionRule` is `not_modeled`.
+Friction levels in that file are an analyst reading. The file has no `choice:Selection`. The two options are separate realizations, not a menu the record says was chosen from.
 
 ## Validate
 
