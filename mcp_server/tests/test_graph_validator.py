@@ -95,6 +95,9 @@ def test_extension_ontology_args_cac_full_uses_manifest() -> None:
 def test_missing_validator_fails_honestly(tmp_path, monkeypatch):
     graph = write_graph(tmp_path, T0_CONFORMANT_GRAPH)
     monkeypatch.setattr(graph_validator.shutil, "which", lambda _name: None)
+    monkeypatch.setattr(
+        "case_uco.validation.graph._validator_beside_interpreter", lambda: None
+    )
     with pytest.raises(ValueError, match="validator_unavailable"):
         graph_validator.validate_graph_file(graph)
 

@@ -1,0 +1,158 @@
+{
+  "extension": "elder-fraud",
+  "modules": [
+    "elder-fraud"
+  ],
+  "classes": {
+    "a_spoof": {
+      "iri": "http://example.org/ontology/elder-fraud/a_spoof",
+      "module": "elder-fraud",
+      "description": "Caller-ID / VoIP spoofing technique (uco-action:Technique class). techniqueID EF.T1.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every elder-fraud Technique action instance."
+        }
+      ],
+      "source": "elder-fraud"
+    },
+    "a_script": {
+      "iri": "http://example.org/ontology/elder-fraud/a_script",
+      "module": "elder-fraud",
+      "description": "Fixed-script deployment technique (uco-action:Technique class). techniqueID EF.T2.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every elder-fraud Technique action instance."
+        }
+      ],
+      "source": "elder-fraud"
+    },
+    "a_secrecy": {
+      "iri": "http://example.org/ontology/elder-fraud/a_secrecy",
+      "module": "elder-fraud",
+      "description": "Isolation / secrecy instruction technique (uco-action:Technique class). techniqueID EF.T3. Aff.: opener script.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every elder-fraud Technique action instance."
+        }
+      ],
+      "source": "elder-fraud"
+    },
+    "a_direct": {
+      "iri": "http://example.org/ontology/elder-fraud/a_direct",
+      "module": "elder-fraud",
+      "description": "Payment-mechanism direction technique (uco-action:Technique class). techniqueID EF.T8. Closer directs cash form and hand-off; produces ExtractionInstruction.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every elder-fraud Technique action instance."
+        }
+      ],
+      "source": "elder-fraud"
+    },
+    "a_coopt": {
+      "iri": "http://example.org/ontology/elder-fraud/a_coopt",
+      "module": "elder-fraud",
+      "description": "Co-opting an unwitting intermediary technique (uco-action:Technique class). techniqueID EF.T4.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every elder-fraud Technique action instance."
+        }
+      ],
+      "source": "elder-fraud"
+    },
+    "a_fakeid": {
+      "iri": "http://example.org/ontology/elder-fraud/a_fakeid",
+      "module": "elder-fraud",
+      "description": "Purported-business bank account technique (uco-action:Technique class). techniqueID EF.T5.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every elder-fraud Technique action instance."
+        }
+      ],
+      "source": "elder-fraud"
+    },
+    "a_deposit": {
+      "iri": "http://example.org/ontology/elder-fraud/a_deposit",
+      "module": "elder-fraud",
+      "description": "Deposit structuring <$10k to evade BSA reporting (uco-action:Technique class). techniqueID EF.T6.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every elder-fraud Technique action instance."
+        }
+      ],
+      "source": "elder-fraud"
+    },
+    "a_transmit": {
+      "iri": "http://example.org/ontology/elder-fraud/a_transmit",
+      "module": "elder-fraud",
+      "description": "Cross-border proceeds transmission technique (uco-action:Technique class). techniqueID EF.T7.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every elder-fraud Technique action instance."
+        }
+      ],
+      "source": "elder-fraud"
+    }
+  },
+  "vocabs": {
+    "PhaseScheme": {
+      "iri": "http://example.org/ontology/elder-fraud/PhaseScheme",
+      "description": "skos:ConceptScheme of traj:State phase instances: InitialContact, Conditioning, ExtractionInstruction, ProceedsCollection, Laundering, Completed."
+    }
+  }
+}

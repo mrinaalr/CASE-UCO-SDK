@@ -1,0 +1,203 @@
+# Elder-Fraud Exploitation State Machine Extension (T-Box + phase/action vocabulary)
+#
+# Narrow, machine-only extension: contributes ONLY what the trajectories
+# (traj:) Exploitation State Machine needs to run on a grandparent-scam /
+# transnational elder-fraud offense — a skos:ConceptScheme of traj:State
+# phases and a small catalog of uco-action:Technique-typed action classes.
+# It is deliberately NOT a rich domain ontology: no class hierarchy beyond
+# the Technique metaclass punning pattern already established by
+# extensions/attack-technique, and no elder-fraud-specific taxonomy of
+# victims, instruments, or roles (those stay as ordinary UCO/uco-identity
+# nodes in the exemplar).
+#
+# Phase set grounded in United States v. Oscar Manuel Castanos Garcia, et
+# al., No. 1:24-cr-10138-LTS (D. Mass.). Both sources are public DOJ URLs
+# (no PACER, nothing vendored in-repo):
+#   PR  -- USAO-MA press release "Operators of Transnational Elder Fraud
+#          Scheme Plead Guilty" (2026-07-15):
+#          https://www.justice.gov/usao-ma/pr/operators-transnational-elder-fraud-scheme-plead-guilty
+#   Aff -- Detention Affidavit, USA v. Oscar Manuel Castanos Garcia, et al.,
+#          publicly hosted at:
+#          https://www.justice.gov/usao-ma/media/1410886/dl?inline
+#          (Affiant identity and internal paragraph numbering are not
+#          asserted here — not traceable without fetching the PDF, which
+#          this extension does not vendor. Citations below are document-
+#          level: "Aff." vs "PR", not pinpoint.)
+#
+# Offense phases (S):
+#   InitialContact         -- "Opener" cold-calls victim impersonating a
+#                              grandchild in trouble (Aff.).
+#   Conditioning            -- "Closer" impersonates the grandchild's
+#                              attorney and demands bail/fee money (Aff.).
+#   ExtractionInstruction   -- Closer (posing as the grandchild's attorney)
+#                              directs the payment mechanism: cash form and
+#                              hand-off via rideshare/"documents" pickup,
+#                              commercial-carrier shipment, or delivery
+#                              (Aff.; produced by a_direct).
+#   ProceedsCollection      -- A US-based runner (via unwitting rideshare
+#                              driver or carrier delivery) physically
+#                              obtains the cash (Aff.).
+#   Laundering              -- Proceeds are deposited into bank accounts in
+#                              the names of purported businesses, structured
+#                              below the $10,000 CTR threshold (Aff.).
+# Terminal outcome states (F), reached by transition (not mid-offense phases):
+#   Completed               -- Cross-border transmission of laundered proceeds
+#                              realized the modeled endpoint (Aff.).
+#   (Disrupted is carried as traj:terminalPolarity on a mid-chain terminal
+#    PhaseAssertion — e.g. Attleboro arrest at ProceedsCollection — rather
+#    than as a separate traj:State, matching the trajectories metamodel.)
+#
+# Authoritative transition function T (arriving-state enactsAction; multi-
+# action edges are multi-valued). FACT CORRECTION vs an earlier ESM draft:
+# Aff. places the secrecy line ("keep this between us until i get out") in
+# the OPENER script (InitialContact), not the Closer/Conditioning phase —
+# so a_secrecy gates InitialContact -> Conditioning with a_spoof/a_script.
+# a_direct (payment-mechanism direction by the Closer) produces
+# ExtractionInstruction.
+#
+#   InitialContact --a_spoof, a_script, a_secrecy--> Conditioning
+#   Conditioning --a_direct--> ExtractionInstruction
+#   ExtractionInstruction --a_coopt--> ProceedsCollection
+#   ProceedsCollection --a_fakeid, a_deposit--> Laundering
+#   Laundering --a_transmit--> Completed
+#
+# Terminal polarity: Agawam full run ends Completed/"completed"; Attleboro
+# UPS pickup is mid-chain interrupted at ProceedsCollection/"disrupted"
+# (Tavarez Jimenez arrested collecting the second package) (Aff.).
+#
+# Exogenous pre-s0: victim-list purchase is a prov:Activity feeding
+# InitialContact — NOT a member of S (Aff.: operators purchased elderly-
+# victim lists).
+
+@prefix ef: <http://example.org/ontology/elder-fraud/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/ontology/elder-fraud>
+	a owl:Ontology ;
+	rdfs:label "Elder-Fraud Exploitation State Machine Extension"@en ;
+	rdfs:comment "Phase vocabulary (traj:State plug-in) and Technique-typed action catalog for a transnational grandparent-scam / elder-fraud Exploitation State Machine. Grounded in United States v. Castanos Garcia et al., No. 1:24-cr-10138-LTS (D. Mass.). Depends on the trajectories and attack-technique extensions; mints no domain taxonomy beyond phases and actions."@en ;
+	dcterms:source
+		"https://www.justice.gov/usao-ma/pr/operators-transnational-elder-fraud-scheme-plead-guilty"^^xsd:anyURI ,
+		"https://www.justice.gov/usao-ma/media/1410886/dl?inline"^^xsd:anyURI ;
+	owl:imports
+		<http://example.org/ontology/trajectories> ,
+		<https://ontology.unifiedcyberontology.org/uco/action/> .
+
+#################################################################
+# Phase vocabulary: traj:State instances in a SKOS scheme
+#################################################################
+
+ef:PhaseScheme
+	a skos:ConceptScheme ;
+	skos:prefLabel "Elder-fraud (grandparent-scam) offense phases"@en ;
+	dcterms:source "United States v. Castanos Garcia et al., No. 1:24-cr-10138-LTS (D. Mass.), Detention Affidavit, publicly hosted at https://www.justice.gov/usao-ma/media/1410886/dl?inline"@en .
+
+ef:InitialContact
+	a traj:State , skos:Concept ;
+	uco-core:name "Initial contact" ;
+	skos:prefLabel "Initial contact"@en ;
+	skos:definition "'Opener' call-center employee cold-calls the elderly victim, impersonating a grandchild who was in an accident; VoIP spoofing makes the call appear to originate from a U.S. number; the opener script includes an isolation instruction ('keep this between us until i get out'). Source: Aff. (opener script photos)."@en ;
+	skos:inScheme ef:PhaseScheme .
+
+ef:Conditioning
+	a traj:State , skos:Concept ;
+	uco-core:name "Conditioning" ;
+	skos:prefLabel "Conditioning"@en ;
+	skos:definition "'Closer' call-center employee follows up, impersonating the grandchild's attorney, and directs the victim to send or deliver cash to aid the grandchild (bail/fee demand). Source: Aff. (closers impersonated attorneys and directed cash payment)."@en ;
+	skos:inScheme ef:PhaseScheme .
+
+ef:ExtractionInstruction
+	a traj:State , skos:Concept ;
+	uco-core:name "Extraction instruction" ;
+	skos:prefLabel "Extraction instruction"@en ;
+	skos:definition "The Closer (posing as the grandchild's attorney) directs the victim into a concrete payment mechanism — cash form and hand-off via rideshare pickup framed as 'documents,' commercial-carrier shipment, or delivery — converting conditioned compliance into logistics. Source: Aff. (closers directed victims to send or deliver cash; rideshare/'documents' and UPS shipment mechanisms)."@en ;
+	skos:inScheme ef:PhaseScheme .
+
+ef:ProceedsCollection
+	a traj:State , skos:Concept ;
+	uco-core:name "Proceeds collection" ;
+	skos:prefLabel "Proceeds collection"@en ;
+	skos:definition "A U.S.-based runner obtains the cash, typically via an unwitting rideshare driver or carrier delivery, and moves it toward the operation's deposit/hand-off channel. Source: Aff."@en ;
+	skos:inScheme ef:PhaseScheme .
+
+ef:Laundering
+	a traj:State , skos:Concept ;
+	uco-core:name "Laundering" ;
+	skos:prefLabel "Laundering"@en ;
+	skos:definition "Proceeds are deposited into bank accounts held in the names of purported businesses and structured in amounts below the $10,000 currency-transaction-report threshold. Source: Aff."@en ;
+	skos:inScheme ef:PhaseScheme .
+
+ef:Completed
+	a traj:State , skos:Concept ;
+	uco-core:name "Completed" ;
+	skos:prefLabel "Completed"@en ;
+	skos:definition "Terminal outcome state: laundered scam proceeds have been transmitted or hand-delivered from the United States to the Dominican Republic, realizing the modeled offense endpoint. Source: Aff. (fee-based cross-border transmission)."@en ;
+	skos:inScheme ef:PhaseScheme .
+
+#################################################################
+# Action catalog: Technique-typed uco-action:Action subclasses
+# (metaclass punning pattern per extensions/attack-technique)
+#################################################################
+
+ef:a_spoof
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Caller-ID / VoIP spoofing"@en ;
+	rdfs:comment "Use of Voice over IP technology to place calls over the internet so that they appear to originate from a U.S. telephone number, concealing the call center's true (Dominican Republic) origin. Source: Aff."@en ;
+	uco-action:techniqueID "EF.T1" .
+
+ef:a_script
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Fixed-script deployment"@en ;
+	rdfs:comment "Deployment of pre-authored call-center scripts that openers (and related roles) follow when cold-calling victims — e.g. the photographed opener script recovered from a CASTANOS GARCIA call center. Source: Aff. (call-center managers provided employees with scripts; opener-script photos)."@en ;
+	uco-action:techniqueID "EF.T2" .
+
+ef:a_secrecy
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Isolation / secrecy instruction"@en ;
+	rdfs:comment "Instructing the victim to isolate the matter from others — in the Aff. opener script, the grandchild persona asks the victim to 'keep this between us until i get out.' Source: Aff. (opener script). FACT NOTE: this language is in the OPENER (InitialContact) script, not the Closer/Conditioning phase."@en ;
+	uco-action:techniqueID "EF.T3" .
+
+ef:a_direct
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Payment-mechanism direction"@en ;
+	rdfs:comment "The Closer (posing as the grandchild's attorney) specifies the cash form and hand-off method — courier/rideshare pickup, commercial-carrier shipment, or delivery — that converts the conditioned victim into executing a concrete payment. Operational pivot from emotional conditioning to logistics; produces ExtractionInstruction. Source: Aff. (closers 'directed the victims to send or deliver cash'; rideshare packages framed as 'documents'; UPS cash shipment to runner addresses)."@en ;
+	uco-action:techniqueID "EF.T8" .
+
+ef:a_coopt
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Co-opting an unwitting intermediary"@en ;
+	rdfs:comment "Directing an unwitting third party — most often a rideshare driver, occasionally a relative sent by a co-conspirator — to physically collect or relay a cash package from the victim without the intermediary's knowledge that a fraud is underway. Source: Aff. (rideshare driver messaged to collect 'documents' from a 'grandmother')."@en ;
+	uco-action:techniqueID "EF.T4" .
+
+ef:a_fakeid
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Fabricated identity / purported-business account"@en ;
+	rdfs:comment "Routing scam proceeds through bank accounts held in the names of purported (non-existent) businesses — e.g. a Bank of America account in the name of a purported vape-supply wholesaler supplied by NUÑEZ NUÑEZ. Source: Aff. (STRUCTURAL wiring: ProceedsCollection -> Laundering. Closers also impersonate attorneys per Aff., but that fact is carried in Conditioning occupancy text, not as this Technique's arriving-edge action.)"@en ;
+	uco-action:techniqueID "EF.T5" .
+
+ef:a_deposit
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Deposit structuring"@en ;
+	rdfs:comment "Deposit structuring <$10k to evade BSA reporting: depositing scam-proceeds cash in amounts kept below the $10,000 currency-transaction-report threshold to avoid Bank Secrecy Act reporting obligations. Source: Aff. (deposits typically structured between $7,000 and $9,500)."@en ;
+	uco-action:techniqueID "EF.T6" .
+
+ef:a_transmit
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Cross-border proceeds transmission"@en ;
+	rdfs:comment "Transmitting or hand-delivering collected scam proceeds from the United States to the Dominican Republic through a money-transmitter/courier network, for a fee — the action that produces the Completed terminal. Source: Aff. (money transmitter charged an eight percent fee; runner-to-nephew hand deliveries in New York)."@en ;
+	uco-action:techniqueID "EF.T7" .

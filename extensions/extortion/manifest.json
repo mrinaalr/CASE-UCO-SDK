@@ -1,0 +1,33 @@
+{
+  "name": "extortion",
+  "display_name": "Cyber-Extortion Exploitation State Machine Extension",
+  "version": "0.1.0",
+  "status": "candidate",
+  "upstream_repo": "https://github.com/vulnmaster/CASE-UCO-SDK",
+  "upstream_ref": "main",
+  "license": "Apache-2.0",
+  "namespaces": {
+    "ex": "http://example.org/ontology/extortion/"
+  },
+  "owl_files": [
+    "extortion.ttl"
+  ],
+  "shacl_files": [
+    "extortion-shapes.ttl"
+  ],
+  "bridge_files": [],
+  "depends_on": ["trajectories", "attack-technique"],
+  "exemplar_files": [
+    "extortion-exemplar.ttl"
+  ],
+  "uco_compat": ["1.4.0"],
+  "upper_ontology": "none",
+  "cdo_shapes_compatibility": {
+    "CDO-Shapes-gufo": "compatible",
+    "CDO-Shapes-BFO": "compatible",
+    "CDO-Shapes-PROV-O": "compatible",
+    "CDO-Shapes-Time": "compatible",
+    "CDO-Shapes-GeoSPARQL": "compatible",
+    "CDO-Shapes-FOAF": "compatible"
+  }
+}

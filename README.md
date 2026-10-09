@@ -280,7 +280,7 @@ For detailed benchmarks, partitioning strategies, validation tool comparisons, a
 
 ## Bundled Extension Ontologies
 
-Core CASE/UCO covers cyber-observables and investigation management, but real investigations reach into domains the core ontology doesn't cover. The SDK bundles ten extension ontologies, all queryable through the same registry, CLI explorer, and MCP tools as core classes (set `CASE_UCO_EXTENSIONS` or use the `scope` parameter to include them). Upstream-maintained ontologies (`cac`, `aeo`, `solveit`) are vendored under `ontology/` alongside CASE and UCO and refreshed with `make sync-upstream`; SDK-developed extensions live under `extensions/`:
+Core CASE/UCO covers cyber-observables and investigation management, but real investigations reach into domains the core ontology doesn't cover. The SDK bundles sixteen extension ontologies, all queryable through the same registry, CLI explorer, and MCP tools as core classes (set `CASE_UCO_EXTENSIONS` or use the `scope` parameter to include them). Upstream-maintained ontologies (`cac`, `aeo`, `solveit`) are vendored under `ontology/` alongside CASE and UCO and refreshed with `make sync-upstream`; SDK-developed extensions live under `extensions/`:
 
 | Extension | Version | Domain |
 |-----------|---------|--------|
@@ -294,6 +294,12 @@ Core CASE/UCO covers cyber-observables and investigation management, but real in
 | [`weapons`](extensions/weapons/) | 0.1.0 | Firearms and ammunition evidence (CCO Artifact Ontology + gUFO bridges) |
 | [`drugs`](extensions/drugs/) | 0.1.0 | Controlled-substance evidence — ChEBI identity, CSA schedules, mass and purity |
 | [`toolcap`](extensions/toolcap/) | 0.4.0 | Forensic tool capability benchmarking — decomposed Tool → Module → Capability model with IR metrics and AutoDFBench provenance |
+| [`trajectories`](extensions/trajectories/) | 0.3.1 | Vocabulary-agnostic state-machine and per-case trajectory metamodel — typed states, transitions with triggers/guards, ordered phase occupancy, and inferred state-machine models |
+| [`elder-fraud`](extensions/elder-fraud/) | 0.1.0 | Elder-fraud Exploitation State Machine — phase vocabulary and action catalog for transnational grandparent-scam offenses |
+| [`extortion`](extensions/extortion/) | 0.1.0 | Cyber-extortion Exploitation State Machine — phase vocabulary and action catalog for data-breach / leak-threat offenses |
+| [`trafficking`](extensions/trafficking/) | 0.1.0 | Sex-trafficking Exploitation State Machine — victim-journey phase vocabulary and action catalog for individual-operator offenses |
+| [`forced-labor`](extensions/forced-labor/) | 0.1.0 | Forced-labor / debt-bondage Exploitation State Machine — phase vocabulary and action catalog for 18 U.S.C. § 1589 pattern offenses |
+| [`layered`](extensions/layered/) | 0.2.0 | Layered ESM composition metamodel — `ExploitationStateMachine` / `Layer` / `Coupling` for full·partial·sequential·concurrent·parallel multi-trajectory cases without flattening S |
 
 Extensions compose: a single graph can combine core observables with CAC victim identification, `legalproc` charges, and `cryptoinv` blockchain traces. See the [cross-ontology composition recipe](docs/recipes/cross-ontology-composition.md).
 

@@ -1,0 +1,25 @@
+# Sex-Trafficking extension — minimal SHACL
+#
+# Only constraint this domain extension adds beyond the base
+# trajectories-shapes.ttl firewall: every action instance typed with one of
+# this domain's Technique classes must carry >=1 uco-action:instrument, so
+# the abused affordance (the φ seam) is always present on the enacted
+# action.
+
+@prefix traf: <http://example.org/ontology/trafficking/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+traf:TechniqueAction-shape
+	a sh:NodeShape ;
+	sh:targetClass
+		traf:a_coerce ,
+		traf:a_advertise ,
+		traf:a_collect_earnings ;
+	sh:property
+		[
+			sh:path uco-action:instrument ;
+			sh:minCount 1 ;
+			sh:nodeKind sh:IRI ;
+			sh:message "A trafficking Technique action instance must carry >=1 uco-action:instrument naming the abused affordance."@en ;
+		] .

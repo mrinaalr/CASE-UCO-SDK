@@ -1,0 +1,497 @@
+# v0.0.0 machine — phone / script / commercial-carrier consumer fraud
+# United States v. Carla Magaly Alcedo Mendoza, S.D. Fla. 1:21-cr-20328
+# Source: public indictment, CourtListener document 438504917 (15 pages).
+# Occupancies are CHARGING ALLEGATIONS (manner and means), not findings of fact.
+# Confidence 55 means "stated in this public charging instrument." It is not a verdict.
+# Conspiracy window on every occupancy: the indictment does not date each phase separately.
+# Terminal polarity "completed" is the charging theory's endpoint (payment obtained),
+# not an adjudicated result for a named victim.
+
+@prefix al: <http://example.org/kb/fraud-v0/alcedo/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+
+#################################################################
+# Provenance
+#################################################################
+
+al:doc-438504917
+	a uco-core:UcoObject ;
+	uco-core:name "Indictment, United States v. Alcedo Mendoza, S.D. Fla. 1:21-cr-20328" ;
+	uco-core:description "Public indictment as to Carla Magaly Alcedo Mendoza, Document 3, entered 2021-06-04. CourtListener document_id 438504917. https://www.courtlistener.com/docket/70056460/3/united-states-v-alcedo-mendoza/ Local copy: workbench/casenoesis-data/collected/recap/fraud/438504917.pdf. Counts include 18 U.S.C. 1349, 1341, 1343, 1951(a). NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). v0.0.0 read the conspiracy window (¶2) and manner and means (¶¶4–11)." .
+
+al:evidence-manner
+	a uco-core:UcoObject ;
+	uco-core:name "Manner and means, English-course telephone scheme" ;
+	uco-core:description "Indictment ¶¶4–11, as read for v0.0.0. She owned Bussines A.A.D.; obtained names and contacts of Spanish-speaking U.S. consumers; telephone calls offered English-language courses and a false claim of university plus U.S. government financial assistance; a second call said the consumer was selected; callers impersonated lawyers and U.S. court officers; a false FedEx storage-fee and lawsuit story; threats of arrest and immigration harm; call scripts collected country of origin and immigration status; co-conspirators in the U.S. mailed packages (English courses or tablets, not of the value represented) via FedEx; payment by credit or prepaid cards." .
+
+al:activity-list-acquisition
+	a prov:Activity ;
+	uco-core:name "Pre-s0: obtain Spanish-speaking consumer contact lists" ;
+	uco-core:description "Exogenous feeder, not a traj:State. The indictment alleges names and contacts were obtained before the scripted calls. Not dated separately from the January 2013–December 2018 conspiracy window." ;
+	prov:used al:evidence-manner .
+
+#################################################################
+# Domain alphabet (A-box states, not new classes)
+#################################################################
+
+al:alphabet
+	a skos:ConceptScheme ;
+	uco-core:name "Alcedo English-course pathway alphabet (v0.0.0)" ;
+	uco-core:description "Phone-era consumer fraud. Instruments are the telephone, a script, a commercial carrier, and a payment card. No platform or app." .
+
+al:ScriptedOffer a traj:State , skos:Concept ;
+	skos:inScheme al:alphabet ; skos:prefLabel "ScriptedOffer"@en ;
+	uco-core:description "Telephone offer of English courses tied to a false claim of university and U.S. government financial assistance." .
+al:SelectionFiction a traj:State , skos:Concept ;
+	skos:inScheme al:alphabet ; skos:prefLabel "SelectionFiction"@en ;
+	uco-core:description "A second call telling the consumer they were selected." .
+al:AuthorityThreat a traj:State , skos:Concept ;
+	skos:inScheme al:alphabet ; skos:prefLabel "AuthorityThreat"@en ;
+	uco-core:description "Impersonation of lawyers and court officers, a storage-fee and lawsuit fiction, and threats of arrest and immigration harm. Scripts collect country of origin and immigration status. The leverage is language and immigration status, not age." .
+al:CarrierDelivery a traj:State , skos:Concept ;
+	skos:inScheme al:alphabet ; skos:prefLabel "CarrierDelivery"@en ;
+	uco-core:description "Co-conspirators mail English courses or tablets via FedEx. The goods are not of the value represented." .
+al:CardPayment a traj:State , skos:Concept ;
+	skos:inScheme al:alphabet ; skos:prefLabel "CardPayment"@en ;
+	uco-core:description "Payment by credit or prepaid card. Charging-theory endpoint." .
+
+#################################################################
+# Tech instruments and enacted actions
+#################################################################
+
+al:inst-telephone a uco-observable:PhoneAccount ;
+	uco-core:name "Telephone" ;
+	uco-core:description "The indictment's contact channel. It does not allege VoIP, spoofing, or a messaging app." .
+al:inst-script a uco-observable:File ;
+	uco-core:name "Call script collecting origin and immigration status" ;
+	uco-core:description "Scripts used to collect country of origin and immigration status and to deliver the assistance and threat story." .
+al:inst-fedex a uco-identity:Organization ;
+	uco-core:name "FedEx" ;
+	uco-core:description "Commercial interstate carrier used to deliver the courses or tablets and as the prop in the storage-fee fiction." .
+al:inst-card a uco-observable:PaymentCard ;
+	uco-core:name "Credit or prepaid card" ;
+	uco-core:description "Payment instrument alleged for the extraction." .
+
+al:act-scripted-call a uco-action:Action ;
+	uco-core:name "Place scripted eligibility call" ;
+	uco-action:instrument al:inst-telephone , al:inst-script ;
+	prov:wasDerivedFrom al:evidence-manner .
+al:act-selection-call a uco-action:Action ;
+	uco-core:name "Place selection call" ;
+	uco-action:instrument al:inst-telephone ;
+	prov:wasDerivedFrom al:evidence-manner .
+al:act-impersonate-and-threaten a uco-action:Action ;
+	uco-core:name "Impersonate court actors and threaten arrest or immigration harm" ;
+	uco-action:instrument al:inst-telephone , al:inst-script ;
+	prov:wasDerivedFrom al:evidence-manner .
+al:act-ship-package a uco-action:Action ;
+	uco-core:name "Ship course or tablet via FedEx" ;
+	uco-action:instrument al:inst-fedex ;
+	prov:wasDerivedFrom al:evidence-manner .
+al:act-take-card a uco-action:Action ;
+	uco-core:name "Take credit or prepaid-card payment" ;
+	uco-action:instrument al:inst-card ;
+	prov:wasDerivedFrom al:evidence-manner .
+
+#################################################################
+# Interval (conspiracy window, not per-phase dates)
+#################################################################
+
+al:interval-conspiracy a time:ProperInterval ;
+	time:hasBeginning al:instant-start ;
+	time:hasEnd al:instant-end .
+al:instant-start a time:Instant ; time:inXSDDateTimeStamp "2013-01-01T00:00:00Z"^^xsd:dateTimeStamp .
+al:instant-end a time:Instant ; time:inXSDDateTimeStamp "2018-12-31T23:59:00Z"^^xsd:dateTimeStamp .
+
+al:confidence-0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+al:confidence-1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+al:confidence-2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+al:confidence-3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+al:confidence-4 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+#################################################################
+# Observed occupancies (one scheme trajectory; individual consumers are not separated)
+#################################################################
+
+al:phase-0 a traj:PhaseAssertion ;
+	uco-core:name "Occupancy 0 — scripted offer" ;
+	uco-core:description "Charging allegation. Telephone offer of English courses and false university / government assistance. Fed by list acquisition (pre-s0). Source: indictment ¶¶4–11." ;
+	traj:assertsState al:ScriptedOffer ;
+	traj:atInterval al:interval-conspiracy ;
+	traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom al:evidence-manner ;
+	uco-core:hasFacet al:confidence-0 .
+
+al:phase-1 a traj:PhaseAssertion ;
+	uco-core:name "Occupancy 1 — selection fiction" ;
+	uco-core:description "Charging allegation. A second call says the consumer was selected. Source: indictment manner and means." ;
+	traj:assertsState al:SelectionFiction ;
+	traj:atInterval al:interval-conspiracy ;
+	traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom al:evidence-manner ;
+	uco-core:hasFacet al:confidence-1 .
+
+al:phase-2 a traj:PhaseAssertion ;
+	uco-core:name "Occupancy 2 — authority impersonation and threat" ;
+	uco-core:description "Charging allegation. Impersonation of lawyers and U.S. court officers, FedEx storage-fee / lawsuit fiction, threats of arrest and immigration harm. Source: indictment manner and means." ;
+	traj:assertsState al:AuthorityThreat ;
+	traj:atInterval al:interval-conspiracy ;
+	traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom al:evidence-manner ;
+	uco-core:hasFacet al:confidence-2 .
+
+al:phase-3 a traj:PhaseAssertion ;
+	uco-core:name "Occupancy 3 — carrier delivery" ;
+	uco-core:description "Charging allegation. Packages mailed via FedEx. Source: indictment manner and means." ;
+	traj:assertsState al:CarrierDelivery ;
+	traj:atInterval al:interval-conspiracy ;
+	traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom al:evidence-manner ;
+	uco-core:hasFacet al:confidence-3 .
+
+al:phase-4 a traj:PhaseAssertion ;
+	uco-core:name "Occupancy 4 — card payment" ;
+	uco-core:description "Charging allegation. Payment by credit or prepaid card. traj:terminalPolarity completed marks the charging theory's extraction endpoint, not a verdict and not a named consumer's proven path." ;
+	traj:assertsState al:CardPayment ;
+	traj:atInterval al:interval-conspiracy ;
+	traj:sequenceIndex "4"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ;
+	traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom al:evidence-manner ;
+	uco-core:hasFacet al:confidence-4 .
+
+al:trajectory-scheme
+	a traj:Trajectory ;
+	uco-core:name "Alcedo English-course scheme trajectory (v0.0.0)" ;
+	uco-core:description "One scheme-level path, January 2013 through December 2018, as charged. Individual consumers are not split out. Tech stack: telephone, script, FedEx, payment card." ;
+	traj:hasPhaseAssertion al:phase-0 , al:phase-1 , al:phase-2 , al:phase-3 , al:phase-4 .
+
+#################################################################
+# Charged edges (manner-and-means order). Not transition probabilities.
+#################################################################
+
+al:t-offer-selection a traj:Transition ;
+	uco-core:name "Scripted offer to selection fiction" ;
+	traj:fromState al:ScriptedOffer ;
+	traj:toState al:SelectionFiction ;
+	traj:trigger al:evidence-manner ;
+	traj:enactsAction al:act-selection-call ;
+	uco-core:description "Indictment order: a second call after the course offer. No estimated probability." .
+al:t-selection-threat a traj:Transition ;
+	uco-core:name "Selection fiction to authority threat" ;
+	traj:fromState al:SelectionFiction ;
+	traj:toState al:AuthorityThreat ;
+	traj:trigger al:evidence-manner ;
+	traj:enactsAction al:act-impersonate-and-threaten ;
+	uco-core:description "Indictment order: impersonation and immigration/arrest threats after the selection claim." .
+al:t-threat-delivery a traj:Transition ;
+	uco-core:name "Authority threat to carrier delivery" ;
+	traj:fromState al:AuthorityThreat ;
+	traj:toState al:CarrierDelivery ;
+	traj:trigger al:evidence-manner ;
+	traj:enactsAction al:act-ship-package ;
+	uco-core:description "Indictment order: FedEx delivery of the course or tablet." .
+al:t-delivery-payment a traj:Transition ;
+	uco-core:name "Carrier delivery to card payment" ;
+	traj:fromState al:CarrierDelivery ;
+	traj:toState al:CardPayment ;
+	traj:trigger al:evidence-manner ;
+	traj:enactsAction al:act-take-card ;
+	uco-core:description "Indictment order: payment by credit or prepaid card." .
+
+#################################################################
+# Inferred SEP extraction test. Not a charging allegation.
+# Premises are the manner-and-means already asserted above.
+# Unfairness is not evaluated. Not a verdict.
+#################################################################
+
+al:sep-run a prov:Activity ;
+	uco-core:name "SEP extraction test" ;
+	uco-core:description "Source-versus-target derivation. A preexisting object that changes hands and keeps its value is victim-sourced. The benefit being the victim's absence is victim-targeted. Unfairness is not scored." .
+
+al:anat-payment a traj:BenefitAnatomy ;
+	uco-core:name "Card payment drawn from the consumer" ;
+	uco-core:description "Manner and means: payment by credit or prepaid card. The consumer is the source of that payment. The script's use of language and immigration status is leverage in the narrative; this test does not score it as unfairness." ;
+	traj:onTransition al:t-delivery-payment ;
+	traj:transferredObject "credit or prepaid-card payment" ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "The payment predates the call and keeps its value after the consumer is off the line. The benefit is the payment, not the consumer's removal." ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy al:sep-run .
+
+al:sep-scheme a traj:ExploitationAssessment ;
+	uco-core:name "Alcedo scheme extraction test" ;
+	uco-core:description "Goal-realizing edge is the card payment. Anatomy derives victim_sourced, so the extraction test passes." ;
+	traj:assessesTrajectory al:trajectory-scheme ;
+	traj:goalRealizingTransition al:t-delivery-payment ;
+	traj:hasBenefitAnatomy al:anat-payment ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest true ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset al:interval-conspiracy ;
+	prov:wasGeneratedBy al:sep-run .
+
+#################################################################
+# CASE/UCO context. Facts are charging allegations from the
+# indictment manner, paragraphs 1–11 and Count 1. No consumer
+# name, telephone number, or card number is recorded.
+#################################################################
+
+al:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Indictment, United States v. Alcedo Mendoza" ;
+	uco-core:description "Document 3, entered 2021-06-04, CourtListener 438504917. Charging instrument, not a judgment." ;
+	legalproc:instrumentType "indictment" ;
+	prov:wasDerivedFrom al:doc-438504917 .
+
+al:charge-1349 a legalproc:FederalCharge ;
+	uco-core:name "Count 1, conspiracy to commit mail and wire fraud" ;
+	legalproc:statuteCitation "18 U.S.C. § 1349" ;
+	legalproc:countNumber "1"^^xsd:nonNegativeInteger ;
+	legalproc:countLabel "Count 1" ;
+	legalproc:offenseForm "conspiracy" ;
+	legalproc:assertedIn al:charge-doc ;
+	prov:wasDerivedFrom al:evidence-manner .
+
+al:charge-1341 a legalproc:FederalCharge ;
+	uco-core:name "Mail fraud counts" ;
+	uco-core:description "Counts 2–6, 18 U.S.C. § 1341. The dated FedEx executions are subactions of the package shipment. No consumer initial is recorded." ;
+	legalproc:statuteCitation "18 U.S.C. § 1341" ;
+	legalproc:countLabel "Counts 2-6" ;
+	legalproc:assertedIn al:charge-doc ;
+	prov:wasDerivedFrom al:evidence-counts .
+
+al:charge-1343 a legalproc:FederalCharge ;
+	uco-core:name "Wire fraud counts" ;
+	uco-core:description "Counts 7–12, 18 U.S.C. § 1343. Each is a telephone call from Peru. No consumer initial is recorded." ;
+	legalproc:statuteCitation "18 U.S.C. § 1343" ;
+	legalproc:countLabel "Counts 7-12" ;
+	legalproc:assertedIn al:charge-doc ;
+	prov:wasDerivedFrom al:evidence-counts .
+
+al:charge-1951 a legalproc:FederalCharge ;
+	uco-core:name "Extortion counts" ;
+	uco-core:description "Counts 13–18, 18 U.S.C. § 1951(a). Payments and one call, each alleged to rest in part on a threat of arrest, deportation, or other immigration consequences. No consumer initial is recorded." ;
+	legalproc:statuteCitation "18 U.S.C. § 1951(a)" ;
+	legalproc:countLabel "Counts 13-18" ;
+	legalproc:assertedIn al:charge-doc ;
+	prov:wasDerivedFrom al:evidence-counts .
+
+al:person-alcedo a uco-identity:Person ;
+	uco-core:name "Carla Magaly Alcedo Mendoza" ;
+	uco-core:description "Named defendant. Paragraphs 1–2 and 4: owner and operator of Bussines A.A.D. Spelling of the company is the indictment's spelling." ;
+	uco-core:tag "charging-allegation" ;
+	prov:wasDerivedFrom al:evidence-manner .
+
+al:org-call-center a uco-identity:Organization ;
+	uco-core:name "Bussines A.A.D." ;
+	uco-core:description "Paragraph 1: a call center in Lima, Peru, that placed cold calls to Spanish-speaking residents of the United States." ;
+	uco-core:tag "charging-allegation" ;
+	prov:wasDerivedFrom al:evidence-manner .
+
+al:loc-peru a uco-location:Location ;
+	uco-core:name "Peru" ;
+	uco-core:description "Counts 7–12 and 17 place the caller in Peru. The call center itself is in Lima. The count table does not repeat the city." ;
+	uco-core:tag "charging-allegation" .
+al:loc-lima a uco-location:Location ;
+	uco-core:name "Lima, Peru" ;
+	uco-core:description "Paragraph 1 places the call center in Lima, Peru." ;
+	uco-core:tag "charging-allegation" .
+al:loc-sdfl a uco-location:Location ;
+	uco-core:name "Miami-Dade and Broward Counties, Southern District of Florida" ;
+	uco-core:description "Paragraph 2 places the conspiracy in those counties, and elsewhere. Paragraph 10 places some package deliveries in the Southern District of Florida." ;
+	uco-core:tag "charging-allegation" .
+
+al:consumers a uco-identity:Identity , uco-victim:Victim ;
+	uco-core:name "Spanish-speaking consumers in the United States" ;
+	uco-core:description "The class of persons in paragraphs 1 and 4. No individual consumer is named in this graph." ;
+	uco-core:tag "charging-allegation" ;
+	prov:wasDerivedFrom al:evidence-manner .
+
+al:facet-phone a uco-observable:PhoneAccountFacet ;
+	uco-core:description "No telephone number is in this graph. Paragraphs 5–6 allege two rounds of calls." .
+al:inst-telephone uco-core:hasFacet al:facet-phone ;
+	uco-observable:accountIssuer al:org-call-center ;
+	uco-core:tag "charging-allegation" .
+
+al:facet-script a uco-observable:FileFacet ;
+	uco-core:description "Paragraph 9 alleges call scripts. No file name or path is stated." .
+al:inst-script uco-core:hasFacet al:facet-script ;
+	uco-core:tag "charging-allegation" .
+
+al:msg-eligibility a uco-observable:Message ;
+	uco-core:name "Eligibility call, as alleged" ;
+	uco-core:hasFacet al:facet-msg-eligibility ;
+	uco-core:tag "charging-allegation" ;
+	prov:wasDerivedFrom al:evidence-manner .
+al:facet-msg-eligibility a uco-observable:MessageFacet ;
+	uco-observable:messageType "telephone" ;
+	uco-observable:application al:inst-telephone ;
+	uco-observable:messageText "Paragraph 5 alleges a call offering an English-language program and falsely claiming that a university, with the United States government, would pay most of the cost. This is not a transcript." .
+
+al:package a uco-observable:ObservableObject ;
+	uco-core:name "Package of course materials or a tablet" ;
+	uco-core:description "Paragraph 10: packages sent by commercial carrier contained English-language courses or computer tablets, not of the nature or value represented." ;
+	uco-core:tag "charging-allegation" ;
+	prov:wasDerivedFrom al:evidence-manner .
+
+al:rel-owns a uco-core:Relationship ;
+	uco-core:name "Alcedo operated Bussines A.A.D." ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "operates" ;
+	uco-core:source al:person-alcedo ;
+	uco-core:target al:org-call-center ;
+	uco-core:description "Paragraphs 2 and 4. Charging allegation." ;
+	prov:wasDerivedFrom al:evidence-manner .
+al:rel-located a uco-core:Relationship ;
+	uco-core:name "Call center in Lima" ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "located-in" ;
+	uco-core:source al:org-call-center ;
+	uco-core:target al:loc-lima ;
+	prov:wasDerivedFrom al:evidence-manner .
+al:rel-targets a uco-core:Relationship ;
+	uco-core:name "Calls placed to the consumers" ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "directed-at" ;
+	uco-core:source al:inst-telephone ;
+	uco-core:target al:consumers ;
+	prov:wasDerivedFrom al:evidence-manner .
+al:rel-carrier a uco-core:Relationship ;
+	uco-core:name "FedEx carried the packages" ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "carried" ;
+	uco-core:source al:inst-fedex ;
+	uco-core:target al:package ;
+	uco-core:description "Paragraph 10 names FedEx as an example of the commercial interstate carrier. The count language also names the Postal Service. This edge records the carrier the manner names." ;
+	prov:wasDerivedFrom al:evidence-manner .
+
+al:act-scripted-call uco-action:performer al:person-alcedo ;
+	uco-action:object al:consumers ;
+	uco-action:location al:loc-lima .
+al:act-selection-call uco-action:performer al:person-alcedo ;
+	uco-action:object al:consumers .
+al:act-impersonate-and-threaten uco-action:performer al:person-alcedo ;
+	uco-action:object al:consumers .
+al:act-ship-package uco-action:performer al:person-alcedo ;
+	uco-action:object al:package ;
+	uco-action:location al:loc-sdfl .
+al:act-take-card uco-action:performer al:person-alcedo ;
+	uco-action:object al:inst-card ;
+	uco-action:result al:inst-card .
+
+al:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Alcedo Mendoza, S.D. Fla. 1:21-cr-20328" ;
+	legalproc:caseIdentifier "1:21-cr-20328" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Telephone English-course pathway" ;
+	uco-core:object al:charge-doc , al:person-alcedo , al:org-call-center , al:inst-telephone , al:inst-script , al:inst-fedex , al:inst-card , al:package , al:trajectory-scheme ;
+	uco-core:description "Close read of the manner and means. Occupancies remain charging allegations. v0.0.1 adds the dated count executions." .
+
+#################################################################
+# v0.0.1 dated executions from the count tables (pages 7–10).
+# Month precision. No consumer initials. Onset stays the
+# conspiracy window: these dates are executions of states the
+# pathway already has, not a new goal edge.
+#################################################################
+
+al:evidence-counts a uco-core:UcoObject ;
+	uco-core:name "Count tables, mail, wire, and extortion" ;
+	uco-core:description "Indictment counts 2–18. Approximate months only. Consumer initials in the table are not copied." .
+
+al:act-ship-package uco-action:subaction al:exec-mail-2016-12 , al:exec-mail-2017-02 , al:exec-mail-2017-06 .
+al:exec-mail-2016-12 a uco-action:Action ;
+	uco-core:name "FedEx packages, approximately December 2016" ;
+	uco-core:description "Counts 2–4. Three packages via FedEx to people in the Southern District of Florida." ;
+	uco-action:actionCount "3"^^xsd:nonNegativeInteger ;
+	uco-action:startTime "2016-12-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument al:inst-fedex ;
+	uco-action:performer al:person-alcedo ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-mail-2017-02 a uco-action:Action ;
+	uco-core:name "FedEx package, approximately February 2017" ;
+	uco-core:description "Count 5. Package via FedEx to a person in the Southern District of Florida." ;
+	uco-action:startTime "2017-02-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument al:inst-fedex ;
+	uco-action:performer al:person-alcedo ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-mail-2017-06 a uco-action:Action ;
+	uco-core:name "FedEx package, approximately June 2017" ;
+	uco-core:description "Count 6. Package via FedEx to a person in the Southern District of Florida." ;
+	uco-action:startTime "2017-06-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument al:inst-fedex ;
+	uco-action:performer al:person-alcedo ;
+	prov:wasDerivedFrom al:evidence-counts .
+
+al:act-selection-call uco-action:subaction al:exec-call-2016-11 , al:exec-call-2016-12 , al:exec-call-2017-02 , al:exec-call-2017-06 .
+al:exec-call-2016-11 a uco-action:Action ;
+	uco-core:name "Call from Peru, approximately November 2016" ;
+	uco-core:description "Count 7. Telephone call between a caller in Peru and a person in the Southern District of Florida." ;
+	uco-action:startTime "2016-11-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location al:loc-peru ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-call-2016-12 a uco-action:Action ;
+	uco-core:name "Calls from Peru, approximately December 2016" ;
+	uco-core:description "Counts 8–10. Three telephone calls from Peru to people in the Southern District of Florida." ;
+	uco-action:actionCount "3"^^xsd:nonNegativeInteger ;
+	uco-action:startTime "2016-12-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location al:loc-peru ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-call-2017-02 a uco-action:Action ;
+	uco-core:name "Call from Peru, approximately February 2017" ;
+	uco-core:description "Count 11. Telephone call from Peru to a person in the Southern District of Florida." ;
+	uco-action:startTime "2017-02-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location al:loc-peru ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-call-2017-06 a uco-action:Action ;
+	uco-core:name "Call from Peru, approximately June 2017" ;
+	uco-core:description "Count 12. Telephone call from Peru to a person in the Southern District of Florida." ;
+	uco-action:startTime "2017-06-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location al:loc-peru ;
+	prov:wasDerivedFrom al:evidence-counts .
+
+al:act-take-card uco-action:subaction al:exec-pay-2016-11 , al:exec-pay-2016-12 , al:exec-pay-2017-02 , al:exec-pay-2017-06 .
+al:exec-pay-2016-11 a uco-action:Action ;
+	uco-core:name "Payment after arrest and deportation threat, approximately November 2016" ;
+	uco-core:description "Count 13. Payment from a person in the Southern District of Florida, alleged to rest in part on a threat of arrest and deportation." ;
+	uco-action:startTime "2016-11-01T00:00:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-pay-2016-12 a uco-action:Action ;
+	uco-core:name "Payments after arrest or deportation threats, approximately December 2016" ;
+	uco-core:description "Counts 14 and 15. Two payments. One is alleged to rest in part on a threat of deportation, the other on a threat of arrest." ;
+	uco-action:actionCount "2"^^xsd:nonNegativeInteger ;
+	uco-action:startTime "2016-12-01T00:00:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-pay-2017-02 a uco-action:Action ;
+	uco-core:name "Payment after an immigration threat, approximately February 2017" ;
+	uco-core:description "Count 16. Payment alleged to rest in part on a threat of arrest and immigration consequences. Count 17, the same month, is a call from Peru threatening arrest unless payment was made, and is recorded on the threat action." ;
+	uco-action:startTime "2017-02-01T00:00:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:exec-pay-2017-06 a uco-action:Action ;
+	uco-core:name "Payment after an arrest threat, approximately June 2017" ;
+	uco-core:description "Count 18. Payment alleged to rest in part on a threat of arrest." ;
+	uco-action:startTime "2017-06-01T00:00:00Z"^^xsd:dateTime ;
+	prov:wasDerivedFrom al:evidence-counts .
+al:act-impersonate-and-threaten uco-action:subaction al:exec-threat-call-2017-02 .
+al:exec-threat-call-2017-02 a uco-action:Action ;
+	uco-core:name "Arrest threat on a call from Peru, approximately February 2017" ;
+	uco-core:description "Count 17. Telephone call from Peru threatening arrest unless a payment was made. Not itself the payment." ;
+	uco-action:startTime "2017-02-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location al:loc-peru ;
+	prov:wasDerivedFrom al:evidence-counts .

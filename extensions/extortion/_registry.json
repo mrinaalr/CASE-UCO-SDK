@@ -1,0 +1,68 @@
+{
+  "extension": "extortion",
+  "modules": [
+    "extortion"
+  ],
+  "classes": {
+    "a_credential_theft": {
+      "iri": "http://example.org/ontology/extortion/a_credential_theft",
+      "module": "extortion",
+      "description": "Stolen-credential network access technique (uco-action:Technique class). techniqueID EX.T1.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every extortion Technique action instance."
+        }
+      ],
+      "source": "extortion"
+    },
+    "a_exfiltrate": {
+      "iri": "http://example.org/ontology/extortion/a_exfiltrate",
+      "module": "extortion",
+      "description": "Protected-network data exfiltration technique (uco-action:Technique class). techniqueID EX.T2.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every extortion Technique action instance."
+        }
+      ],
+      "source": "extortion"
+    },
+    "a_leak_threat": {
+      "iri": "http://example.org/ontology/extortion/a_leak_threat",
+      "module": "extortion",
+      "description": "Leak-as-leverage threat technique (uco-action:Technique class). techniqueID EX.T3.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every extortion Technique action instance."
+        }
+      ],
+      "source": "extortion"
+    }
+  },
+  "vocabs": {
+    "PhaseScheme": {
+      "iri": "http://example.org/ontology/extortion/PhaseScheme",
+      "description": "skos:ConceptScheme of traj:State phase instances: InitialAccess, Exfiltration, Demand, LeakThreat."
+    }
+  }
+}

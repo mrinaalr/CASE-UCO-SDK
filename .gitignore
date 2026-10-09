@@ -53,3 +53,6 @@ evaluation/critic/reports/*.json
 artifacts/bench/
 
 opencode.json
+
+# Local CaseNoesis corpus copy (court PDFs). Machine graphs under workbench/machines/ stay tracked.
+workbench/casenoesis-data/

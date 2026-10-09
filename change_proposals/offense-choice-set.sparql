@@ -1,0 +1,46 @@
+# CQ 1: Which options serve the cash-collection goal, and which instrument does each use?
+PREFIX choice: <http://example.org/ontology/choice/>
+PREFIX uco-core: <https://ontology.unifiedcyberontology.org/uco/core/>
+
+SELECT ?option ?name ?instrument
+WHERE {
+    ?option a choice:Option ;
+            choice:servesGoal ?goal ;
+            choice:usesInstrument ?instrument ;
+            uco-core:name ?name .
+    ?goal uco-core:name "Move the directed cash from the victim to the runners" .
+}
+# ---
+# CQ 2: Which transition enacted each option?
+PREFIX choice: <http://example.org/ontology/choice/>
+PREFIX traj: <http://example.org/ontology/trajectories/>
+
+SELECT ?option ?transition
+WHERE {
+    ?option a choice:Option ;
+            choice:enactedTransition ?transition .
+    ?transition a traj:Transition .
+}
+# ---
+# CQ 3: What selection rule was recorded, and which option was selected?
+PREFIX choice: <http://example.org/ontology/choice/>
+
+SELECT ?selection ?rule ?chosen
+WHERE {
+    ?selection a choice:Selection ;
+               choice:selectionRule ?rule ;
+               choice:selectsOption ?chosen ;
+               choice:amongOptions ?menu .
+}
+# ---
+# CQ 4: What identity-friction level was assessed for each option?
+PREFIX choice: <http://example.org/ontology/choice/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+SELECT ?option ?friction
+WHERE {
+    ?assessment a choice:OptionAssessment ;
+                choice:assessesOption ?option ;
+                choice:identityFriction ?friction ;
+                prov:wasGeneratedBy ?activity .
+}

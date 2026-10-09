@@ -1,0 +1,237 @@
+# v0.0.0 — phishing for W-2s and wires, romance contacts used as mules
+# United States v. Ridwan Adeleke Adepoju, N.D. Ill. 1:21-cr-00630
+# Indictment, CourtListener document 442720807, filed 2021-10-07
+# https://www.courtlistener.com/docket/61088260/1/united-states-v-adepoju/
+# Read through paragraph 12. Later paragraphs are not phased.
+# Unreadable year tokens are not guessed. The interval end is the last
+# day the instrument states.
+# Charging allegations. Confidence 55. Employee counts and one wire amount are
+# in the indictment; account numbers and W-2 contents are not copied.
+
+@prefix ap: <http://example.org/kb/fraud-v0/adepoju/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix lay: <http://example.org/ontology/layered/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+
+ap:doc-442720807 a uco-core:UcoObject ;
+	uco-core:name "Indictment, United States v. Adepoju, N.D. Ill. 1:21-cr-00630" ;
+	uco-core:description "CourtListener document_id 442720807. Local copy: workbench/casenoesis-data/collected/recap/fraud/442720807.pdf. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). Paragraph 2 gives no later than in or around February 2017, a month. The last day the instrument states is March 29, 2018. The paragraph 2 closing token is not a readable year and is not stored." .
+
+ap:evidence-phish a uco-core:UcoObject ;
+	uco-core:name "Phishing emails for W-2s and a wire" ;
+	uco-core:description "Paragraphs 3–10. Emails pretended to be a CFO or CEO. Some asked for employee W-2s. Company A sent about 850, Company B about 3,000, Company C about 289. W-2 data was used to file unauthorized tax returns. A compromised Comcast account was used to create additional email addresses. Company D was asked to wire $46,800 and an employee wired that amount to an account in another person's name, who then wired proceeds onward. Mailbox addresses in the indictment are not repeated here." .
+
+ap:evidence-romance a uco-core:UcoObject ;
+	uco-core:name "Dating-site and social-media contacts used as mules" ;
+	uco-core:description "Paragraphs 11–12, as read. Defendants contacted people through dating websites and social media, used other people's names and photographs, and after a false relationship asked them to open bank accounts to receive deposits or to send money. Paragraph 12 is only partly read. One person who received the Company D wire is also named among the romance contacts." .
+
+ap:interval a time:ProperInterval ; time:hasBeginning ap:t0 ; time:hasEnd ap:t1 .
+ap:t0 a time:Instant ;
+	time:inXSDDateTimeStamp "2017-02-01T00:00:00Z"^^xsd:dateTimeStamp ;
+	uco-core:description "The instrument says no later than in or around February 2017. That is a month, not a day. This instant is the first moment of that month." .
+ap:t1 a time:Instant ;
+	time:inXSDDateTimeStamp "2018-03-29T23:59:00Z"^^xsd:dateTimeStamp ;
+	uco-core:description "The instrument states on or about March 29, 2018. That is a day. This instant is the end of that day, the last day the instrument states." .
+
+ap:alphabet-phish a skos:ConceptScheme ; uco-core:name "Adepoju phishing alphabet" .
+ap:ExecutiveImpersonation a traj:State , skos:Concept ; skos:inScheme ap:alphabet-phish ; skos:prefLabel "ExecutiveImpersonation"@en ;
+	uco-core:description "Email purporting to be a company CFO or CEO, including from addresses created on a compromised consumer account." .
+ap:DataOrWireRequest a traj:State , skos:Concept ; skos:inScheme ap:alphabet-phish ; skos:prefLabel "DataOrWireRequest"@en ;
+	uco-core:description "The email asks for W-2s or for a wire." .
+ap:Receipt a traj:State , skos:Concept ; skos:inScheme ap:alphabet-phish ; skos:prefLabel "Receipt"@en ;
+	uco-core:description "The company sends W-2s or wires funds." .
+ap:TaxOrOnward a traj:State , skos:Concept ; skos:inScheme ap:alphabet-phish ; skos:prefLabel "TaxOrOnward"@en ;
+	uco-core:description "Unauthorized tax returns from W-2 data, or a mule withdrawing and wiring the company payment onward. Charging-theory endpoint of the paragraphs read." .
+
+ap:alphabet-romance a skos:ConceptScheme ; uco-core:name "Adepoju romance-mule alphabet" .
+ap:FalseRomance a traj:State , skos:Concept ; skos:inScheme ap:alphabet-romance ; skos:prefLabel "FalseRomance"@en ;
+	uco-core:description "Dating-website or social-media contact using another person's name and photograph." .
+ap:MuleAsk a traj:State , skos:Concept ; skos:inScheme ap:alphabet-romance ; skos:prefLabel "MuleAsk"@en ;
+	uco-core:description "Request that the contact open an account to receive deposits or send money." .
+
+ap:inst-email a uco-observable:EmailMessage ; uco-core:name "Email, including addresses on a compromised Comcast account" .
+ap:inst-w2 a uco-observable:File ; uco-core:name "Form W-2 as the data object" ;
+	uco-core:description "The indictment defines the W-2 as the IRS earnings report that carries name, address, and Social Security number. Values are not copied." .
+ap:inst-dating a uco-core:UcoObject ; uco-core:name "Dating websites and social media" .
+ap:act-phish a uco-action:Action ; uco-core:name "Send executive-impersonation email" ;
+	uco-action:instrument ap:inst-email ; prov:wasDerivedFrom ap:evidence-phish .
+ap:act-file a uco-action:Action ; uco-core:name "File unauthorized returns or move the wire" ;
+	uco-action:instrument ap:inst-w2 ; prov:wasDerivedFrom ap:evidence-phish .
+ap:act-romance a uco-action:Action ; uco-core:name "Open a false romance contact" ;
+	uco-action:instrument ap:inst-dating ; prov:wasDerivedFrom ap:evidence-romance .
+
+ap:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ap:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ap:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ap:c3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ap:c4 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+ap:c5 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+ap:p0 a traj:PhaseAssertion ; uco-core:name "Phish occupancy 0" ; traj:assertsState ap:ExecutiveImpersonation ;
+	traj:atInterval ap:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ap:evidence-phish ; uco-core:hasFacet ap:c0 .
+ap:p1 a traj:PhaseAssertion ; uco-core:name "Phish occupancy 1" ; traj:assertsState ap:DataOrWireRequest ;
+	traj:atInterval ap:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ap:evidence-phish ; uco-core:hasFacet ap:c1 .
+ap:p2 a traj:PhaseAssertion ; uco-core:name "Phish occupancy 2" ; traj:assertsState ap:Receipt ;
+	traj:atInterval ap:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ap:evidence-phish ; uco-core:hasFacet ap:c2 .
+ap:p3 a traj:PhaseAssertion ; uco-core:name "Phish occupancy 3" ;
+	uco-core:description "Charging-theory endpoint for the phishing paragraphs read." ;
+	traj:assertsState ap:TaxOrOnward ; traj:atInterval ap:interval ; traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom ap:evidence-phish ; uco-core:hasFacet ap:c3 .
+ap:traj-phish a traj:Trajectory ; uco-core:name "Adepoju phishing trajectory" ;
+	traj:hasPhaseAssertion ap:p0 , ap:p1 , ap:p2 , ap:p3 .
+ap:e0 a traj:Transition ; traj:fromState ap:ExecutiveImpersonation ; traj:toState ap:DataOrWireRequest ; traj:trigger ap:evidence-phish ; traj:enactsAction ap:act-phish .
+ap:e1 a traj:Transition ; traj:fromState ap:DataOrWireRequest ; traj:toState ap:Receipt ; traj:trigger ap:evidence-phish .
+ap:e2 a traj:Transition ; traj:fromState ap:Receipt ; traj:toState ap:TaxOrOnward ; traj:trigger ap:evidence-phish ; traj:enactsAction ap:act-file .
+
+ap:r0 a traj:PhaseAssertion ; uco-core:name "Romance occupancy 0" ; traj:assertsState ap:FalseRomance ;
+	traj:atInterval ap:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ap:evidence-romance ; uco-core:hasFacet ap:c4 .
+ap:r1 a traj:PhaseAssertion ; uco-core:name "Romance occupancy 1" ;
+	uco-core:description "The ask is alleged. No terminal: paragraph 12 was not fully read." ;
+	traj:assertsState ap:MuleAsk ; traj:atInterval ap:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom ap:evidence-romance ; uco-core:hasFacet ap:c5 .
+ap:traj-romance a traj:Trajectory ; uco-core:name "Adepoju romance-mule trajectory (partial)" ;
+	traj:hasPhaseAssertion ap:r0 , ap:r1 .
+ap:e3 a traj:Transition ; traj:fromState ap:FalseRomance ; traj:toState ap:MuleAsk ; traj:trigger ap:evidence-romance ; traj:enactsAction ap:act-romance .
+
+#################################################################
+# Inferred SEP extraction test.
+# Phishing paragraphs that were read have a completed endpoint.
+# The romance-mule ask stops at paragraph 12 and has no terminal.
+#################################################################
+
+ap:sep-run a prov:Activity ;
+	uco-core:name "SEP extraction test" ;
+	uco-core:description "Source-versus-target derivation from the paragraphs this graph already uses. Unfairness is not scored." .
+
+ap:anat-file a traj:BenefitAnatomy ;
+	uco-core:name "Unauthorized return or onward movement of the wire" ;
+	uco-core:description "Phishing endpoint in the paragraphs read: W-2s or a wire are received, then an unauthorized return is filed or the wire is moved. The employee data and the funds are the source." ;
+	traj:onTransition ap:e2 ;
+	traj:transferredObject "W-2 data or the wired funds" ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "The W-2 and the funds preexist the filing or the onward transfer and keep their value afterward. The benefit is that taking, not removal of the employee or the payer." ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy ap:sep-run .
+
+ap:sep-phish a traj:ExploitationAssessment ;
+	uco-core:name "Adepoju phishing extraction test" ;
+	uco-core:description "Goal-realizing edge is the filing or onward transfer. Anatomy derives victim_sourced." ;
+	traj:assessesTrajectory ap:traj-phish ;
+	traj:goalRealizingTransition ap:e2 ;
+	traj:hasBenefitAnatomy ap:anat-file ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest true ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset ap:interval ;
+	prov:wasGeneratedBy ap:sep-run .
+
+ap:anat-ask a traj:BenefitAnatomy ;
+	uco-core:name "Romance-mule ask, not a completed handoff" ;
+	uco-core:description "The ask is alleged. Paragraph 12 was not fully read, and this trajectory has no terminal occupancy. Nothing in the graph is a completed transfer from the contact." ;
+	traj:onTransition ap:e3 ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "No object is asserted to have changed hands on this edge, and the benefit is not the contact's absence, so the edge has no victim-linked benefit. The trajectory-level test stays withheld." ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "none" ;
+	prov:wasGeneratedBy ap:sep-run .
+
+ap:sep-romance a traj:ExploitationAssessment ;
+	uco-core:name "Adepoju romance-mule extraction test" ;
+	uco-core:description "No terminal occupancy. The extraction test is withheld. The ask edge derives none." ;
+	traj:assessesTrajectory ap:traj-romance ;
+	traj:hasBenefitAnatomy ap:anat-ask ;
+	traj:extractionTestStatus "withheld_partial" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest false ;
+	prov:wasGeneratedBy ap:sep-run .
+
+ap:layer-phish a lay:Layer ; uco-core:name "Layer 0 — phishing" ;
+	lay:occupiesTrajectory ap:traj-phish ; lay:domainAlphabet ap:alphabet-phish ;
+	lay:layerIndex "0"^^xsd:nonNegativeInteger ; lay:coverage "partial" ; lay:concurrencyGroup "adepoju-2017-2019" .
+ap:layer-romance a lay:Layer ; uco-core:name "Layer 1 — romance mules" ;
+	lay:occupiesTrajectory ap:traj-romance ; lay:domainAlphabet ap:alphabet-romance ;
+	lay:layerIndex "1"^^xsd:nonNegativeInteger ; lay:coverage "partial" ; lay:concurrencyGroup "adepoju-2017-2019" .
+ap:couple a lay:Coupling ; uco-core:name "Romance contact feeds a wire-receipt account" ;
+	uco-core:description "The indictment names one romance contact as the recipient of the Company D wire." ;
+	lay:couplingKind "feeds" ; lay:fromLayer ap:layer-romance ; lay:toLayer ap:layer-phish ;
+	prov:wasDerivedFrom ap:evidence-romance .
+ap:machine a lay:ExploitationStateMachine ;
+	uco-core:name "Adepoju phishing and romance-mule machine (v0.0.0)" ;
+	uco-core:description "Email impersonation of executives produces W-2s or a wire. Dating sites and social media produce account holders. The two layers meet when a romance contact receives the wire. compositionPattern hybrid. completeness partial." ;
+	lay:hasLayer ap:layer-phish , ap:layer-romance ; lay:hasCoupling ap:couple ;
+	lay:compositionPattern "hybrid" ; lay:completeness "partial" .
+
+#################################################################
+# CASE/UCO context layer
+# Indictment paragraphs naming Companies A-E. No email address,
+# login, or employee name is recorded.
+#################################################################
+
+ap:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Indictment, United States v. Adepoju" ;
+	legalproc:instrumentType "indictment" ;
+	uco-core:description "Filed 2021-10-07. CourtListener 442720807." ;
+	prov:wasDerivedFrom ap:doc-442720807 .
+ap:charge-wire a legalproc:FederalCharge ;
+	uco-core:name "Wire fraud scheme alleged in the phishing counts" ;
+	legalproc:statuteCitation "18 U.S.C. § 1343" ;
+	legalproc:assertedIn ap:charge-doc ;
+	uco-core:description "The indictment charges a scheme to obtain W-2 forms or wires. The count table is not copied line by line." .
+ap:org-a a uco-identity:Organization , uco-victim:Victim ;
+	uco-core:name "Company A" ;
+	uco-core:description "Indictment: a law firm in Chicago, Illinois. An email purporting to be the firm's chief financial officer asked for 2016 W-2 forms. About 850 forms were sent. The sending address is not recorded." ;
+	uco-core:tag "charging-allegation" .
+ap:org-b a uco-identity:Organization , uco-victim:Victim ;
+	uco-core:name "Company B" ;
+	uco-core:description "Indictment: a casino in Las Vegas, Nevada. The phishing paragraph alleges stolen login credentials for a Comcast account. No credential is recorded." ;
+	uco-core:tag "charging-allegation" .
+ap:org-c a uco-identity:Organization , uco-victim:Victim ;
+	uco-core:name "Company C" ;
+	uco-core:description "Indictment: an agricultural business in Rosemont. Employees are alleged in the Northern District of Illinois and in New York. No employee name is recorded." ;
+	uco-core:tag "charging-allegation" .
+ap:org-d a uco-identity:Organization , uco-victim:Victim ;
+	uco-core:name "Company D" ;
+	uco-core:description "Indictment: a health care service in Atlanta, Georgia." ;
+	uco-core:tag "charging-allegation" .
+ap:org-e a uco-identity:Organization , uco-victim:Victim ;
+	uco-core:name "Company E" ;
+	uco-core:description "Indictment: an automotive business in Wheeling." ;
+	uco-core:tag "charging-allegation" .
+ap:facet-w2 a uco-observable:FileFacet ;
+	uco-core:description "Form W-2. The indictment says the form lists name, home address, and other identifiers. Those values are not copied." .
+ap:inst-w2 uco-core:hasFacet ap:facet-w2 ; uco-core:tag "charging-allegation" .
+ap:facet-email a uco-observable:EmailMessageFacet ;
+	uco-core:description "The indictment alleges an executive-impersonation email requesting W-2 forms or a wire. The message body and the sending address are not copied." .
+ap:inst-email uco-core:hasFacet ap:facet-email ; uco-core:tag "charging-allegation" .
+ap:act-phish uco-action:instrument ap:inst-email ; uco-action:object ap:org-a , ap:org-b , ap:org-c , ap:org-d , ap:org-e .
+ap:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Adepoju, N.D. Ill. 1:21-cr-630" ;
+	legalproc:caseIdentifier "1:21-cr-00630" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Executive-impersonation email, then a romance-mule ask" ;
+	uco-core:object ap:charge-doc , ap:inst-email , ap:inst-w2 , ap:org-a , ap:org-b , ap:org-c , ap:org-d , ap:org-e , ap:traj-phish , ap:traj-romance .

@@ -1,0 +1,31 @@
+# Elder-Fraud extension — minimal SHACL
+#
+# Only constraint this domain extension adds beyond the base
+# trajectories-shapes.ttl firewall: every action instance typed with one of
+# this domain's Technique classes must carry >=1 uco-action:instrument, so
+# the abused affordance (the φ seam) is always present on the enacted
+# action, per the ESM's "each transition wired with traj:enactsAction whose
+# action:instrument carries the abused affordance" requirement.
+
+@prefix ef: <http://example.org/ontology/elder-fraud/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ef:TechniqueAction-shape
+	a sh:NodeShape ;
+	sh:targetClass
+		ef:a_spoof ,
+		ef:a_script ,
+		ef:a_secrecy ,
+		ef:a_direct ,
+		ef:a_coopt ,
+		ef:a_fakeid ,
+		ef:a_deposit ,
+		ef:a_transmit ;
+	sh:property
+		[
+			sh:path uco-action:instrument ;
+			sh:minCount 1 ;
+			sh:nodeKind sh:IRI ;
+			sh:message "An elder-fraud Technique action instance must carry >=1 uco-action:instrument naming the abused affordance."@en ;
+		] .

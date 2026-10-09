@@ -1,0 +1,152 @@
+# Close read — fintech payments used to reach the U.S. system
+# United States v. Iurii Gugnin, E.D.N.Y. 1:25-cr-191
+# Indictment filed 2025-06-06, CourtListener document 442161436
+# Local: workbench/casenoesis-data/collected/recap/fraud/from_press/442161436.pdf
+# Overview read: paragraphs 1–3 and 21–22. Later counts were not phased.
+# Charging allegations. Confidence 55.
+
+@prefix gu: <http://example.org/kb/method-v0/gugnin/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+
+gu:doc a uco-core:UcoObject ;
+	uco-core:name "Indictment, United States v. Gugnin, E.D.N.Y. 1:25-cr-191" ;
+	uco-core:description "Evita Investments and Evita Pay. The indictment overview alleges access to U.S. banks for overseas customers, including customers at sanctioned Russian banks, by masking source and owner. Counts include wire fraud, bank fraud, money laundering, Bank Secrecy Act, and sanctions. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). Scheme described as since at least July 2022. The overview does not give a closing date. The interval ends on the indictment filing day." .
+
+gu:evidence a uco-core:UcoObject ;
+	uco-core:name "Evita as the payment instrument" ;
+	uco-core:description "As alleged in the overview: Evita Investments incorporated in Delaware on 24 November 2021 and had not registered as a money services business. Evita Pay incorporated in Florida on 14 June 2023, registered with FinCEN on 23 June 2023, and received a money-transmitter license on 4 June 2024. Gugnin is alleged to have lied to U.S. financial institutions, masked beneficial owners, and facilitated nearly $2 billion in transactions, with more than $500 million of overseas payments through the United States. Many customers were in Russia and held funds at sanctioned banks." .
+
+gu:alphabet a skos:ConceptScheme ; uco-core:name "Gugnin alphabet" .
+gu:FormPaymentFirm a traj:State , skos:Concept ; skos:inScheme gu:alphabet ; skos:prefLabel "FormPaymentFirm"@en ;
+	uco-core:description "Evita entities formed. Evita Pay later registers as a money services business and obtains a transmitter license." .
+gu:FalseBankRepresentations a traj:State , skos:Concept ; skos:inScheme gu:alphabet ; skos:prefLabel "FalseBankRepresentations"@en ;
+	uco-core:description "Lies to U.S. banks and other financial institutions about the activity, including customer identity obligations." .
+gu:MaskedRouting a traj:State , skos:Concept ; skos:inScheme gu:alphabet ; skos:prefLabel "MaskedRouting"@en ;
+	uco-core:description "Overseas payments move through the United States with source and owner masked. Charging-theory endpoint of the overview." .
+
+gu:inst-msb a uco-identity:Organization ; uco-core:name "Money-services firm and transmitter license" ;
+	uco-core:description "The instrument is a payments company sitting in front of U.S. banks, not a call script." .
+gu:act-route a uco-action:Action ; uco-core:name "Route overseas payments through U.S. institutions" ;
+	uco-action:instrument gu:inst-msb ; prov:wasDerivedFrom gu:evidence .
+
+gu:interval a time:ProperInterval ; time:hasBeginning gu:t0 ; time:hasEnd gu:t1 .
+gu:t0 a time:Instant ; time:inXSDDateTimeStamp "2022-07-01T00:00:00Z"^^xsd:dateTimeStamp .
+gu:t1 a time:Instant ; time:inXSDDateTimeStamp "2025-06-06T23:59:00Z"^^xsd:dateTimeStamp .
+gu:c0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+gu:c1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+gu:c2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+gu:p0 a traj:PhaseAssertion ; uco-core:name "Occupancy 0 — payment firm" ;
+	traj:assertsState gu:FormPaymentFirm ; traj:atInterval gu:interval ; traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom gu:evidence ; uco-core:hasFacet gu:c0 .
+gu:p1 a traj:PhaseAssertion ; uco-core:name "Occupancy 1 — false statements to banks" ;
+	traj:assertsState gu:FalseBankRepresentations ; traj:atInterval gu:interval ; traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom gu:evidence ; uco-core:hasFacet gu:c1 .
+gu:p2 a traj:PhaseAssertion ; uco-core:name "Occupancy 2 — masked routing" ;
+	uco-core:description "Charging-theory endpoint of the overview. Later counts in the 53-page indictment were not phased. Not a verdict." ;
+	traj:assertsState gu:MaskedRouting ; traj:atInterval gu:interval ; traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ; traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom gu:evidence ; uco-core:hasFacet gu:c2 .
+gu:trajectory a traj:Trajectory ; uco-core:name "Gugnin Evita trajectory (overview only)" ;
+	traj:hasPhaseAssertion gu:p0 , gu:p1 , gu:p2 .
+gu:e0 a traj:Transition ; traj:fromState gu:FormPaymentFirm ; traj:toState gu:FalseBankRepresentations ; traj:trigger gu:evidence .
+gu:e1 a traj:Transition ; traj:fromState gu:FalseBankRepresentations ; traj:toState gu:MaskedRouting ; traj:trigger gu:evidence ; traj:enactsAction gu:act-route .
+
+gu:sep-run a prov:Activity ;
+	uco-core:name "Benefit-at-expense test" ;
+	uco-core:description "Overview only. False statements let overseas payments use U.S. institutions. The gain is that access, not an identified person's property or work." .
+gu:anat-route a traj:BenefitAnatomy ;
+	uco-core:name "Masked access to U.S. institutions" ;
+	uco-core:description "The overview alleges lies to banks and masking of owners so payments from customers, including at sanctioned banks, can move. Customers are not described as the people supplying a taking." ;
+	traj:onTransition gu:e1 ;
+	traj:suppliedByPerson false ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:preexisting false ;
+	traj:valueSurvivesVictim true ;
+	traj:advantageDefect "deception" ;
+	traj:anatomyRule "Deception is alleged. The gain is use of the banking system, not an identified person's property or activity. Derives not_from_person." ;
+	traj:benefitSource "not_from_person" ;
+	prov:wasGeneratedBy gu:sep-run .
+gu:sep a traj:ExploitationAssessment ;
+	uco-core:name "Gugnin benefit-at-expense test" ;
+	uco-core:description "The routing is the completed edge. Bank fraud and sanctions charges can be true. This trajectory is not a benefit at an identified person's expense." ;
+	traj:assessesTrajectory gu:trajectory ;
+	traj:goalRealizingTransition gu:e1 ;
+	traj:hasBenefitAnatomy gu:anat-route ;
+	traj:extractionTestStatus "not_exploitation" ;
+	traj:passesExtractionTest false ;
+	traj:passesExploitationTest false ;
+	prov:wasGeneratedBy gu:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# Indictment overview. Customer names are not recorded.
+#################################################################
+
+gu:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Indictment, United States v. Gugnin" ;
+	legalproc:instrumentType "indictment" ;
+	uco-core:description "Filed 2025-06-06. CourtListener 442161436." ;
+	prov:wasDerivedFrom gu:doc .
+gu:charge-1344 a legalproc:FederalCharge ;
+	uco-core:name "Bank fraud" ;
+	legalproc:statuteCitation "18 U.S.C. § 1344" ;
+	legalproc:assertedIn gu:charge-doc .
+gu:person-gugnin a uco-identity:Person ;
+	uco-core:name "Iurii Gugnin" ;
+	uco-core:description "Caption. Also known as Iurii Mashukov and George Goognin. The overview alleges he was president, treasurer, and compliance officer of the Evita entities." ;
+	uco-core:tag "charging-allegation" .
+gu:org-investments a uco-identity:Organization ;
+	uco-core:name "Evita Investments, Inc." ;
+	uco-core:description "Overview: incorporated in Delaware on 24 November 2021. Had not registered as a money services business." ;
+	uco-core:tag "charging-allegation" .
+gu:org-pay a uco-identity:Organization ;
+	uco-core:name "Evita Pay, Inc." ;
+	uco-core:description "Overview: incorporated in Florida on 14 June 2023, registered with FinCEN as a money services business on 23 June 2023, and received a money-transmitter license on 4 June 2024." ;
+	uco-core:tag "charging-allegation" .
+gu:loc-delaware a uco-location:Location ;
+	uco-core:name "Delaware" ;
+	uco-core:description "State of incorporation alleged for Evita Investments." .
+gu:loc-florida a uco-location:Location ;
+	uco-core:name "Florida" ;
+	uco-core:description "State of incorporation alleged for Evita Pay." .
+gu:rel-officer a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "officer-of" ;
+	uco-core:source gu:person-gugnin ;
+	uco-core:target gu:org-pay ;
+	uco-core:name "Officer of Evita Pay" ;
+	prov:wasDerivedFrom gu:evidence .
+gu:rel-inc-de a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "incorporated-in" ;
+	uco-core:source gu:org-investments ;
+	uco-core:target gu:loc-delaware ;
+	prov:wasDerivedFrom gu:evidence .
+gu:rel-inc-fl a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "incorporated-in" ;
+	uco-core:source gu:org-pay ;
+	uco-core:target gu:loc-florida ;
+	prov:wasDerivedFrom gu:evidence .
+gu:act-route uco-action:performer gu:person-gugnin ; uco-action:instrument gu:org-pay , gu:org-investments .
+gu:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Gugnin, E.D.N.Y. 1:25-cr-191" ;
+	legalproc:caseIdentifier "1:25-cr-00191" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "Payments firm in front of U.S. banks" ;
+	uco-core:description "The benefit-at-expense test fails. The overview's gain is access to U.S. institutions, not an identified person's property or work." ;
+	uco-core:object gu:charge-doc , gu:person-gugnin , gu:org-investments , gu:org-pay , gu:trajectory .

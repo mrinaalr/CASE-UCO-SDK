@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `extensions/trajectories/` (v0.5.0): the benefit-at-expense test now derives `person_used` (use of a person, or a product made from that use) and accepts `vulnerability` (age, dependency, or incapacity alleged by the instrument) alongside deception and coercion. `exploitationOnset` is the arriving phase interval, and only when the test passes. A minor who is not the source, use with no alleged defect, and benefit from absence still fail. Applied to the sixteen close reads. The use-of-a-minor proof is a synthetic exemplar. No withheld court PDF was read.
+- `extensions/trajectories/`: candidate state-machine/trajectory extension (State, Transition, Trajectory, PhaseAssertion, StateMachineModel/TransitionEstimate) with an observed≠inferred SHACL firewall; validated via the SDK path with `extensions=['trajectories']`, `profiles=['time','prov-o']`.
+- `extensions/trajectories/`: terminal-polarity pair `traj:isTerminal` / `traj:terminalPolarity` (v0.2.0) marking a Trajectory's realized outcome (`completed` / `disrupted`) without requiring a second, opposite-polarity branch.
+- `extensions/trajectories/`: Exploitation State Machine metamodel additions (v0.3.0) — `traj:enactsAction` (Transition → Action, additive alongside `traj:trigger`, carries the abused affordance via `action:instrument`) and `traj:initialState` (StateMachineModel → State, marks s₀).
+- `extensions/trajectories/` (v0.3.1): `traj:enactsAction` is multi-valued (SHACL `sh:maxCount` removed) so affordance-labeled multi-action edges validate.
+- `extensions/elder-fraud/`, `extensions/extortion/`, `extensions/trafficking/`: three narrow, machine-only ESM domain extensions (phase `skos:ConceptScheme` + `uco-action:Technique`-typed action catalog + minimal SHACL + real exemplar each), grounded in United States v. Castanos Garcia et al. (D. Mass. 1:24-cr-10138), United States v. Matthew D. Lane (D. Mass.), and United States v. Chase Anthony Young (N.D. Tex.) respectively.
+- `extensions/forced-labor/`: narrow forced-labor / debt-bondage ESM domain extension (18 U.S.C. § 1589 pattern) with two press-release trajectories sharing one machine — United States v. Gladys Ibanez-Olea (N.D. Ill., completed) and United States v. Thuy Tien Luong (W.D.N.C., disrupted).
+- `extensions/layered/` (v0.2.0): layered ESM **composition metamodel** — `lay:ExploitationStateMachine`, `lay:Layer`, `lay:Coupling` (sequential `enables`, concurrent `temporallyOverlaps`, leverage/shared-factor kinds), `hasFactor` register, full/partial `coverage`/`completeness`. Domain alphabet module in `layered-vocab.ttl`. Exemplars: `layered-exemplar.ttl` (Atkinson sequential multi-offense T1–T4) and `layered-legal-process.ttl` (hybrid warrant→custody + concurrent surveillance). Negative fixture `layered-invalid-exemplar.ttl`.
+
 ## [1.30.0] - 2026-09-10
 
 Modeling recipes for the three commercial mobile forensic suites —

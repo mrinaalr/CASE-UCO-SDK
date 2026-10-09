@@ -1,0 +1,117 @@
+# Cyber-Extortion Exploitation State Machine Extension (T-Box + phase/action vocabulary)
+#
+# Narrow, machine-only extension: contributes ONLY what the trajectories
+# (traj:) Exploitation State Machine needs to run on a NON-sexual, general
+# data-breach / leak-threat cyber extortion offense — a skos:ConceptScheme
+# of traj:State phases and a small catalog of uco-action:Technique-typed
+# action classes. This is deliberately access/exfiltration/demand/leak-
+# threat shaped, NOT sextortion-shaped — no coercion-of-a-person-via-
+# intimate-imagery phases or vocabulary. No domain taxonomy beyond the
+# Technique metaclass punning pattern already established by
+# extensions/attack-technique.
+#
+# Phase set grounded in United States v. Matthew D. Lane (D. Mass.), per
+# the USAO-MA press release "Worcester College Student Sentenced to Four
+# Years in Prison for Cyber Extortions" (2025-11-13). Built from the
+# second of the two described incidents (Aug.-Dec. 2024, the software /
+# cloud-storage company serving school systems), which is the one the
+# press release describes with an explicit access -> exfiltration ->
+# demand chain:
+#
+#   InitialAccess  -- Lane used stolen login credentials to access the
+#                     victim company's computer network.
+#   Exfiltration   -- PII of students/teachers was transferred to a
+#                     computer server Lane leased in Ukraine.
+#   Demand         -- A ransom of ~$2.85 million in Bitcoin was demanded.
+#   LeakThreat     -- Threats that the data would be "leak[ed] ...
+#                     worldwide" if the ransom went unpaid.
+#
+# The first incident (Apr.-May 2024, telecommunications company) is
+# thinner in the source — the press release does not describe its access
+# or exfiltration method, only the ransom ($200,000) and a directly quoted
+# leak-threat message. That quote is carried as corroborating evidence text
+# on the Demand/LeakThreat phases (same MO, a separate incident), not
+# modeled as its own trajectory, since a full 4-phase path cannot be
+# sourced for it without inventing an access/exfiltration narrative.
+
+@prefix ex: <http://example.org/ontology/extortion/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/ontology/extortion>
+	a owl:Ontology ;
+	rdfs:label "Cyber-Extortion Exploitation State Machine Extension"@en ;
+	rdfs:comment "Phase vocabulary (traj:State plug-in) and Technique-typed action catalog for a non-sexual, general data-breach / leak-threat cyber-extortion Exploitation State Machine. Grounded in United States v. Matthew D. Lane (D. Mass.). Depends on the trajectories and attack-technique extensions; mints no domain taxonomy beyond phases and actions."@en ;
+	dcterms:source "https://www.justice.gov/usao-ma/pr/worcester-college-student-sentenced-four-years-prison-cyber-extortions"^^xsd:anyURI ;
+	owl:imports
+		<http://example.org/ontology/trajectories> ,
+		<https://ontology.unifiedcyberontology.org/uco/action/> .
+
+#################################################################
+# Phase vocabulary: traj:State instances in a SKOS scheme
+#################################################################
+
+ex:PhaseScheme
+	a skos:ConceptScheme ;
+	skos:prefLabel "Cyber-extortion (data-breach / leak-threat) offense phases"@en ;
+	dcterms:source "United States v. Matthew D. Lane (D. Mass.), USAO-MA press release, 2025-11-13"@en .
+
+ex:InitialAccess
+	a traj:State , skos:Concept ;
+	uco-core:name "Initial access" ;
+	skos:prefLabel "Initial access"@en ;
+	skos:definition "The offender gains unauthorized access to a victim organization's protected computer network using stolen login credentials. Source: press release, para. 3 ('used stolen login credentials to access the computer network')."@en ;
+	skos:inScheme ex:PhaseScheme .
+
+ex:Exfiltration
+	a traj:State , skos:Concept ;
+	uco-core:name "Exfiltration" ;
+	skos:prefLabel "Exfiltration"@en ;
+	skos:definition "Data is transferred out of the victim's network to attacker-controlled infrastructure. Source: press release, para. 3 ('caused personally identifying information ... to be transferred to a computer server Lane leased in Ukraine')."@en ;
+	skos:inScheme ex:PhaseScheme .
+
+ex:Demand
+	a traj:State , skos:Concept ;
+	uco-core:name "Demand" ;
+	skos:prefLabel "Demand"@en ;
+	skos:definition "The offender demands a ransom payment from the victim organization in exchange for not disseminating the stolen data. Source: press release, paras. 2-3 ($200,000 ransom; ~$2.85 million in Bitcoin)."@en ;
+	skos:inScheme ex:PhaseScheme .
+
+ex:LeakThreat
+	a traj:State , skos:Concept ;
+	uco-core:name "Leak threat" ;
+	skos:prefLabel "Leak threat"@en ;
+	skos:definition "The offender threatens (and reiterates the threat of) public dissemination of the stolen data as leverage to compel ransom payment. Source: press release, paras. 2-3 (quoted threat messages; data of 60M+ students / 10M+ teachers threatened to be 'leak[ed] ... worldwide')."@en ;
+	skos:inScheme ex:PhaseScheme .
+
+#################################################################
+# Action catalog: Technique-typed uco-action:Action subclasses
+# (metaclass punning pattern per extensions/attack-technique)
+#################################################################
+
+ex:a_credential_theft
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Stolen-credential network access"@en ;
+	rdfs:comment "Use of stolen login credentials to gain unauthorized access to a victim organization's protected computer network. Affordance abused: reusable remote login authentication (stolen credentials are the misuse token, not the affordance). Source: press release, para. 3."@en ;
+	uco-action:techniqueID "EX.T1" .
+
+ex:a_exfiltrate
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Protected-network data exfiltration"@en ;
+	rdfs:comment "Abuse of gained protected-network access to transfer victim data to attacker-leased infrastructure. Affordance abused: leasable remote hosting infrastructure (not the particular Ukraine server instance). Source: press release, para. 3."@en ;
+	uco-action:techniqueID "EX.T2" .
+
+ex:a_leak_threat
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Leak-as-leverage threat"@en ;
+	rdfs:comment "Threatening to publicly disseminate exfiltrated data unless a ransom is paid. Affordance abused: worldwide digital publication channels (the stolen dataset is leverage material, not an affordance). Source: press release, paras. 2-3 (quoted threats)."@en ;
+	uco-action:techniqueID "EX.T3" .

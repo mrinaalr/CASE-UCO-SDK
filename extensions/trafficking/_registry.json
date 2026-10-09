@@ -1,0 +1,68 @@
+{
+  "extension": "trafficking",
+  "modules": [
+    "trafficking"
+  ],
+  "classes": {
+    "a_coerce": {
+      "iri": "http://example.org/ontology/trafficking/a_coerce",
+      "module": "trafficking",
+      "description": "Force / fraud / coercion technique (uco-action:Technique class). techniqueID TRAF.T1.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every trafficking Technique action instance."
+        }
+      ],
+      "source": "trafficking"
+    },
+    "a_advertise": {
+      "iri": "http://example.org/ontology/trafficking/a_advertise",
+      "module": "trafficking",
+      "description": "Online-advertisement placement technique (uco-action:Technique class). techniqueID TRAF.T2.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every trafficking Technique action instance."
+        }
+      ],
+      "source": "trafficking"
+    },
+    "a_collect_earnings": {
+      "iri": "http://example.org/ontology/trafficking/a_collect_earnings",
+      "module": "trafficking",
+      "description": "Proceeds collection technique (uco-action:Technique class). techniqueID TRAF.T3.",
+      "parents": ["Action"],
+      "is_facet": false,
+      "properties": [
+        {
+          "name": "instrument",
+          "type": "UcoObject",
+          "type_iri": "https://ontology.unifiedcyberontology.org/uco/core/UcoObject",
+          "cardinality": "one_or_more",
+          "required": true,
+          "description": "Abused affordance (φ seam). Domain SHACL requires >=1 uco-action:instrument on every trafficking Technique action instance."
+        }
+      ],
+      "source": "trafficking"
+    }
+  },
+  "vocabs": {
+    "PhaseScheme": {
+      "iri": "http://example.org/ontology/trafficking/PhaseScheme",
+      "description": "skos:ConceptScheme of traj:State phase instances: Recruitment, Control, Exploitation, EarningsCollection."
+    }
+  }
+}

@@ -1,0 +1,432 @@
+# v0.0.0 machine — mail opener, then email/phone closer, elder-targeted inheritance advance-fee
+# United States v. Kelly Augustine Jr. et al., S.D. Fla. 1:24-cr-20140-RKA
+# Source: public indictment, CourtListener document 449969604 (22 pages).
+# v0.0.0 read the conspiracy window (¶1: May 2017–December 2023) and manner ¶¶3–9.
+# v0.0.1 adds the dated mail and wire counts (Counts 2–22) and two later filings
+# on this docket: Akhimie's plea agreement (doc 443127169) and the government's
+# sentencing memoranda for Akhimie (doc 451481738) and Nnebocha (doc 466999947).
+# Forfeiture boilerplate is not a laundering occupancy. The plea proffer attachment
+# did not yield readable facts, so no proffer fact is added.
+# Occupancies are CHARGING ALLEGATIONS. Confidence 55 is not a verdict.
+# Lookup bucket is "classic"; the mechanics are hybrid (mail, then email and telephone).
+
+@prefix au: <http://example.org/kb/fraud-v0/augustine/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix legalproc: <https://ontology.caseontology.org/case/criminal/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-location: <https://ontology.unifiedcyberontology.org/uco/location/> .
+@prefix uco-victim: <https://ontology.unifiedcyberontology.org/uco/victim/> .
+
+#################################################################
+# Provenance
+#################################################################
+
+au:doc-449969604
+	a uco-core:UcoObject ;
+	uco-core:name "Indictment, United States v. Kelly Augustine Jr. et al., S.D. Fla. 1:24-cr-20140" ;
+	uco-core:description "Public indictment entered 2024-04-11. CourtListener document_id 449969604. https://www.courtlistener.com/docket/69370945/3/united-states-v-kelly-augustine-jr/ Local copy: workbench/casenoesis-data/collected/recap/fraud/449969604.pdf. Defendants charged in the docket entry: Kelly Augustine Jr (a/k/a Ogo), Andy Onoh, Okezie Bonaventure Ogbata, Kingsley Chinedu Chukwu, Ehis Lawrence Akhimie, Princewill Ekene Okoro, Tochukwu Albert Nnebocha. NHSR: UMass HRPO NHSR #8252 (16 Sep 2026). Manner ¶¶3–9 supply the pathway. Counts 2–22 supply the dated executions." .
+
+au:evidence-manner-3-9
+	a uco-core:UcoObject ;
+	uco-core:name "Manner and means ¶¶3–9, inheritance advance-fee" ;
+	uco-core:description "As read: purchased victim lists including many people older than 65; personalized letters mailed via U.S. mail claiming a multimillion-dollar inheritance; aliases included Gloria Alves, Sofia Gomez, Maria Moraleda, Isabella Morales, Krisoffer Antonio; when victims respond, contact continues by email and telephone; a false foreign-bank documentation story; commercial carriers send documents purporting to be foreign-government sworn statements and court orders; victims are directed to send an application with personal information to a purported bank employee; further aliases Gerald/Gerrard/Mark Martinez and Oscar Lozano pose as remittance-department employees; advance fees are demanded (delivery, taxes, anti-terrorist and money-laundering certificates, payments to avoid government questioning) via email, phone, and international mail; victims are instructed to send money to U.S. couriers by check, money order, or wire; couriers are often prior victims who can no longer pay and are told later payments will offset what they owe." .
+
+au:activity-list-purchase
+	a prov:Activity ;
+	uco-core:name "Pre-s0: purchase of lists that include people older than 65" ;
+	uco-core:description "Exogenous feeder, not a traj:State. The indictment alleges purchased victim lists, many of them people older than 65, before the mailed letters. This is the elder-targeting seam. It is not the Castanos Garcia grandparent-scam machine." ;
+	prov:used au:evidence-manner-3-9 .
+
+#################################################################
+# Domain alphabet
+#################################################################
+
+au:alphabet
+	a skos:ConceptScheme ;
+	uco-core:name "Augustine inheritance pathway alphabet (v0.0.0)" ;
+	uco-core:description "Mail opens the contact. Email and telephone close it. Forged paper authority and a co-opted prior victim carry the money. Steps after ¶9 are out of this alphabet." .
+
+au:MailedInheritanceLetter a traj:State , skos:Concept ;
+	skos:inScheme au:alphabet ; skos:prefLabel "MailedInheritanceLetter"@en ;
+	uco-core:description "Personalized U.S. mail letter claiming a multimillion-dollar inheritance, sent under a false personal alias." .
+au:DigitalFollowup a traj:State , skos:Concept ;
+	skos:inScheme au:alphabet ; skos:prefLabel "DigitalFollowup"@en ;
+	uco-core:description "After the victim responds, contact moves to email and telephone and a false foreign-bank documentation story." .
+au:ForgedAuthority a traj:State , skos:Concept ;
+	skos:inScheme au:alphabet ; skos:prefLabel "ForgedAuthority"@en ;
+	uco-core:description "Commercial carrier delivers documents purporting to be foreign-government sworn statements and court orders. A fake bank-employee persona collects an application with personal information." .
+au:AdvanceFeeDemand a traj:State , skos:Concept ;
+	skos:inScheme au:alphabet ; skos:prefLabel "AdvanceFeeDemand"@en ;
+	uco-core:description "Demands for delivery fees, taxes, anti-terrorist and money-laundering certificates, and payments to avoid government questioning, made by email, phone, and international mail. Remittance-department aliases." .
+au:VictimCourierPayment a traj:State , skos:Concept ;
+	skos:inScheme au:alphabet ; skos:prefLabel "VictimCourierPayment"@en ;
+	uco-core:description "Money sent to U.S. couriers by check, money order, or wire. Couriers are often prior victims who can no longer pay. Charging-theory endpoint of the ¶¶3–9 read. Not a laundering occupancy." .
+
+#################################################################
+# Tech instruments and enacted actions
+#################################################################
+
+au:inst-purchased-list a uco-observable:File ;
+	uco-core:name "Purchased contact list (age-selected)" ;
+	uco-core:description "Data product that selects people older than 65 before any letter is sent." .
+au:inst-usps a uco-identity:Organization ;
+	uco-core:name "U.S. Mail" ;
+	uco-core:description "Opener channel for the inheritance letter. Overt acts also allege some letters via FedEx; the manner paragraph read here specifies U.S. mail for the personalized letters." .
+au:inst-email-phone a uco-core:UcoObject ;
+	uco-core:name "Email and telephone" ;
+	uco-core:description "Closer channels used only after the victim responds to the letter." .
+au:inst-carrier-forgeries a uco-core:UcoObject ;
+	uco-core:name "Commercial carrier" ;
+	uco-core:description "Used to deliver documents purporting to be foreign-government sworn statements and court orders." .
+au:inst-payment-rails a uco-core:UcoObject ;
+	uco-core:name "Check, money order, or wire" ;
+	uco-core:description "Payment rails alleged for sending money to U.S. couriers." .
+
+au:act-mail-letter a uco-action:Action ;
+	uco-core:name "Mail personalized inheritance letter" ;
+	uco-action:instrument au:inst-purchased-list , au:inst-usps ;
+	prov:wasDerivedFrom au:evidence-manner-3-9 .
+au:act-email-phone a uco-action:Action ;
+	uco-core:name "Continue by email and telephone" ;
+	uco-action:instrument au:inst-email-phone ;
+	prov:wasDerivedFrom au:evidence-manner-3-9 .
+au:act-send-forgeries a uco-action:Action ;
+	uco-core:name "Send purported foreign orders by commercial carrier" ;
+	uco-action:instrument au:inst-carrier-forgeries ;
+	prov:wasDerivedFrom au:evidence-manner-3-9 .
+au:act-demand-fees a uco-action:Action ;
+	uco-core:name "Demand advance fees" ;
+	uco-action:instrument au:inst-email-phone ;
+	prov:wasDerivedFrom au:evidence-manner-3-9 .
+au:act-direct-courier a uco-action:Action ;
+	uco-core:name "Direct payment to a victim-courier" ;
+	uco-action:instrument au:inst-payment-rails ;
+	prov:wasDerivedFrom au:evidence-manner-3-9 .
+
+#################################################################
+# Interval
+#################################################################
+
+au:interval-conspiracy a time:ProperInterval ;
+	time:hasBeginning au:instant-start ;
+	time:hasEnd au:instant-end .
+au:instant-start a time:Instant ; time:inXSDDateTimeStamp "2017-05-01T00:00:00Z"^^xsd:dateTimeStamp .
+au:instant-end a time:Instant ; time:inXSDDateTimeStamp "2023-12-31T23:59:00Z"^^xsd:dateTimeStamp .
+
+au:confidence-0 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+au:confidence-1 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+au:confidence-2 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+au:confidence-3 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+au:confidence-4 a uco-core:ConfidenceFacet ; uco-core:confidence "55"^^xsd:nonNegativeInteger .
+
+#################################################################
+# Occupancies
+#################################################################
+
+au:phase-0 a traj:PhaseAssertion ;
+	uco-core:name "Occupancy 0 — mailed inheritance letter" ;
+	uco-core:description "Charging allegation ¶¶3–9. Personalized inheritance letter by U.S. mail. Fed by purchased lists that include people older than 65 (pre-s0). Counts 2–13 date individual letters from July 2020 through November 2023. Those executions are subactions, not a second trajectory." ;
+	traj:assertsState au:MailedInheritanceLetter ;
+	traj:atInterval au:interval-conspiracy ;
+	traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom au:evidence-manner-3-9 ;
+	uco-core:hasFacet au:confidence-0 .
+
+au:phase-1 a traj:PhaseAssertion ;
+	uco-core:name "Occupancy 1 — email and telephone follow-up" ;
+	uco-core:description "Charging allegation. After a response, the channel switches to email and telephone and a foreign-bank documentation fiction." ;
+	traj:assertsState au:DigitalFollowup ;
+	traj:atInterval au:interval-conspiracy ;
+	traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom au:evidence-manner-3-9 ;
+	uco-core:hasFacet au:confidence-1 .
+
+au:phase-2 a traj:PhaseAssertion ;
+	uco-core:name "Occupancy 2 — forged authority" ;
+	uco-core:description "Charging allegation. Commercial-carrier delivery of purported foreign-government and court documents, plus a fake bank-employee persona collecting personal information." ;
+	traj:assertsState au:ForgedAuthority ;
+	traj:atInterval au:interval-conspiracy ;
+	traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom au:evidence-manner-3-9 ;
+	uco-core:hasFacet au:confidence-2 .
+
+au:phase-3 a traj:PhaseAssertion ;
+	uco-core:name "Occupancy 3 — advance-fee demand" ;
+	uco-core:description "Charging allegation. Fees for delivery, taxes, certificates, and avoiding government questioning, demanded by email, phone, and international mail." ;
+	traj:assertsState au:AdvanceFeeDemand ;
+	traj:atInterval au:interval-conspiracy ;
+	traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom au:evidence-manner-3-9 ;
+	uco-core:hasFacet au:confidence-3 .
+
+au:phase-4 a traj:PhaseAssertion ;
+	uco-core:name "Occupancy 4 — payment to a victim-courier" ;
+	uco-core:description "Charging allegation. Check, money order, or wire to a U.S. courier who is often a prior victim. terminalPolarity completed is the charging theory's extraction endpoint for ¶¶3–9. The forfeiture section is not modeled as a laundering state." ;
+	traj:assertsState au:VictimCourierPayment ;
+	traj:atInterval au:interval-conspiracy ;
+	traj:sequenceIndex "4"^^xsd:nonNegativeInteger ;
+	traj:isTerminal true ;
+	traj:terminalPolarity "completed" ;
+	prov:wasDerivedFrom au:evidence-manner-3-9 ;
+	uco-core:hasFacet au:confidence-4 .
+
+au:trajectory-scheme
+	a traj:Trajectory ;
+	uco-core:name "Augustine inheritance scheme trajectory (v0.0.0, ¶¶3–9)" ;
+	uco-core:description "One scheme-level path, May 2017 through December 2023. Tech step-up from the Alcedo machine: purchased age-selected data, mail as opener, email and telephone as closer, forged documents, and wires to co-opted victims. Not the Castanos Garcia machine." ;
+	traj:hasPhaseAssertion au:phase-0 , au:phase-1 , au:phase-2 , au:phase-3 , au:phase-4 .
+
+#################################################################
+# Charged edges
+#################################################################
+
+au:t-letter-digital a traj:Transition ;
+	uco-core:name "Mailed letter to email/phone follow-up" ;
+	traj:fromState au:MailedInheritanceLetter ;
+	traj:toState au:DigitalFollowup ;
+	traj:trigger au:evidence-manner-3-9 ;
+	traj:guard "Victim responds to the letter" ;
+	traj:enactsAction au:act-email-phone ;
+	uco-core:description "The channel change is conditional on a response. That guard is in the indictment." .
+au:t-digital-forged a traj:Transition ;
+	uco-core:name "Digital follow-up to forged authority" ;
+	traj:fromState au:DigitalFollowup ;
+	traj:toState au:ForgedAuthority ;
+	traj:trigger au:evidence-manner-3-9 ;
+	traj:enactsAction au:act-send-forgeries .
+au:t-forged-fee a traj:Transition ;
+	uco-core:name "Forged authority to advance-fee demand" ;
+	traj:fromState au:ForgedAuthority ;
+	traj:toState au:AdvanceFeeDemand ;
+	traj:trigger au:evidence-manner-3-9 ;
+	traj:enactsAction au:act-demand-fees .
+au:t-fee-courier a traj:Transition ;
+	uco-core:name "Advance-fee demand to victim-courier payment" ;
+	traj:fromState au:AdvanceFeeDemand ;
+	traj:toState au:VictimCourierPayment ;
+	traj:trigger au:evidence-manner-3-9 ;
+	traj:enactsAction au:act-direct-courier .
+
+#################################################################
+# Inferred SEP extraction test. Read stopped at manner ¶9.
+#################################################################
+
+au:sep-run a prov:Activity ;
+	uco-core:name "SEP extraction test" ;
+	uco-core:description "Source-versus-target derivation from ¶¶3–9 only. Paragraphs after ¶9 were not read. Unfairness is not scored." .
+
+au:anat-fee a traj:BenefitAnatomy ;
+	uco-core:name "Advance fee paid to a victim-courier" ;
+	uco-core:description "Manner ¶¶3–9: check, money order, or wire to a U.S. courier who is often a prior victim. The payer's funds are the source. Age selection of the list is feeder context, not a scored unfairness finding." ;
+	traj:onTransition au:t-fee-courier ;
+	traj:transferredObject "advance fee by check, money order, or wire" ;
+	traj:preexisting true ;
+	traj:valueSurvivesVictim true ;
+	traj:anatomyRule "The fee is the payer's preexisting money and keeps its value after it is sent. The benefit is the fee, not the payer's removal." ;
+	traj:suppliedByPerson true ;
+	traj:personRetainsValue false ;
+	traj:requiresPresence false ;
+	traj:advantageDefect "deception" ;
+	traj:benefitSource "victim_sourced" ;
+	prov:wasGeneratedBy au:sep-run .
+
+au:sep-scheme a traj:ExploitationAssessment ;
+	uco-core:name "Augustine inheritance extraction test" ;
+	uco-core:description "Goal-realizing edge is the courier payment in the paragraphs that were read. Anatomy derives victim_sourced." ;
+	traj:assessesTrajectory au:trajectory-scheme ;
+	traj:goalRealizingTransition au:t-fee-courier ;
+	traj:hasBenefitAnatomy au:anat-fee ;
+	traj:extractionTestStatus "realized_at_expense" ;
+	traj:passesExtractionTest true ;
+	traj:passesExploitationTest true ;
+	traj:exploitationOnset au:interval-conspiracy ;
+	prov:wasGeneratedBy au:sep-run .
+
+#################################################################
+# CASE/UCO context layer
+# Manner paragraphs 3-7. No victim name, email address, or telephone number.
+#################################################################
+
+au:charge-doc a legalproc:ChargingInstrument ;
+	uco-core:name "Indictment, United States v. Augustine" ;
+	legalproc:instrumentType "indictment" ;
+	uco-core:description "Entered 2024-04-11. CourtListener 449969604. Not a judgment." ;
+	prov:wasDerivedFrom au:doc-449969604 .
+au:charge-lead a legalproc:FederalCharge ;
+	uco-core:name "Conspiracy alleged in the manner read" ;
+	legalproc:statuteCitation "18 U.S.C. § 1349" ;
+	legalproc:offenseForm "conspiracy" ;
+	legalproc:assertedIn au:charge-doc ;
+	uco-core:description "Count 1 is the conspiracy. Counts 2–22 are dated executions of the mail and wire steps, not extra phases." .
+
+au:person-augustine a uco-identity:Person ;
+	uco-core:name "Kelly Augustine Jr" ;
+	uco-core:description "Named defendant. The docket entry also lists the alias Ogo. Paragraphs 5-7 name him among those who mailed letters and then used email and telephone." ;
+	uco-core:tag "charging-allegation" .
+au:facet-list a uco-observable:FileFacet ;
+	uco-core:description "Paragraph 3 alleges purchased lists of names and contact information. No file name is stated." .
+au:inst-purchased-list uco-core:hasFacet au:facet-list ; uco-core:tag "charging-allegation" .
+au:email a uco-observable:EmailAccount ;
+	uco-core:name "Email used after a letter response" ;
+	uco-core:description "Paragraph 6. No email address is recorded." ;
+	uco-core:tag "charging-allegation" .
+au:phone a uco-observable:PhoneAccount ;
+	uco-core:name "Telephone used after a letter response" ;
+	uco-core:description "Paragraph 6. No telephone number is recorded." ;
+	uco-core:tag "charging-allegation" .
+au:consumers a uco-identity:Identity , uco-victim:Victim ;
+	uco-core:name "People on the purchased lists" ;
+	uco-core:description "Paragraph 3. No person on a list is named." ;
+	uco-core:tag "charging-allegation" .
+au:rel-mail a uco-core:Relationship ;
+	uco-core:isDirectional true ;
+	uco-core:kindOfRelationship "sent-via" ;
+	uco-core:source au:inst-purchased-list ;
+	uco-core:target au:inst-usps ;
+	uco-core:name "Letters mailed after the list" ;
+	uco-core:description "Paragraphs 3 and 5." ;
+	prov:wasDerivedFrom au:evidence-manner-3-9 .
+au:act-mail-letter uco-action:performer au:person-augustine ; uco-action:instrument au:inst-usps ; uco-action:object au:consumers .
+au:act-email-phone uco-action:performer au:person-augustine ; uco-action:instrument au:email , au:phone .
+au:investigation a case-investigation:Investigation ;
+	uco-core:name "United States v. Augustine, S.D. Fla. 1:24-cr-20140" ;
+	legalproc:caseIdentifier "1:24-cr-20140" ;
+	case-investigation:investigationForm "case" ;
+	case-investigation:focus "List, letter, then email and telephone" ;
+	uco-core:object au:charge-doc , au:person-augustine , au:inst-purchased-list , au:inst-usps , au:email , au:phone .
+
+#################################################################
+# v0.0.1. Dated count executions. No recipient initials.
+# Caller locations are countries named in Counts 14–22.
+#################################################################
+
+au:evidence-counts a uco-core:UcoObject ;
+	uco-core:name "Mail and wire count tables" ;
+	uco-core:description "Indictment counts 2–22. Approximate months. Recipient initials are not copied." .
+
+au:loc-spain a uco-location:Location ; uco-core:name "Spain" ; uco-core:description "Counts 14, 18, and 19 place a caller or email sender in Spain." .
+au:loc-uk a uco-location:Location ; uco-core:name "United Kingdom" ; uco-core:description "Counts 15 and 17 place the email sender in the United Kingdom." .
+au:loc-ukraine a uco-location:Location ; uco-core:name "Ukraine" ; uco-core:description "Count 16 places two callers in Ukraine." .
+au:loc-portugal a uco-location:Location ; uco-core:name "Portugal" ; uco-core:description "Counts 20–22 place two callers in Portugal." .
+au:org-fedex a uco-identity:Organization ; uco-core:name "FedEx" ; uco-core:description "Counts 4, 6, and 10 allege the letter moved by FedEx rather than U.S. mail." .
+
+au:act-mail-letter uco-action:subaction au:exec-mail-usps , au:exec-mail-fedex .
+au:exec-mail-usps a uco-action:Action ;
+	uco-core:name "Letters by U.S. mail, July 2020 through November 2023" ;
+	uco-core:description "Counts 2, 3, 5, 7, 8, 9, 11, 12, and 13. Nine letters by U.S. mail to people in the Southern District of Florida. Months: July 2020, September 2020, May 2021, July 2021, September 2021, November 2021, September 2023 twice, November 2023." ;
+	uco-action:actionCount "9"^^xsd:nonNegativeInteger ;
+	uco-action:startTime "2020-07-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:endTime "2023-11-30T23:59:00Z"^^xsd:dateTime ;
+	uco-action:instrument au:inst-usps ;
+	prov:wasDerivedFrom au:evidence-counts .
+au:exec-mail-fedex a uco-action:Action ;
+	uco-core:name "Letters by FedEx, March 2021 through November 2021" ;
+	uco-core:description "Counts 4, 6, and 10. Three letters by FedEx to people in the Southern District of Florida. Months: March 2021, June 2021, November 2021." ;
+	uco-action:actionCount "3"^^xsd:nonNegativeInteger ;
+	uco-action:startTime "2021-03-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:endTime "2021-11-30T23:59:00Z"^^xsd:dateTime ;
+	uco-action:instrument au:org-fedex ;
+	prov:wasDerivedFrom au:evidence-counts .
+
+au:act-email-phone uco-action:subaction au:exec-wire-2019-09 , au:exec-wire-2020-10 , au:exec-wire-2021-06 , au:exec-wire-2021-08 , au:exec-wire-2021-09 , au:exec-wire-2021-11 , au:exec-wire-2023-11 , au:exec-wire-2023-12 .
+au:exec-wire-2019-09 a uco-action:Action ;
+	uco-core:name "Telephone call from Spain, approximately September 2019" ;
+	uco-core:description "Count 14. Call from Spain to a person in the Southern District of Florida." ;
+	uco-action:startTime "2019-09-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location au:loc-spain ;
+	prov:wasDerivedFrom au:evidence-counts .
+au:exec-wire-2020-10 a uco-action:Action ;
+	uco-core:name "Email from the United Kingdom, approximately October 2020" ;
+	uco-core:description "Count 15. Email from the United Kingdom to a person in the Southern District of Florida." ;
+	uco-action:startTime "2020-10-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument au:email ;
+	uco-action:location au:loc-uk ;
+	prov:wasDerivedFrom au:evidence-counts .
+au:exec-wire-2021-06 a uco-action:Action ;
+	uco-core:name "Telephone call from Ukraine, approximately June 2021" ;
+	uco-core:description "Count 16. Call from Ukraine to a person in the Southern District of Florida." ;
+	uco-action:startTime "2021-06-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location au:loc-ukraine ;
+	prov:wasDerivedFrom au:evidence-counts .
+au:exec-wire-2021-08 a uco-action:Action ;
+	uco-core:name "Email from the United Kingdom, approximately August 2021" ;
+	uco-core:description "Count 17. Email from the United Kingdom to a person in the Southern District of Florida." ;
+	uco-action:startTime "2021-08-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument au:email ;
+	uco-action:location au:loc-uk ;
+	prov:wasDerivedFrom au:evidence-counts .
+au:exec-wire-2021-09 a uco-action:Action ;
+	uco-core:name "Email from Spain, approximately September 2021" ;
+	uco-core:description "Count 18. Email from Spain to a person in the Southern District of Florida." ;
+	uco-action:startTime "2021-09-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument au:email ;
+	uco-action:location au:loc-spain ;
+	prov:wasDerivedFrom au:evidence-counts .
+au:exec-wire-2021-11 a uco-action:Action ;
+	uco-core:name "Email from Spain, approximately November 2021" ;
+	uco-core:description "Count 19. Email from Spain to a person in the Southern District of Florida." ;
+	uco-action:startTime "2021-11-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:instrument au:email ;
+	uco-action:location au:loc-spain ;
+	prov:wasDerivedFrom au:evidence-counts .
+au:exec-wire-2023-11 a uco-action:Action ;
+	uco-core:name "Telephone call from Portugal, approximately November 2023" ;
+	uco-core:description "Count 20. Call from Portugal to a person in the Southern District of Florida." ;
+	uco-action:startTime "2023-11-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location au:loc-portugal ;
+	prov:wasDerivedFrom au:evidence-counts .
+au:exec-wire-2023-12 a uco-action:Action ;
+	uco-core:name "Telephone calls from Portugal, approximately December 2023" ;
+	uco-core:description "Counts 21 and 22. Two calls from Portugal to people in the Southern District of Florida." ;
+	uco-action:actionCount "2"^^xsd:nonNegativeInteger ;
+	uco-action:startTime "2023-12-01T00:00:00Z"^^xsd:dateTime ;
+	uco-action:location au:loc-portugal ;
+	prov:wasDerivedFrom au:evidence-counts .
+
+au:doc-plea-akhimie a uco-core:UcoObject ;
+	uco-core:name "Plea agreement, Ehis Lawrence Akhimie" ;
+	uco-core:description "CourtListener document 443127169, entered on the docket 2025-06-17. He agrees to plead guilty to Count 1, conspiracy to commit mail and wire fraud, 18 U.S.C. § 1349. The government agrees to seek dismissal of the remaining counts as to him after sentencing. The attached factual proffer was not readable in the local text extract. No proffer fact is added. This is not a judgment, and it is not a plea by Kelly Augustine Jr." .
+au:doc-sentence-akhimie a uco-core:UcoObject ;
+	uco-core:name "Government sentencing memorandum, Ehis Lawrence Akhimie" ;
+	uco-core:description "CourtListener document 451481738, entered 2025-09-04. The memorandum states that he pleaded guilty to the conspiracy and was scheduled to be sentenced on 2025-09-11. It describes a multi-year inheritance scheme and recommends 97 months. That recommendation is not a sentence imposed." .
+au:doc-sentence-nnebocha a uco-core:UcoObject ;
+	uco-core:name "Government sentencing memorandum, Tochukwu Albert Nnebocha" ;
+	uco-core:description "CourtListener document 466999947, entered 2026-01-30. The memorandum states that he pleaded guilty to the conspiracy and was scheduled to be sentenced on 2026-02-06. That schedule is not a sentence imposed." .
+
+au:person-akhimie a uco-identity:Person ;
+	uco-core:name "Ehis Lawrence Akhimie" ;
+	uco-core:description "Named defendant. The plea agreement also lists the alias Lawrenchi." ;
+	uco-core:tag "charging-allegation" .
+au:person-nnebocha a uco-identity:Person ;
+	uco-core:name "Tochukwu Albert Nnebocha" ;
+	uco-core:description "Named defendant." ;
+	uco-core:tag "charging-allegation" .
+
+au:plea-akhimie a legalproc:Plea ;
+	uco-core:name "Guilty plea to Count 1, as stated in the sentencing memorandum" ;
+	legalproc:pleaType "guilty" ;
+	legalproc:outcomeScope "current-case" ;
+	legalproc:concernsCharge au:charge-lead ;
+	uco-core:description "The 2025-09-04 memorandum states that he pleaded guilty to the conspiracy. This graph does not attach a judgment." ;
+	prov:wasDerivedFrom au:doc-sentence-akhimie .
+au:agreement-akhimie a legalproc:PleaAgreement ;
+	uco-core:name "Plea agreement, 2025-06-17" ;
+	legalproc:recordsPlea au:plea-akhimie ;
+	legalproc:outcomeScope "current-case" ;
+	uco-core:description "Agreement to plead guilty to Count 1. Remaining counts to be dismissed as to him after sentencing. The factual proffer attachment was not used." ;
+	prov:wasDerivedFrom au:doc-plea-akhimie .
+au:plea-nnebocha a legalproc:Plea ;
+	uco-core:name "Guilty plea to Count 1, as stated for Nnebocha" ;
+	legalproc:pleaType "guilty" ;
+	legalproc:outcomeScope "current-case" ;
+	legalproc:concernsCharge au:charge-lead ;
+	uco-core:description "The 2026-01-30 memorandum states that he pleaded guilty to the conspiracy. No separate plea-agreement PDF was read for him. This graph does not attach a judgment." ;
+	prov:wasDerivedFrom au:doc-sentence-nnebocha .

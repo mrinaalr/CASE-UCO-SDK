@@ -1,0 +1,25 @@
+# Cyber-Extortion extension — minimal SHACL
+#
+# Only constraint this domain extension adds beyond the base
+# trajectories-shapes.ttl firewall: every action instance typed with one of
+# this domain's Technique classes must carry >=1 uco-action:instrument, so
+# the abused affordance (the φ seam) is always present on the enacted
+# action.
+
+@prefix ex: <http://example.org/ontology/extortion/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:TechniqueAction-shape
+	a sh:NodeShape ;
+	sh:targetClass
+		ex:a_credential_theft ,
+		ex:a_exfiltrate ,
+		ex:a_leak_threat ;
+	sh:property
+		[
+			sh:path uco-action:instrument ;
+			sh:minCount 1 ;
+			sh:nodeKind sh:IRI ;
+			sh:message "An extortion Technique action instance must carry >=1 uco-action:instrument naming the abused affordance."@en ;
+		] .

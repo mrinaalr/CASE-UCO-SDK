@@ -1,0 +1,123 @@
+# Sex-Trafficking Exploitation State Machine Extension (T-Box + phase/action vocabulary)
+#
+# Narrow, machine-only extension: contributes ONLY what the trajectories
+# (traj:) Exploitation State Machine needs to run on an individual-operator,
+# online-advertisement-based adult sex-trafficking offense — a
+# skos:ConceptScheme of traj:State phases and a small catalog of
+# uco-action:Technique-typed action classes. No domain taxonomy beyond the
+# Technique metaclass punning pattern already established by
+# extensions/attack-technique.
+#
+# All classes here are minted fresh — no CAC classes are retyped. This
+# extension does not crosswalk to any CAC (cacontology.projectvic.org)
+# trafficking class: the vendored CAC ontology (ontology/cac) is
+# grooming/CSAM-focused (child victims), while the source case here is an
+# adult-victim, individual-operator sex-trafficking prosecution with no
+# child-exploitation allegation, so no CAC class is a defensible
+# skos:exactMatch target. (Sign-off note: revisit only if a specific CAC
+# trafficking class is later identified as a genuine exact match.)
+#
+# Phase set grounded in United States v. Chase Anthony Young (N.D. Tex.),
+# per the USAO-NDTX press release "Dallas Man Sentenced to 30 Years in
+# Federal Prison for Sex Trafficking" (2026-06-15). Victim-journey shaped:
+#
+#   Recruitment        -- Young's sex-trafficking organization, per
+#                          prosecutors' sentencing statement, dated back
+#                          to at least 2017 with nine total identified
+#                          victims (recruitment *method* is not described
+#                          in the source for the three victims of the
+#                          admitted conduct).
+#   Control            -- Victims caused to engage in commercial sex "by
+#                          force, threats of force, fraud, or coercion";
+#                          Young set pricing and rules for the victims.
+#   Exploitation       -- Young placed online ads for the victims and
+#                          rented hotel rooms in which commercial sex acts
+#                          occurred.
+#   EarningsCollection -- Young took all proceeds from the commercial sex
+#                          acts performed by the victims.
+#
+# This is thinner source material than the elder-fraud case (a press
+# release, not an affidavit): no phase, action, amount, or affordance is
+# asserted here beyond what the press release states.
+
+@prefix traf: <http://example.org/ontology/trafficking/> .
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/ontology/trafficking>
+	a owl:Ontology ;
+	rdfs:label "Sex-Trafficking Exploitation State Machine Extension"@en ;
+	rdfs:comment "Phase vocabulary (traj:State plug-in) and Technique-typed action catalog for an individual-operator, online-advertisement-based adult sex-trafficking Exploitation State Machine. Grounded in United States v. Chase Anthony Young (N.D. Tex.). Depends on the trajectories and attack-technique extensions; mints no domain taxonomy beyond phases and actions; no CAC classes retyped or crosswalked."@en ;
+	dcterms:source "https://www.justice.gov/usao-ndtx/pr/dallas-man-sentenced-30-years-federal-prison-sex-trafficking"^^xsd:anyURI ;
+	owl:imports
+		<http://example.org/ontology/trajectories> ,
+		<https://ontology.unifiedcyberontology.org/uco/action/> .
+
+#################################################################
+# Phase vocabulary: traj:State instances in a SKOS scheme
+#################################################################
+
+traf:PhaseScheme
+	a skos:ConceptScheme ;
+	skos:prefLabel "Sex-trafficking victim-journey offense phases"@en ;
+	dcterms:source "United States v. Chase Anthony Young (N.D. Tex.), USAO-NDTX press release, 2026-06-15"@en .
+
+traf:Recruitment
+	a traj:State , skos:Concept ;
+	uco-core:name "Recruitment" ;
+	skos:prefLabel "Recruitment"@en ;
+	skos:definition "Onset of the trafficking organization/relationship. Source is silent on recruitment method for the three victims of the admitted conduct; the only sourced fact is organizational duration and victim count. Source: press release para. 4 ('a total of nine identified victims of his sex trafficking organization, dating back to at least 2017')."@en ;
+	skos:inScheme traf:PhaseScheme .
+
+traf:Control
+	a traj:State , skos:Concept ;
+	uco-core:name "Control" ;
+	skos:prefLabel "Control"@en ;
+	skos:definition "Victims are caused to engage in commercial sex by force, threats of force, fraud, or coercion; the offender sets pricing and rules for the victims. Source: press release paras. 2, 4-5."@en ;
+	skos:inScheme traf:PhaseScheme .
+
+traf:Exploitation
+	a traj:State , skos:Concept ;
+	uco-core:name "Exploitation" ;
+	skos:prefLabel "Exploitation"@en ;
+	skos:definition "Commercial sex acts are arranged and carried out: online ads are placed for the victims and hotel rooms are rented. Source: press release para. 3 ('placing online ads for the victims, renting hotel rooms ... performed by the victims')."@en ;
+	skos:inScheme traf:PhaseScheme .
+
+traf:EarningsCollection
+	a traj:State , skos:Concept ;
+	uco-core:name "Earnings collection" ;
+	skos:prefLabel "Earnings collection"@en ;
+	skos:definition "The offender takes the proceeds from the commercial sex acts performed by the victims. Source: press release paras. 3-4 ('taking the proceeds ... Young received all the proceeds')."@en ;
+	skos:inScheme traf:PhaseScheme .
+
+#################################################################
+# Action catalog: Technique-typed uco-action:Action subclasses
+# (metaclass punning pattern per extensions/attack-technique)
+#################################################################
+
+traf:a_coerce
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Force / fraud / coercion"@en ;
+	rdfs:comment "Causing a victim to engage in commercial sex by force, threats of force, fraud, or coercion, including setting pricing and rules for the victim. Those are techniques/misuses, not affordances. Affordance abused: operator control of commercial-sex labor (authority to set pricing, rules, and work conditions). Source: press release paras. 2, 4-5."@en ;
+	uco-action:techniqueID "TRAF.T1" .
+
+traf:a_advertise
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Online-advertisement placement"@en ;
+	rdfs:comment "Placing online advertisements for a victim to solicit commercial sex buyers. Affordance abused: online advertising platforms (adjacent: short-stay hotel lodging as venue). Source: press release para. 3 ('placing online ads for the victims')."@en ;
+	uco-action:techniqueID "TRAF.T2" .
+
+traf:a_collect_earnings
+	a owl:Class , uco-action:Technique ;
+	rdfs:subClassOf uco-action:Action ;
+	rdfs:label "Proceeds collection"@en ;
+	rdfs:comment "Taking the proceeds from commercial sex acts performed by a victim. Affordance abused: commercial-sex payment collection channels (not the proceeds themselves). Source: press release paras. 3-4 ('taking the proceeds ... Young received all the proceeds')."@en ;
+	uco-action:techniqueID "TRAF.T3" .

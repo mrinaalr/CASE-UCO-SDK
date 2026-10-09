@@ -1,0 +1,263 @@
+# Trajectories Extension — non-CAC elder-fraud trajectory
+# Grounded in examples/pacer/edla_2022_cr_00115/keel-panchal-edla-2022-elder-fraud.jsonld
+# (original @ids preserved). Domain states are minted here (not CAC).
+
+@prefix traj: <http://example.org/ontology/trajectories/> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-tool: <https://ontology.unifiedcyberontology.org/uco/tool/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix case-investigation: <https://ontology.caseontology.org/case/investigation/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# Elder-fraud plug-in state vocabulary (case-derived, not CAC)
+#################################################################
+
+<urn:uuid:11000001-0000-5000-8000-000000000001>
+	a skos:ConceptScheme ;
+	skos:prefLabel "Elder-fraud offense stages (EDLA 2022-cr-00115)"@en .
+
+<urn:uuid:11000002-0000-5000-8000-000000000002>
+	a traj:State , skos:Concept ;
+	uco-core:name "Contact" ;
+	skos:prefLabel "Contact"@en ;
+	skos:definition "Cold call / government-impersonation opening contact with elderly victim."@en ;
+	skos:inScheme <urn:uuid:11000001-0000-5000-8000-000000000001> .
+
+<urn:uuid:11000003-0000-5000-8000-000000000003>
+	a traj:State , skos:Concept ;
+	uco-core:name "Trust cultivation" ;
+	skos:prefLabel "Trust cultivation"@en ;
+	skos:definition "Impersonators claim Treasury/DOJ role and induce belief that bank accounts are implicated in crime."@en ;
+	skos:inScheme <urn:uuid:11000001-0000-5000-8000-000000000001> .
+
+<urn:uuid:11000004-0000-5000-8000-000000000004>
+	a traj:State , skos:Concept ;
+	uco-core:name "Urgency / safekeeping coercion" ;
+	skos:prefLabel "Urgency / safekeeping coercion"@en ;
+	skos:definition "Victim is directed to withdraw cash 'for safekeeping' under time pressure."@en ;
+	skos:inScheme <urn:uuid:11000001-0000-5000-8000-000000000001> .
+
+<urn:uuid:11000005-0000-5000-8000-000000000005>
+	a traj:State , skos:Concept ;
+	uco-core:name "Asset extraction" ;
+	skos:prefLabel "Asset extraction"@en ;
+	skos:definition "Cash collected via Green Dot cards, mailed packages, or in-person courier pickup."@en ;
+	skos:inScheme <urn:uuid:11000001-0000-5000-8000-000000000001> .
+
+#################################################################
+# Evidence nodes (verbatim @ids from keel-panchal-edla-2022-elder-fraud.jsonld)
+#################################################################
+
+# Copied from examples/pacer/edla_2022_cr_00115/keel-panchal-edla-2022-elder-fraud.jsonld
+<urn:uuid:8d61cedc-e74a-5977-b1d5-5fa0950c1c19>
+	a uco-observable:ObservableObject , uco-core:UcoObject ;
+	uco-core:name "pacer -- elder fraud -- factual basis.pdf" ;
+	uco-core:description "PACER document (61) filed 2023-06-14 in 2:22-cr-00115-ILRL-KWR (E.D. La.); local bundle 'outside_pacer -- elder fraud'." .
+
+# Copied from examples/pacer/edla_2022_cr_00115/keel-panchal-edla-2022-elder-fraud.jsonld
+<urn:uuid:ee49c32f-2f3f-571c-9964-997a966c4915>
+	a uco-identity:Person , uco-core:UcoObject ;
+	uco-core:name "Victim A" ;
+	uco-core:description "77-year-old woman, resident of Hammond, Tangipahoa Parish, Louisiana (E.D. La.). Told by callers posing as U.S. Treasury agents that her accounts were implicated in fraud; transferred $60,000 via Green Dot cards from 2022-03-07 and handed a $60,000 cash box to Keel on 2022-04-03; a further $400,000 withdrawal on 2022-04-04 was halted by bank employees and her adult son. Source: PACER Doc 28 (superseding_indictment), Count 1 paras. A.3, D.5-D.11; Source: PACER Doc 61 (factual_basis), pp. 1-3" .
+
+# Copied from examples/pacer/edla_2022_cr_00115/keel-panchal-edla-2022-elder-fraud.jsonld
+<urn:uuid:07c7b29a-102b-5431-9c35-ed4d5bad50b2>
+	a uco-core:UcoObject ;
+	uco-core:name "Sealed box of $60,000 cash handed to Keel by Victim A (2022-04-03)" ;
+	uco-core:description "Cash box Victim A was instructed to prepare and hand off in the Santa Fe Cattle Company parking lot at Hammond Square Mall; Keel verified himself with a code word supplied by the caller. Source: PACER Doc 61 (factual_basis), p. 2" .
+
+# Copied from examples/pacer/edla_2022_cr_00115/keel-panchal-edla-2022-elder-fraud.jsonld
+<urn:uuid:f082ad12-bb26-518d-8150-929af69aa563>
+	a uco-action:Action , uco-core:UcoObject ;
+	uco-core:name "Keel collects a $60,000 cash box from Victim A, Hammond, LA (2022-04-03)" ;
+	uco-core:description "Victim A was sent to the Santa Fe Cattle Company parking lot at Hammond Square Mall with a sealed cash box; Keel (driven to the pickup by Panchal) gave the code word and took the box. Source: PACER Doc 28 (superseding_indictment), Count 1 para. D.9; Source: PACER Doc 61 (factual_basis), pp. 2, 4" ;
+	uco-action:performer <urn:uuid:39ea84fe-2fe1-5890-823f-6933fde634b5> ;
+	uco-action:object <urn:uuid:07c7b29a-102b-5431-9c35-ed4d5bad50b2> .
+
+# Support node referenced by evidence Action roles
+# Copied from examples/pacer/edla_2022_cr_00115/keel-panchal-edla-2022-elder-fraud.jsonld
+<urn:uuid:39ea84fe-2fe1-5890-823f-6933fde634b5>
+	a uco-identity:Person , uco-core:UcoObject ;
+	uco-core:name "Christopher L. Keel" ;
+	uco-core:description "Defendant (1), resident of Tampa, Florida; USM number 03691-510. Money courier who collected cash boxes from Victim A (Hammond, LA) and Victim B (South Center, WA) while co-conspirators impersonated federal agents by phone; texting with co-conspirators about courier 'work' since at least 2021-10-22. Arrested 2022-04-04 in a controlled-delivery sting. Pleaded guilty 2023-06-14 to Counts 1s and 2s; sentenced 2023-10-25 to 125 months. Source: PACER Doc criminal docket sheet (docket), defendant 1 caption; Source: PACER Doc 61 (factual_basis), pp. 1-8" .
+
+#################################################################
+# Intervals / confidence / PhaseAssertions / Trajectory
+#################################################################
+
+<urn:uuid:13000001-0000-5000-8000-000000000001>
+	a time:ProperInterval ;
+	time:hasBeginning <urn:uuid:13000011-0000-5000-8000-000000000011> ;
+	time:hasEnd <urn:uuid:13000012-0000-5000-8000-000000000012> .
+<urn:uuid:13000011-0000-5000-8000-000000000011>
+	a time:Instant ; time:inXSDDateTimeStamp "2022-03-01T00:00:00Z"^^xsd:dateTimeStamp .
+<urn:uuid:13000012-0000-5000-8000-000000000012>
+	a time:Instant ; time:inXSDDateTimeStamp "2022-03-31T23:59:00Z"^^xsd:dateTimeStamp .
+
+<urn:uuid:14000001-0000-5000-8000-000000000001>
+	a uco-core:ConfidenceFacet ; uco-core:confidence "90"^^xsd:nonNegativeInteger .
+
+# Fit: Factual basis PDF (Doc 61) establishes co-conspirators phoned Victim A (contact).
+<urn:uuid:15000001-0000-5000-8000-000000000001>
+	a traj:PhaseAssertion ;
+	uco-core:name "Occupancy assertion 0" ;
+	uco-core:description "Factual basis PDF (Doc 61) establishes co-conspirators phoned Victim A (contact)." ;
+	traj:assertsState <urn:uuid:11000002-0000-5000-8000-000000000002> ;
+	traj:atInterval <urn:uuid:13000001-0000-5000-8000-000000000001> ;
+	traj:sequenceIndex "0"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom <urn:uuid:8d61cedc-e74a-5977-b1d5-5fa0950c1c19> ;
+	uco-core:hasFacet <urn:uuid:14000001-0000-5000-8000-000000000001> .
+
+<urn:uuid:13000002-0000-5000-8000-000000000002>
+	a time:ProperInterval ;
+	time:hasBeginning <urn:uuid:13000021-0000-5000-8000-000000000021> ;
+	time:hasEnd <urn:uuid:13000022-0000-5000-8000-000000000022> .
+<urn:uuid:13000021-0000-5000-8000-000000000021>
+	a time:Instant ; time:inXSDDateTimeStamp "2022-03-15T00:00:00Z"^^xsd:dateTimeStamp .
+<urn:uuid:13000022-0000-5000-8000-000000000022>
+	a time:Instant ; time:inXSDDateTimeStamp "2022-04-02T00:00:00Z"^^xsd:dateTimeStamp .
+
+<urn:uuid:14000002-0000-5000-8000-000000000002>
+	a uco-core:ConfidenceFacet ; uco-core:confidence "88"^^xsd:nonNegativeInteger .
+
+# Fit: Victim A narrative: Treasury-agent callers claimed her accounts were implicated (trust).
+<urn:uuid:15000002-0000-5000-8000-000000000002>
+	a traj:PhaseAssertion ;
+	uco-core:name "Occupancy assertion 1" ;
+	uco-core:description "Victim A narrative: Treasury-agent callers claimed her accounts were implicated (trust)." ;
+	traj:assertsState <urn:uuid:11000003-0000-5000-8000-000000000003> ;
+	traj:atInterval <urn:uuid:13000002-0000-5000-8000-000000000002> ;
+	traj:sequenceIndex "1"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom <urn:uuid:ee49c32f-2f3f-571c-9964-997a966c4915> ;
+	uco-core:hasFacet <urn:uuid:14000002-0000-5000-8000-000000000002> .
+
+<urn:uuid:13000003-0000-5000-8000-000000000003>
+	a time:ProperInterval ;
+	time:hasBeginning <urn:uuid:13000031-0000-5000-8000-000000000031> ;
+	time:hasEnd <urn:uuid:13000032-0000-5000-8000-000000000032> .
+<urn:uuid:13000031-0000-5000-8000-000000000031>
+	a time:Instant ; time:inXSDDateTimeStamp "2022-04-02T12:00:00Z"^^xsd:dateTimeStamp .
+<urn:uuid:13000032-0000-5000-8000-000000000032>
+	a time:Instant ; time:inXSDDateTimeStamp "2022-04-03T15:00:00Z"^^xsd:dateTimeStamp .
+
+<urn:uuid:14000003-0000-5000-8000-000000000003>
+	a uco-core:ConfidenceFacet ; uco-core:confidence "90"^^xsd:nonNegativeInteger .
+
+# Fit: Sealed cash box prepared at callers' instructions for safekeeping handoff (urgency).
+<urn:uuid:15000003-0000-5000-8000-000000000003>
+	a traj:PhaseAssertion ;
+	uco-core:name "Occupancy assertion 2" ;
+	uco-core:description "Sealed cash box prepared at callers' instructions for safekeeping handoff (urgency)." ;
+	traj:assertsState <urn:uuid:11000004-0000-5000-8000-000000000004> ;
+	traj:atInterval <urn:uuid:13000003-0000-5000-8000-000000000003> ;
+	traj:sequenceIndex "2"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom <urn:uuid:07c7b29a-102b-5431-9c35-ed4d5bad50b2> ;
+	uco-core:hasFacet <urn:uuid:14000003-0000-5000-8000-000000000003> .
+
+<urn:uuid:13000004-0000-5000-8000-000000000004>
+	a time:ProperInterval ;
+	time:hasBeginning <urn:uuid:13000041-0000-5000-8000-000000000041> ;
+	time:hasEnd <urn:uuid:13000042-0000-5000-8000-000000000042> .
+<urn:uuid:13000041-0000-5000-8000-000000000041>
+	a time:Instant ; time:inXSDDateTimeStamp "2022-04-03T15:00:00Z"^^xsd:dateTimeStamp .
+<urn:uuid:13000042-0000-5000-8000-000000000042>
+	a time:Instant ; time:inXSDDateTimeStamp "2022-04-03T18:00:00Z"^^xsd:dateTimeStamp .
+
+<urn:uuid:14000004-0000-5000-8000-000000000004>
+	a uco-core:ConfidenceFacet ; uco-core:confidence "93"^^xsd:nonNegativeInteger .
+
+# Fit: Keel collects $60,000 cash box from Victim A (asset extraction).
+<urn:uuid:15000004-0000-5000-8000-000000000004>
+	a traj:PhaseAssertion ;
+	uco-core:name "Occupancy assertion 3" ;
+	uco-core:description "Keel collects $60,000 cash box from Victim A (asset extraction)." ;
+	traj:assertsState <urn:uuid:11000005-0000-5000-8000-000000000005> ;
+	traj:atInterval <urn:uuid:13000004-0000-5000-8000-000000000004> ;
+	traj:sequenceIndex "3"^^xsd:nonNegativeInteger ;
+	prov:wasDerivedFrom <urn:uuid:f082ad12-bb26-518d-8150-929af69aa563> ;
+	uco-core:hasFacet <urn:uuid:14000004-0000-5000-8000-000000000004> .
+
+<urn:uuid:16000001-0000-5000-8000-000000000001>
+	a traj:Trajectory ;
+	uco-core:name "Elder-fraud trajectory (Victim A cash-box handoff)" ;
+	uco-core:description "U.S. v. Keel & Panchal, 2:22-cr-00115 (E.D. La.) — occupancy grounded in case graph nodes ending in the 2022-04-03 cash-box collection." ;
+	traj:hasPhaseAssertion
+		<urn:uuid:15000001-0000-5000-8000-000000000001> ,
+		<urn:uuid:15000002-0000-5000-8000-000000000002> ,
+		<urn:uuid:15000003-0000-5000-8000-000000000003> ,
+		<urn:uuid:15000004-0000-5000-8000-000000000004> .
+
+#################################################################
+# Transitions + inferred model
+#################################################################
+
+<urn:uuid:17000001-0000-5000-8000-000000000001>
+	a uco-core:UcoObject ; uco-core:name "Trigger: government-impersonation opening claim" .
+<urn:uuid:17000002-0000-5000-8000-000000000002>
+	a uco-core:UcoObject ; uco-core:name "Trigger: safekeeping handoff instruction issued" .
+<urn:uuid:17000003-0000-5000-8000-000000000003>
+	a uco-core:UcoObject ; uco-core:name "Trigger: courier cash-box pickup completed" .
+
+<urn:uuid:18000001-0000-5000-8000-000000000001>
+	a traj:Transition ;
+	uco-core:name "contact -> trust_cultivation" ;
+	traj:fromState <urn:uuid:11000002-0000-5000-8000-000000000002> ;
+	traj:toState <urn:uuid:11000003-0000-5000-8000-000000000003> ;
+	traj:trigger <urn:uuid:17000001-0000-5000-8000-000000000001> .
+
+<urn:uuid:18000002-0000-5000-8000-000000000002>
+	a traj:Transition ;
+	uco-core:name "trust_cultivation -> urgency" ;
+	traj:fromState <urn:uuid:11000003-0000-5000-8000-000000000003> ;
+	traj:toState <urn:uuid:11000004-0000-5000-8000-000000000004> ;
+	traj:trigger <urn:uuid:17000002-0000-5000-8000-000000000002> .
+
+<urn:uuid:18000003-0000-5000-8000-000000000003>
+	a traj:Transition ;
+	uco-core:name "urgency -> extraction" ;
+	traj:fromState <urn:uuid:11000004-0000-5000-8000-000000000004> ;
+	traj:toState <urn:uuid:11000005-0000-5000-8000-000000000005> ;
+	traj:trigger <urn:uuid:17000003-0000-5000-8000-000000000003> .
+
+<urn:uuid:19000001-0000-5000-8000-000000000001>
+	a uco-tool:Tool ;
+	uco-core:name "CaseLinker trajectory estimator" ;
+	uco-core:description "version 0.1.0-dev" .
+
+<urn:uuid:19000002-0000-5000-8000-000000000002>
+	a uco-action:Action ;
+	uco-core:name "Estimate elder-fraud transition probabilities" ;
+	uco-action:instrument <urn:uuid:19000001-0000-5000-8000-000000000001> .
+
+<urn:uuid:1a000001-0000-5000-8000-000000000001>
+	a traj:TransitionEstimate ;
+	traj:ofTransition <urn:uuid:18000001-0000-5000-8000-000000000001> ;
+	traj:transitionProbability "0.90"^^xsd:decimal ;
+	traj:sampleBasis "n=31 EDLA-attributed victim narratives (illustrative)"^^xsd:string ;
+	prov:wasGeneratedBy <urn:uuid:19000002-0000-5000-8000-000000000002> .
+
+<urn:uuid:1a000002-0000-5000-8000-000000000002>
+	a traj:TransitionEstimate ;
+	traj:ofTransition <urn:uuid:18000002-0000-5000-8000-000000000002> ;
+	traj:transitionProbability "0.78"^^xsd:decimal ;
+	traj:sampleBasis "n=31 EDLA-attributed victim narratives (illustrative)"^^xsd:string ;
+	prov:wasGeneratedBy <urn:uuid:19000002-0000-5000-8000-000000000002> .
+
+<urn:uuid:1b000001-0000-5000-8000-000000000001>
+	a traj:StateMachineModel ;
+	uco-core:name "Elder-fraud stage Markov estimate (v0)" ;
+	traj:learnedFrom <urn:uuid:16000001-0000-5000-8000-000000000001> ;
+	traj:hasTransition
+		<urn:uuid:18000001-0000-5000-8000-000000000001> ,
+		<urn:uuid:18000002-0000-5000-8000-000000000002> ,
+		<urn:uuid:18000003-0000-5000-8000-000000000003> ;
+	traj:hasTransitionEstimate
+		<urn:uuid:1a000001-0000-5000-8000-000000000001> ,
+		<urn:uuid:1a000002-0000-5000-8000-000000000002> ;
+	prov:wasGeneratedBy <urn:uuid:19000002-0000-5000-8000-000000000002> .
