@@ -1,15 +1,16 @@
 # Choice extension — feasible menu for a stable goal (T-Box)
 #
 # Sits beside traj:Transition. The transition records the edge that was
-# walked and carries the abused affordance on uco-action:instrument.
-# This vocabulary records the menu that edge was chosen from: the stable
-# goal, the options available at a state, an actor's capability to use an
-# option, a constraint that removes an option, and an inferred assessment
-# of friction and feasibility.
+# walked. The action that transition enacts carries the affordance on
+# uco-action:instrument.
+# This vocabulary records the documented options for a goal at a state,
+# walked or not: the stable goal, an actor's capability to use an option,
+# a constraint that removes an option, and an inferred assessment of
+# friction and feasibility.
 #
 # It does not record a reward, a Bellman value, or a utility float.
-# selectionRule "not_modeled" is the conformant way to say the graph has
-# not claimed how the option was picked.
+# selectionRule "not_modeled" is the conformant value on a Selection that
+# names a menu without claiming a pick.
 #
 # OffenderCapability is a local stand-in for the Capability class proposed
 # in UCO #682. It is not toolcap:BenchmarkObservation and it is not

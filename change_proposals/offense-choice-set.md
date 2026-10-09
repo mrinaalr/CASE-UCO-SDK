@@ -119,14 +119,9 @@ Properties:
 
 ## Benefits
 
-- Enables modeling of Offense choice set data in CASE/UCO-compliant graphs
-- Improves interoperability between tools that encounter this data type
-- The `Goal` class provides a structured representation where none currently exists
-- The `Option` class provides a structured representation where none currently exists
-- The `OptionAssessment` class provides a structured representation where none currently exists
-- The `OffenderCapability` class provides a structured representation where none currently exists
-- The `Constraint` class provides a structured representation where none currently exists
-- The `Selection` class provides a structured representation where none currently exists
+- Constraint versus friction separates an option removed from the menu (wall, guardian, access denial) from one that stays feasible at higher friction.
+- Dissecting the same goal in two cases records how the documented menu of instruments differs across cases and eras.
+- Recording unwalked options gives a later model somewhere to look when an option is removed, without the graph claiming where traffic went.
 
 ## Risks
 
@@ -173,7 +168,7 @@ I am fine with my examples being transcribed and credited.
 * Define property `availableAt` with range `traj:State`
 * Define property `usesInstrument` with range `uco-core:UcoObject`
 * Define property `enactedTransition` with range `traj:Transition`
-* Add SHACL shape for `Option` with property constraints
+* Add SHACL shape for `Option` with property constraints, including a SPARQL constraint that a walked option's `traj:enactsAction` carries that option's `usesInstrument` on `uco-action:instrument`
 * Define new class `OptionAssessment` as a subclass of `uco-core:UcoObject`
 * Define property `assessesOption` with range `Option`
 * Define property `identityFriction` with range `xsd:string`
@@ -186,7 +181,7 @@ I am fine with my examples being transcribed and credited.
 * Define new class `Constraint` as a subclass of `uco-core:UcoObject`
 * Define property `removesOption` with range `Option`
 * Define property `constraintKind` with range `xsd:string`
-* Add SHACL shape for `Constraint` with property constraints
+* Add SHACL shape for `Constraint` with property constraints, including a SPARQL constraint that a removed option's assessment says `feasibility` `removed`
 * Define new class `Selection` as a subclass of `uco-core:UcoObject`
 * Define property `selectsOption` with range `Option`
 * Define property `amongOptions` with range `Option`
@@ -211,7 +206,7 @@ I am fine with my examples being transcribed and credited.
 
 `validate_graph` on `extensions/choice/choice-exemplar.ttl` and on `change_proposals/offense-choice-set.jsonld`: `conforms: true`, `violation_count: 0`, `verification_status: complete`. Loaded extensions: `choice`, `trajectories`, `layered`, `attack-technique`, `forced-labor`. Profiles: `prov-o`, `time`. Validator: case_validate 0.17.0.
 
-`extensions/choice/choice-invalid-exemplar.ttl` does not conform (10 violations): the option is missing its goal, state, instrument, and source; `identityFriction` is `"easy"`; `selectionRule` is `"bellman"`; the menu has one member; both the assessment and that selection lack `prov:wasGeneratedBy`; and `ex:selection-off-menu` names a `selectsOption` that is not in its `amongOptions`.
+`extensions/choice/choice-invalid-exemplar.ttl` does not conform (12 violations): the option is missing its goal, state, instrument, and source; `identityFriction` is `"easy"`; `selectionRule` is `"bellman"`; the menu has one member; both the assessment and that selection lack `prov:wasGeneratedBy`; `ex:selection-off-menu` names a `selectsOption` that is not in its `amongOptions`; `ex:constraint-removes` takes an option off the menu while its assessment says `feasible`; and `ex:option-wrong-instrument` walks a transition whose action carries a different instrument.
 
 ## Unresolved issues
 

@@ -3,12 +3,14 @@
 # assessment uses a friction token outside the vocabulary and has no
 # prov:wasGeneratedBy; one selection uses a reward-style rule and names
 # only one option; another selection names a chosen option that is not
-# on its menu.
+# on its menu; a constraint removes an option whose assessment stays
+# feasible; a walked option's action carries a different instrument.
 
 @prefix choice: <http://example.org/ontology/choice/> .
 @prefix ex: <http://example.org/kb/choice/invalid/> .
 @prefix traj: <http://example.org/ontology/trajectories/> .
 @prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -93,3 +95,64 @@ ex:selection-off-menu
 	choice:amongOptions ex:option-on-menu-a , ex:option-on-menu-b ;
 	choice:selectionRule "not_modeled" ;
 	prov:wasGeneratedBy ex:activity-off-menu .
+
+# Constraint removes an option whose assessment still says feasible.
+# The option and the assessment are otherwise complete.
+
+ex:option-removed
+	a choice:Option ;
+	uco-core:name "Option a constraint removes" ;
+	choice:servesGoal ex:goal-menu ;
+	choice:availableAt ex:state-menu ;
+	choice:usesInstrument ex:instrument-menu ;
+	prov:wasDerivedFrom ex:source-menu .
+
+ex:constraint-removes
+	a choice:Constraint ;
+	uco-core:name "Wall that removes an option the assessment still calls feasible" ;
+	choice:removesOption ex:option-removed ;
+	choice:constraintKind "wall" .
+
+ex:assessment-still-feasible
+	a choice:OptionAssessment ;
+	uco-core:name "Assessment that leaves a removed option feasible" ;
+	choice:assessesOption ex:option-removed ;
+	choice:identityFriction "low" ;
+	choice:delayBurden "low" ;
+	choice:detectionExposure "low" ;
+	choice:resourceCost "low" ;
+	choice:feasibility "feasible" ;
+	prov:wasGeneratedBy ex:activity-off-menu .
+
+# Walked option whose enacted action carries a different instrument.
+
+ex:instrument-on-option
+	a uco-core:UcoObject ;
+	uco-core:name "Instrument named by the option" .
+
+ex:instrument-on-action
+	a uco-core:UcoObject ;
+	uco-core:name "Instrument named by the action" .
+
+ex:action-wrong-instrument
+	a uco-action:Action ;
+	uco-core:name "Action that carries a different instrument" ;
+	uco-action:performer ex:actor-menu ;
+	uco-action:instrument ex:instrument-on-action ;
+	prov:wasDerivedFrom ex:source-menu .
+
+ex:transition-wrong-instrument
+	a traj:Transition ;
+	traj:fromState ex:state-menu ;
+	traj:toState ex:state-menu ;
+	traj:trigger ex:action-wrong-instrument ;
+	traj:enactsAction ex:action-wrong-instrument .
+
+ex:option-wrong-instrument
+	a choice:Option ;
+	uco-core:name "Walked option whose action carries a different instrument" ;
+	choice:servesGoal ex:goal-menu ;
+	choice:availableAt ex:state-menu ;
+	choice:usesInstrument ex:instrument-on-option ;
+	choice:enactedTransition ex:transition-wrong-instrument ;
+	prov:wasDerivedFrom ex:source-menu .

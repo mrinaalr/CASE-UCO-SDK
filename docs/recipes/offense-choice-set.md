@@ -2,7 +2,7 @@
 
 > See [Recipe Index](INDEX.md). Extension: [`extensions/choice/`](../../extensions/choice/).
 
-Record the menu a walked `traj:Transition` was chosen from. Use this when one stable goal has more than one instrument, and the graph needs to say which one was walked without claiming the actor optimized.
+Record the documented options for a goal at a `traj:State`, walked or not. Use this when one stable goal has more than one instrument, and the graph needs to say which one was walked without claiming the actor optimized.
 
 ## When to use
 

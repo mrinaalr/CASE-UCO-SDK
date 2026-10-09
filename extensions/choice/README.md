@@ -2,7 +2,7 @@
 
 Status: **candidate** · version **0.1.0**
 
-The menu a `traj:Transition` was chosen from. `trajectories` records the edge that was walked. `layered` composes those edges into a case-level machine. This extension records the stable goal, the options at a state, the actor's capability to use an option, a constraint that removes an option, and an inferred friction reading.
+Records the documented options for a goal at a `traj:State`, walked or not. `trajectories` records the edge that was walked. `layered` composes those edges into a case-level machine. This extension records the stable goal, the options at a state, the actor's capability to use an option, a constraint that removes an option, and an inferred friction reading.
 
 It does not define a reward. `selectionRule "not_modeled"` is the value to use when the graph must not claim that the actor optimized.
 

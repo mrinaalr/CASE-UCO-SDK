@@ -5,6 +5,7 @@
 @prefix choice: <http://example.org/ontology/choice/> .
 @prefix traj: <http://example.org/ontology/trajectories/> .
 @prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-action: <https://ontology.unifiedcyberontology.org/uco/action/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -59,6 +60,23 @@ choice:Option-shape
 			sh:minCount 1 ;
 			sh:nodeKind sh:IRI ;
 			sh:message "Every Option MUST cite the source that names this means."@en ;
+		] ;
+	sh:sparql
+		[
+			a sh:SPARQLConstraint ;
+			sh:message "The action a walked option's transition enacts must carry that option's usesInstrument on uco-action:instrument."@en ;
+			sh:select """
+				PREFIX choice: <http://example.org/ontology/choice/>
+				PREFIX traj: <http://example.org/ontology/trajectories/>
+				PREFIX uco-action: <https://ontology.unifiedcyberontology.org/uco/action/>
+				SELECT $this ?instrument
+				WHERE {
+					$this choice:enactedTransition ?transition ;
+						choice:usesInstrument ?instrument .
+					?transition traj:enactsAction ?action .
+					FILTER NOT EXISTS { ?action uco-action:instrument ?instrument }
+				}
+				""" ;
 		] ;
 	sh:not
 		[
@@ -184,6 +202,22 @@ choice:Constraint-shape
 			sh:minCount 1 ;
 			sh:maxCount 1 ;
 			sh:nodeKind sh:Literal ;
+		] ;
+	sh:sparql
+		[
+			a sh:SPARQLConstraint ;
+			sh:message "An option removed by a Constraint must be assessed feasibility removed."@en ;
+			sh:select """
+				PREFIX choice: <http://example.org/ontology/choice/>
+				SELECT $this ?assessment
+				WHERE {
+					$this choice:removesOption ?option .
+					?assessment a choice:OptionAssessment ;
+						choice:assessesOption ?option ;
+						choice:feasibility ?feasibility .
+					FILTER(?feasibility != "removed")
+				}
+				""" ;
 		] .
 
 choice:Selection-shape
