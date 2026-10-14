@@ -332,3 +332,30 @@ def test_phone_mapping_skips_cik_bates_pageid_and_keeps_real_nanp() -> None:
         if entity.ontology_class == "uco-observable:PhoneAccount"
     ]
     assert phones == ["(413) 555-2671"]
+
+
+def _phone_texts(text: str, seed: str) -> list[str]:
+    return [
+        entity.matched_text
+        for entity in extract_semantic_entities(text, run_seed=seed)
+        if entity.ontology_class == "uco-observable:PhoneAccount"
+    ]
+
+
+def test_phone_re_rejects_newline_bridged_digit_runs() -> None:
+    assert _phone_texts("202954\n5071", "nl-bridge-t0") == []
+    flattened = "size: 202954\n5071\n5129"
+    assert _phone_texts(flattened, "nl-json-flat-t0") == []
+    # Intentional recall tradeoff: newline inside an otherwise valid number.
+    assert _phone_texts("(413)\n555-2671", "nl-recall-t0") == []
+
+
+def test_phone_re_keeps_space_dot_hyphen_separators() -> None:
+    cases = [
+        ("(413) 555-2671", "(413) 555-2671"),
+        ("413-555-2671", "413-555-2671"),
+        ("413.555.2671", "413.555.2671"),
+        ("+1 413 555 2671", "+1 413 555 2671"),
+    ]
+    for text, expected in cases:
+        assert _phone_texts(text, f"sep-{expected}") == [expected]
