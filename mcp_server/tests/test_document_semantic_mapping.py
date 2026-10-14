@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from document_semantic_mapping import (
     _B58_ALPHABET,
+    _is_plausible_nanp_phone,
     extract_semantic_entities,
     repair_ocr_cyber_identifiers,
 )
@@ -42,7 +43,7 @@ announced that a 38-year-old Riverton man was charged with sexual solicitation
 after an investigation into online activity. Officers executed a search warrant
 at a residence in Riverton on DECEMBER 12, 2025.
 
-Contact the task force at tips@example-agency.test or call (555) 010-2000.
+Contact the task force at tips@example-agency.test or call (413) 555-2671.
 More information: https://example-agency.test/icac/release-001
 """
 
@@ -307,3 +308,27 @@ def test_semantic_mapping_models_warrant_investigation_and_p2pkh() -> None:
         if facet.get("@type") == "uco-observable:DomainNameFacet"
     ]
     assert "wallet-portal.cc" in domains
+
+
+def test_nanp_plausibility_rejects_npa_nxx_starting_with_0_or_1() -> None:
+    assert _is_plausible_nanp_phone("0001065280") is False
+    assert _is_plausible_nanp_phone("555-010-2345") is False
+    assert _is_plausible_nanp_phone("0001234567") is False
+    assert _is_plausible_nanp_phone("1234567890") is False
+    assert _is_plausible_nanp_phone("(413) 555-2671") is True
+    assert _is_plausible_nanp_phone("+1 413-555-2671") is True
+
+
+def test_phone_mapping_skips_cik_bates_pageid_and_keeps_real_nanp() -> None:
+    text = (
+        "CIK 0001065280. Reference 555-010-2345. "
+        "Bates USAO-0001234567. PageID.1234567890. "
+        "Tip line (413) 555-2671. Case No. 1:22-cr-00115-EEF-JVM. "
+        "Charged under 18 U.S.C. § 1343."
+    )
+    phones = [
+        entity.matched_text
+        for entity in extract_semantic_entities(text, run_seed="nanp-gate-t0")
+        if entity.ontology_class == "uco-observable:PhoneAccount"
+    ]
+    assert phones == ["(413) 555-2671"]
